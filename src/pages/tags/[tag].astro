@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getAllPosts, getAllTags, getTags } from '../../lib/content';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const tagMap = await getAllTags();
+  return Array.from(tagMap.keys()).map((tag) => ({
+    params: { tag },
+  }));
+}
+
+const { tag } = Astro.params;
+const allPosts = await getAllPosts();
+const posts = allPosts.filter((p) => getTags(p).includes(tag));
+---
+
+<BaseLayout title={`标签: ${tag}`}>
+  <Header />
+
+  <main class="mx-auto w-full max-w-3xl flex-1 px-6 py-12">
+    <header class="mb-10 animate-fade-in">
+      <p class="mb-2 text-sm text-[var(--color-text-muted)]">标签</p>
+      <h1 class="text-3xl font-bold tracking-tight text-[var(--color-text)]">
+        {tag}
+      </h1>
+      <p class="mt-2 text-[var(--color-text-secondary)]">
+        共 {posts.length} 篇文章
+      </p>
+    </header>
+
+    <section class="flex flex-col gap-4">
+      {posts.map((post, index) => (
+        <div class={`animate-fade-in animate-delay-${Math.min(index + 1, 3)}`}>
+          <PostCard post={post} />
+        </div>
+      ))}
+    </section>
+
+    <div class="mt-12">
+      <a
+        href="/tags"
+        class="inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-accent)]"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m12 19-7-7 7-7" /><path d="M19 12H5" />
+        </svg>
+        返回标签列表
+      </a>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

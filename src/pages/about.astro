@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="关于">
+  <Header />
+
+  <main class="mx-auto w-full max-w-3xl flex-1 px-6 py-12">
+    <article class="animate-fade-in">
+      <h1 class="mb-8 text-3xl font-bold tracking-tight text-[var(--color-text)]">
+        关于
+      </h1>
+
+      <div class="prose">
+        <p>
+          你好，欢迎来到我的个人博客。
+        </p>
+
+        <p>
+          这是一个分享技术笔记、生活感悟和思考记录的地方。我相信写作是最好的学习方式——
+          通过输出倒逼输入，能够更深入地理解一个话题。
+        </p>
+
+        <h2>关于这个博客</h2>
+
+        <p>这个博客使用以下技术构建：</p>
+
+        <ul>
+          <li><strong>Astro</strong> — 现代化的内容型网站框架</li>
+          <li><strong>Tailwind CSS</strong> — 原子化 CSS 框架</li>
+          <li><strong>Cloudflare Pages</strong> — 全球 CDN 部署平台</li>
+        </ul>
+
+        <p>
+          所有文章都以 Markdown 格式编写，通过 Git 进行版本管理。
+          如果你发现任何错误或有任何建议，欢迎联系我。
+        </p>
+
+        <h2>联系方式</h2>
+
+        <p>
+          你可以通过以下方式联系我：
+        </p>
+
+        <ul>
+          <li>GitHub: <a href="#">your-username</a></li>
+          <li>Email: <a href="#">your-email@example.com</a></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <Footer />
+</BaseLayout>

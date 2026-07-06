@@ -1,0 +1,50 @@
+---
+import TagList from './TagList.astro';
+import type { AnyPost } from '../lib/content';
+import { getDate, getTags, getSummary, formatDate } from '../lib/content';
+
+interface Props {
+  post: AnyPost;
+}
+
+const { post } = Astro.props;
+const date = getDate(post);
+const tags = getTags(post);
+const summary = getSummary(post);
+const dateStr = formatDate(date);
+const isEssay = post.collection === 'essays';
+---
+
+<article class="group animate-fade-in">
+  <a
+    href={`/posts/${post.collection}/${post.id}`}
+    class="block rounded-lg border border-[var(--color-border)] p-5 transition-all hover:border-[var(--color-accent)]/40 hover:shadow-sm"
+  >
+    <div class="flex flex-col gap-2.5">
+      <!-- Meta row -->
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+        <time class="text-sm text-[var(--color-text-muted)]" datetime={date.toISOString()}>
+          {dateStr}
+        </time>
+        {isEssay && (
+          <span class="rounded-full bg-[var(--color-bg-secondary)] px-2 py-0.5 text-xs text-[var(--color-text-muted)]">
+            随笔
+          </span>
+        )}
+        {tags.length > 0 && <TagList tags={tags.slice(0, 4)} size="sm" />}
+      </div>
+
+      <!-- Title -->
+      <h2 class="text-lg font-bold leading-snug text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors">
+        {post.data.title}
+      </h2>
+
+      <!-- Summary -->
+      {summary && (
+        <p class="text-sm leading-relaxed text-[var(--color-text-secondary)] line-clamp-2">
+          {summary}
+        </p>
+      )}
+    </div>
+  </a>
+</article>

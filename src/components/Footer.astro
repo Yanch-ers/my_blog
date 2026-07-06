@@ -1,0 +1,16 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-auto border-t border-[var(--color-border)]">
+  <div class="mx-auto max-w-3xl px-6 py-8">
+    <div class="flex flex-col items-center gap-2 text-sm text-[var(--color-text-muted)]">
+      <p>&copy; {year} My Blog. All rights reserved.</p>
+      <p class="text-xs">
+        Powered by <a href="https://astro.build" class="hover:text-[var(--color-accent)] transition-colors" target="_blank" rel="noopener">Astro</a>
+        &amp;
+        <a href="https://pages.cloudflare.com" class="hover:text-[var(--color-accent)] transition-colors" target="_blank" rel="noopener">Cloudflare Pages</a>
+      </p>
+    </div>
+  </div>
+</footer>
