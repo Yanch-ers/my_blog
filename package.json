@@ -9,7 +9,7 @@
     "setup": "git clone --depth 1 https://github.com/Yanch-ers/obsidian_vault.git content/obsidian && rm -rf content/obsidian/.git",
     "dev": "astro dev",
     "build": "astro build",
-    "build:cf": "rm -rf content/obsidian && git clone --depth 1 https://oauth2:${GH_TOKEN}@github.com/Yanch-ers/obsidian_vault.git content/obsidian && rm -rf content/obsidian/.git && npm run build",
+    "build:cf": "rm -rf content/obsidian && git clone --depth 1 https://${GH_TOKEN}@github.com/Yanch-ers/obsidian_vault.git content/obsidian && rm -rf content/obsidian/.git && npm run build",
     "preview": "astro preview",
     "astro": "astro",
     "generate-types": "wrangler types"
