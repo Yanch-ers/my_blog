@@ -28,3 +28,7 @@ pnpm-debug.log*
 
 # VS Code
 .vscode/
+
+# Obsidian content (cloned in CI / local setup)
+content/obsidian/
+.gitmodules

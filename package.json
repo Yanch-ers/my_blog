@@ -6,9 +6,10 @@
     "node": ">=22.12.0"
   },
   "scripts": {
+    "setup": "git clone --depth 1 https://github.com/Yanch-ers/obsidian_vault.git content/obsidian && rm -rf content/obsidian/.git",
     "dev": "astro dev",
     "build": "astro build",
-    "build:cf": "git -c url.https://${GH_TOKEN}@github.com/.insteadOf=https://github.com/ submodule update --init --recursive && npm run build",
+    "build:cf": "rm -rf content/obsidian && git clone --depth 1 https://${GH_TOKEN}@github.com/Yanch-ers/obsidian_vault.git content/obsidian && rm -rf content/obsidian/.git && npm run build",
     "preview": "astro preview",
     "astro": "astro",
     "generate-types": "wrangler types"
