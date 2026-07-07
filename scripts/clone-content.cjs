@@ -6,7 +6,6 @@ const token = process.env.GH_TOKEN;
 const giteeToken = process.env.GITEE_TOKEN;
 const targetDir = path.resolve(__dirname, '..', 'content', 'obsidian');
 
-// Remove existing directory
 fs.rmSync(targetDir, { recursive: true, force: true });
 
 const cloneOptions = {
@@ -45,7 +44,6 @@ if (!success && token) {
 
 if (!success) {
   console.error('Error: Failed to clone content repository from all sources');
-  console.error('Please check your network connectivity or configure GH_TOKEN/GITEE_TOKEN');
   process.exit(1);
 }
 

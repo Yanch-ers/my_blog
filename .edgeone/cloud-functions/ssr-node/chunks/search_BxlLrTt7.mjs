@@ -208,7 +208,7 @@ function createGetCollection({ liveCollections }) {
 		const hasFilter = typeof filter === "function";
 		const store = await globalDataStore.get();
 		if (store.hasCollection(collection)) {
-			const { default: imageAssetMap } = await import("./content-assets_BNW1matP.mjs");
+			const { default: imageAssetMap } = await import("./content-assets_DXqEyLLP.mjs");
 			const result = [];
 			for (const rawEntry of store.values(collection)) {
 				const data = updateImageReferencesInData(rawEntry.data, rawEntry.filePath, imageAssetMap);
@@ -256,7 +256,7 @@ function createGetEntry({ liveCollections }) {
 				console.warn(`Entry ${collection} → ${lookupId} was not found.`);
 				return;
 			}
-			const { default: imageAssetMap } = await import("./content-assets_BNW1matP.mjs");
+			const { default: imageAssetMap } = await import("./content-assets_DXqEyLLP.mjs");
 			const data = updateImageReferencesInData(entry.data, entry.filePath, imageAssetMap);
 			const result = {
 				...entry,

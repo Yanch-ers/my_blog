@@ -1,6 +1,6 @@
 import { t as __exportAll } from "./rolldown-runtime_D7D4PA-g.mjs";
 import { T as createComponent, _ as renderHead, f as renderTemplate } from "./server_BzLvcQuV.mjs";
-import { t as getCollection } from "./_astro_content_C7znbMFL.mjs";
+import { t as getCollection } from "./_astro_content_4mK-tfxb.mjs";
 import "./compiler_CykheeCx.mjs";
 //#region src/pages/debug-posts.astro
 var debug_posts_exports = /* @__PURE__ */ __exportAll({

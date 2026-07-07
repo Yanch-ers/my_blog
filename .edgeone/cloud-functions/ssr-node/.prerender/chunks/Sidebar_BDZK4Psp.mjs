@@ -1,6 +1,6 @@
 import { T as createComponent, f as renderTemplate, g as maybeRenderHead, v as addAttribute } from "./server_BzLvcQuV.mjs";
 import "./compiler_CykheeCx.mjs";
-import { a as getAllTags, i as getAllSubCategories } from "./content_BhODR8ss.mjs";
+import { a as getAllTags, i as getAllSubCategories } from "./content_Dz-elcKP.mjs";
 //#region src/components/Sidebar.astro
 var $$Sidebar = createComponent(async ($$result, $$props, $$slots) => {
 	const subCategories = await getAllSubCategories();

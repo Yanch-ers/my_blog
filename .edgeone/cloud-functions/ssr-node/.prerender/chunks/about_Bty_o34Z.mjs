@@ -2,7 +2,7 @@ import { t as __exportAll } from "./rolldown-runtime_D7D4PA-g.mjs";
 import { T as createComponent, f as renderTemplate, g as maybeRenderHead, o as renderComponent } from "./server_BzLvcQuV.mjs";
 import "./compiler_CykheeCx.mjs";
 import { n as $$Header, r as $$BaseLayout, t as $$Footer } from "./Footer_BfBjyjUc.mjs";
-import { r as getAllPosts } from "./content_BhODR8ss.mjs";
+import { r as getAllPosts } from "./content_Dz-elcKP.mjs";
 //#region src/pages/about.astro
 var about_exports = /* @__PURE__ */ __exportAll({
 	default: () => $$About,
