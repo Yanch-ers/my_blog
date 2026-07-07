@@ -2,7 +2,6 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
-import edgeone from '@edgeone/astro';
 import sitemap from '@astrojs/sitemap';
 import { remarkObsidian } from './src/plugins/remark-obsidian.mjs';
 import { unified } from '@astrojs/markdown-remark';
@@ -34,7 +33,4 @@ export default defineConfig({
     react(),
     sitemap(),
   ],
-  adapter: edgeone({
-    entrypointResolution: 'auto',
-  }),
 });

@@ -9,18 +9,16 @@
     "setup": "git clone --depth 1 https://github.com/Yanch-ers/obsidian_vault.git content/obsidian && rm -rf content/obsidian/.git",
     "dev": "astro dev",
     "build": "astro build",
-    "build:cf": "git config --global credential.helper store && node scripts/clone-content.cjs && npm run build",
+    "build:cf": "git config --global credential.helper store && node scripts/clone-content.cjs && npm run build && npm run postbuild",
+    "postbuild": "rm -rf .edgeone/assets && mkdir -p .edgeone/assets && cp -r dist/. .edgeone/assets/",
     "preview": "astro preview",
-    "astro": "astro",
-    "generate-types": "wrangler types"
+    "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^14.1.1",
     "@astrojs/markdown-remark": "^7.2.1",
     "@astrojs/react": "^6.0.1",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
-    "@edgeone/astro": "^1.1.4",
     "@tailwindcss/vite": "^4.3.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
@@ -32,7 +30,6 @@
     "remark-stringify": "^11.0.0",
     "tailwindcss": "^4.3.2",
     "three": "^0.185.1",
-    "unified": "^11.0.5",
-    "wrangler": "^4.107.0"
+    "unified": "^11.0.5"
   }
 }
