@@ -19,25 +19,10 @@
       "src": "^/_image/?$"
     },
     {
-      "src": "^/about/?$"
-    },
-    {
       "src": "^/api/search/?$"
     },
     {
       "src": "^/api/upload/?$"
-    },
-    {
-      "src": "^/debug-posts/?$"
-    },
-    {
-      "src": "^/search/?$"
-    },
-    {
-      "src": "^/tags/?$"
-    },
-    {
-      "src": "^/$"
     },
     {
       "src": "^/404/?$"

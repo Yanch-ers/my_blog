@@ -11,7 +11,7 @@ const siteUrl = process.env.SITE_URL || 'https://your-blog.pages.dev';
 
 export default defineConfig({
   site: siteUrl,
-  output: 'server',
+  output: 'static',
   markdown: {
     processor: unified({
       remarkPlugins: [remarkObsidian],

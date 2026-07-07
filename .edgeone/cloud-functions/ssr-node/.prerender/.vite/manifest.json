@@ -1,6 +1,6 @@
 {
   ".astro/content-assets.mjs": {
-    "file": "chunks/content-assets_DXqEyLLP.mjs",
+    "file": "chunks/content-assets_BNW1matP.mjs",
     "name": "content-assets",
     "src": ".astro/content-assets.mjs",
     "isDynamicEntry": true
@@ -11,35 +11,46 @@
     "src": ".astro/content-modules.mjs",
     "isDynamicEntry": true
   },
-  "_Footer.DQFaz84t.css": {
-    "file": "_astro/Footer.DQFaz84t.css",
-    "src": "_Footer.DQFaz84t.css"
+  "_Footer.ONKt4F7_.css": {
+    "file": "_astro/Footer.ONKt4F7_.css",
+    "src": "_Footer.ONKt4F7_.css"
   },
-  "_Footer_Kq32CAfA.mjs": {
-    "file": "chunks/Footer_Kq32CAfA.mjs",
+  "_Footer_BfBjyjUc.mjs": {
+    "file": "chunks/Footer_BfBjyjUc.mjs",
     "name": "Footer",
     "imports": [
-      "_server_CUCY0GF4.mjs"
+      "_server_BzLvcQuV.mjs",
+      "_compiler_CykheeCx.mjs"
     ],
     "css": [
-      "_astro/Footer.DQFaz84t.css"
+      "_astro/Footer.ONKt4F7_.css"
     ]
   },
-  "_PostCard_Df5fjiFz.mjs": {
-    "file": "chunks/PostCard_Df5fjiFz.mjs",
+  "_PostCard_72_nTU2p.mjs": {
+    "file": "chunks/PostCard_72_nTU2p.mjs",
     "name": "PostCard",
     "imports": [
-      "_content_DVRZEqeP.mjs",
-      "_server_CUCY0GF4.mjs",
-      "_Footer_Kq32CAfA.mjs"
+      "_server_BzLvcQuV.mjs",
+      "_compiler_CykheeCx.mjs",
+      "_content_BhODR8ss.mjs"
     ]
   },
-  "_content_DVRZEqeP.mjs": {
-    "file": "chunks/content_DVRZEqeP.mjs",
-    "name": "content",
+  "_Sidebar_c0pr8Tnx.mjs": {
+    "file": "chunks/Sidebar_c0pr8Tnx.mjs",
+    "name": "Sidebar",
     "imports": [
-      "_errors_DD4ZP9r6.mjs",
-      "_server_CUCY0GF4.mjs"
+      "_server_BzLvcQuV.mjs",
+      "_compiler_CykheeCx.mjs",
+      "_content_BhODR8ss.mjs"
+    ]
+  },
+  "__astro_content_C7znbMFL.mjs": {
+    "file": "chunks/_astro_content_C7znbMFL.mjs",
+    "name": "_astro_content",
+    "imports": [
+      "_path_DSAdOJJi.mjs",
+      "_errors_UeLp8ga4.mjs",
+      "_server_BzLvcQuV.mjs"
     ],
     "dynamicImports": [
       "astro:data-layer-content",
@@ -48,29 +59,52 @@
       ".astro/content-modules.mjs"
     ]
   },
-  "_errors_DD4ZP9r6.mjs": {
-    "file": "chunks/errors_DD4ZP9r6.mjs",
+  "_compiler_CykheeCx.mjs": {
+    "file": "chunks/compiler_CykheeCx.mjs",
+    "name": "compiler",
+    "imports": [
+      "_server_BzLvcQuV.mjs"
+    ]
+  },
+  "_content_BhODR8ss.mjs": {
+    "file": "chunks/content_BhODR8ss.mjs",
+    "name": "content",
+    "imports": [
+      "__astro_content_C7znbMFL.mjs"
+    ]
+  },
+  "_errors_UeLp8ga4.mjs": {
+    "file": "chunks/errors_UeLp8ga4.mjs",
     "name": "errors"
+  },
+  "_path_DSAdOJJi.mjs": {
+    "file": "chunks/path_DSAdOJJi.mjs",
+    "name": "path"
   },
   "_remote_BgpFkaRQ.mjs": {
     "file": "chunks/remote_BgpFkaRQ.mjs",
     "name": "remote"
   },
-  "_server_CUCY0GF4.mjs": {
-    "file": "chunks/server_CUCY0GF4.mjs",
+  "_rolldown-runtime_D7D4PA-g.mjs": {
+    "file": "chunks/rolldown-runtime_D7D4PA-g.mjs",
+    "name": "rolldown-runtime"
+  },
+  "_server_BzLvcQuV.mjs": {
+    "file": "chunks/server_BzLvcQuV.mjs",
     "name": "server",
     "imports": [
-      "_errors_DD4ZP9r6.mjs",
+      "_errors_UeLp8ga4.mjs",
       "_shorthash_BpL1kSm9.mjs"
     ]
   },
-  "_service_D8yI1hi1.mjs": {
-    "file": "chunks/service_D8yI1hi1.mjs",
+  "_service_2aoz-e2B.mjs": {
+    "file": "chunks/service_2aoz-e2B.mjs",
     "name": "service",
     "imports": [
-      "_content_DVRZEqeP.mjs",
-      "_errors_DD4ZP9r6.mjs",
-      "_remote_BgpFkaRQ.mjs"
+      "_path_DSAdOJJi.mjs",
+      "_remote_BgpFkaRQ.mjs",
+      "_errors_UeLp8ga4.mjs",
+      "__astro_content_C7znbMFL.mjs"
     ]
   },
   "_shorthash_BpL1kSm9.mjs": {
@@ -78,7 +112,7 @@
     "name": "shorthash"
   },
   "astro:data-layer-content": {
-    "file": "chunks/_astro_data-layer-content_CLcyejEI.mjs",
+    "file": "chunks/_astro_data-layer-content_DJfkbjBN.mjs",
     "name": "_astro_data-layer-content",
     "src": "astro:data-layer-content",
     "isDynamicEntry": true
@@ -90,31 +124,37 @@
     "isDynamicEntry": true
   },
   "node_modules/astro/dist/assets/services/sharp.js": {
-    "file": "chunks/sharp_CsB-j-qz.mjs",
+    "file": "chunks/sharp_McgevWJl.mjs",
     "name": "sharp",
     "src": "node_modules/astro/dist/assets/services/sharp.js",
     "isDynamicEntry": true,
     "imports": [
-      "_errors_DD4ZP9r6.mjs",
-      "_service_D8yI1hi1.mjs"
+      "_errors_UeLp8ga4.mjs",
+      "_service_2aoz-e2B.mjs"
     ]
   },
   "node_modules/astro/dist/entrypoints/prerender.js": {
-    "file": "prerender-entry.CZBN6bd8.mjs",
+    "file": "prerender-entry.DlCVwHIi.mjs",
     "name": "prerender",
     "src": "node_modules/astro/dist/entrypoints/prerender.js",
     "isEntry": true,
     "imports": [
-      "_errors_DD4ZP9r6.mjs",
+      "_path_DSAdOJJi.mjs",
       "_remote_BgpFkaRQ.mjs",
-      "_server_CUCY0GF4.mjs"
+      "_errors_UeLp8ga4.mjs",
+      "_server_BzLvcQuV.mjs"
     ],
     "dynamicImports": [
       "node_modules/@astrojs/react/dist/vnode-children.js",
+      "virtual:astro:page:src/pages/about@_@astro",
+      "virtual:astro:page:src/pages/debug-posts@_@astro",
       "virtual:astro:page:src/pages/page/[page]@_@astro",
       "virtual:astro:page:src/pages/posts/[collection]/[...slug]@_@astro",
       "virtual:astro:page:src/pages/rss.xml@_@ts",
+      "virtual:astro:page:src/pages/search@_@astro",
       "virtual:astro:page:src/pages/tags/[tag]@_@astro",
+      "virtual:astro:page:src/pages/tags/index@_@astro",
+      "virtual:astro:page:src/pages/index@_@astro",
       "virtual:astro:actions/noop-entrypoint",
       "noop-middleware",
       "virtual:astro:session-driver",
@@ -134,62 +174,137 @@
     "isDynamicEntry": true
   },
   "virtual:astro:get-image": {
-    "file": "chunks/_virtual_astro_get-image_DajeqKOc.mjs",
+    "file": "chunks/_virtual_astro_get-image_CO-DGN9X.mjs",
     "name": "_virtual_astro_get-image",
     "src": "virtual:astro:get-image",
     "isDynamicEntry": true,
     "imports": [
-      "_content_DVRZEqeP.mjs",
-      "_errors_DD4ZP9r6.mjs",
+      "_path_DSAdOJJi.mjs",
       "_remote_BgpFkaRQ.mjs",
-      "_service_D8yI1hi1.mjs"
+      "_errors_UeLp8ga4.mjs",
+      "__astro_content_C7znbMFL.mjs",
+      "_service_2aoz-e2B.mjs"
     ],
     "dynamicImports": [
       "node_modules/astro/dist/assets/services/sharp.js"
     ]
   },
+  "virtual:astro:page:src/pages/about@_@astro": {
+    "file": "chunks/about_QKlqcrPk.mjs",
+    "name": "about@_@astro",
+    "src": "virtual:astro:page:src/pages/about@_@astro",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime_D7D4PA-g.mjs",
+      "_server_BzLvcQuV.mjs",
+      "_compiler_CykheeCx.mjs",
+      "_Footer_BfBjyjUc.mjs",
+      "_content_BhODR8ss.mjs"
+    ]
+  },
+  "virtual:astro:page:src/pages/debug-posts@_@astro": {
+    "file": "chunks/debug-posts_D3HkkwXV.mjs",
+    "name": "debug-posts@_@astro",
+    "src": "virtual:astro:page:src/pages/debug-posts@_@astro",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime_D7D4PA-g.mjs",
+      "_server_BzLvcQuV.mjs",
+      "__astro_content_C7znbMFL.mjs",
+      "_compiler_CykheeCx.mjs"
+    ]
+  },
+  "virtual:astro:page:src/pages/index@_@astro": {
+    "file": "chunks/index_DTOOHAdh.mjs",
+    "name": "index@_@astro",
+    "src": "virtual:astro:page:src/pages/index@_@astro",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime_D7D4PA-g.mjs",
+      "_server_BzLvcQuV.mjs",
+      "_compiler_CykheeCx.mjs",
+      "_Footer_BfBjyjUc.mjs",
+      "_content_BhODR8ss.mjs",
+      "_PostCard_72_nTU2p.mjs",
+      "_Sidebar_c0pr8Tnx.mjs"
+    ]
+  },
   "virtual:astro:page:src/pages/page/[page]@_@astro": {
-    "file": "chunks/_page__D0hzprBd.mjs",
+    "file": "chunks/_page__BKmISchf.mjs",
     "name": "_page_@_@astro",
     "src": "virtual:astro:page:src/pages/page/[page]@_@astro",
     "isDynamicEntry": true,
     "imports": [
-      "_content_DVRZEqeP.mjs",
-      "_server_CUCY0GF4.mjs",
-      "_Footer_Kq32CAfA.mjs",
-      "_PostCard_Df5fjiFz.mjs"
+      "_rolldown-runtime_D7D4PA-g.mjs",
+      "_server_BzLvcQuV.mjs",
+      "_compiler_CykheeCx.mjs",
+      "_Footer_BfBjyjUc.mjs",
+      "_content_BhODR8ss.mjs",
+      "_PostCard_72_nTU2p.mjs",
+      "_Sidebar_c0pr8Tnx.mjs"
     ]
   },
   "virtual:astro:page:src/pages/posts/[collection]/[...slug]@_@astro": {
-    "file": "chunks/_.._CCO-gLhI.mjs",
+    "file": "chunks/_.._DkjsDG44.mjs",
     "name": "_..",
     "src": "virtual:astro:page:src/pages/posts/[collection]/[...slug]@_@astro",
     "isDynamicEntry": true,
     "imports": [
-      "_content_DVRZEqeP.mjs",
-      "_server_CUCY0GF4.mjs",
-      "_Footer_Kq32CAfA.mjs"
+      "_rolldown-runtime_D7D4PA-g.mjs",
+      "_server_BzLvcQuV.mjs",
+      "__astro_content_C7znbMFL.mjs",
+      "_compiler_CykheeCx.mjs",
+      "_Footer_BfBjyjUc.mjs",
+      "_content_BhODR8ss.mjs"
     ]
   },
   "virtual:astro:page:src/pages/rss.xml@_@ts": {
-    "file": "chunks/rss_BHN1Jkiv.mjs",
+    "file": "chunks/rss_BE7LBCqW.mjs",
     "name": "rss",
     "src": "virtual:astro:page:src/pages/rss.xml@_@ts",
     "isDynamicEntry": true,
     "imports": [
-      "_content_DVRZEqeP.mjs"
+      "_rolldown-runtime_D7D4PA-g.mjs",
+      "_content_BhODR8ss.mjs"
+    ]
+  },
+  "virtual:astro:page:src/pages/search@_@astro": {
+    "file": "chunks/search_Cm6PeEOi.mjs",
+    "name": "search@_@astro",
+    "src": "virtual:astro:page:src/pages/search@_@astro",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime_D7D4PA-g.mjs",
+      "_server_BzLvcQuV.mjs",
+      "_compiler_CykheeCx.mjs",
+      "_Footer_BfBjyjUc.mjs"
     ]
   },
   "virtual:astro:page:src/pages/tags/[tag]@_@astro": {
-    "file": "chunks/_tag__WWJwmfKE.mjs",
+    "file": "chunks/_tag__CvKhwzAI.mjs",
     "name": "_tag_@_@astro",
     "src": "virtual:astro:page:src/pages/tags/[tag]@_@astro",
     "isDynamicEntry": true,
     "imports": [
-      "_content_DVRZEqeP.mjs",
-      "_server_CUCY0GF4.mjs",
-      "_Footer_Kq32CAfA.mjs",
-      "_PostCard_Df5fjiFz.mjs"
+      "_rolldown-runtime_D7D4PA-g.mjs",
+      "_server_BzLvcQuV.mjs",
+      "_compiler_CykheeCx.mjs",
+      "_Footer_BfBjyjUc.mjs",
+      "_content_BhODR8ss.mjs",
+      "_PostCard_72_nTU2p.mjs"
+    ]
+  },
+  "virtual:astro:page:src/pages/tags/index@_@astro": {
+    "file": "chunks/index_qbDMUuDN.mjs",
+    "name": "index@_@astro",
+    "src": "virtual:astro:page:src/pages/tags/index@_@astro",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime_D7D4PA-g.mjs",
+      "_server_BzLvcQuV.mjs",
+      "_compiler_CykheeCx.mjs",
+      "_Footer_BfBjyjUc.mjs",
+      "_content_BhODR8ss.mjs"
     ]
   },
   "virtual:astro:server-island-manifest": {

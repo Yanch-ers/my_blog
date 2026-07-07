@@ -8,6 +8,8 @@ import HeroSection from '../components/HeroSection.astro';
 import Sidebar from '../components/Sidebar.astro';
 import { getAllPosts } from '../lib/content';
 
+export const prerender = true;
+
 const allPosts = await getAllPosts();
 
 const POSTS_PER_PAGE = 12;
