@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime.Dkcc3WWB.js";var t=e();function n({src:e,poster:n}){return(0,t.jsx)(`div`,{className:`my-6 overflow-hidden rounded-lg border border-[var(--color-border)]`,children:(0,t.jsxs)(`video`,{controls:!0,preload:`metadata`,poster:n,className:`w-full`,children:[(0,t.jsx)(`source`,{src:e,type:`video/mp4`}),`您的浏览器不支持视频播放。`]})})}export{n as default};

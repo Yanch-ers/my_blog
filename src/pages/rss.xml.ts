@@ -10,7 +10,7 @@ export const GET: APIRoute = async (context) => {
   return rss({
     title: 'My Blog',
     description: '技术笔记与生活随笔',
-    site: context.site ?? 'https://your-blog.pages.dev',
+    site: context.site ?? import.meta.env.SITE_URL ?? 'https://your-blog.pages.dev',
     items: allPosts.map((post) => ({
       title: post.data.title,
       pubDate: getDate(post),

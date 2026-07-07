@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+
+const [techPosts] = await Promise.all([
+  getCollection('tech'),
+]);
+
+const samplePosts = techPosts.slice(0, 10);
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <title>Debug Posts</title>
+</head>
+<body>
+  <h1>Debug Posts</h1>
+  <table border="1">
+    <tr>
+      <th>Index</th>
+      <th>ID (raw)</th>
+      <th>ID length</th>
+      <th>Has backslash</th>
+      <th>Has space</th>
+      <th>Title</th>
+      <th>URL (hyphenated)</th>
+    </tr>
+    {samplePosts.map((post, index) => (
+      <tr>
+        <td>{index}</td>
+        <td><code>{post.id}</code></td>
+        <td>{post.id.length}</td>
+        <td>{post.id.includes('\\') ? 'YES' : 'NO'}</td>
+        <td>{post.id.includes(' ') ? 'YES' : 'NO'}</td>
+        <td>{post.data.title}</td>
+        <td><code>/posts/tech/{post.id.replace(/\\/g, '/').replace(/ /g, '-')}</code></td>
+      </tr>
+    ))}
+  </table>
+</body>
+</html>

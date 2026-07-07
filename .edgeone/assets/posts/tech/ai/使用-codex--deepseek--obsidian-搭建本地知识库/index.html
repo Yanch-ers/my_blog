@@ -1,0 +1,1087 @@
+<!DOCTYPE html><html lang="zh-CN" class="scroll-smooth"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Astro v7.0.6"><title>使用 Codex + DeepSeek + Obsidian 搭建本地知识库 | My Blog</title><meta name="description" content="从零开始，通过 Codex++ 插件接入 DeepSeek 模型，在 Codex 中以 Claudian 角色管理 Obsidian 知识库的完整教程"><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:title" content="使用 Codex + DeepSeek + Obsidian 搭建本地知识库"><meta property="og:description" content="从零开始，通过 Codex++ 插件接入 DeepSeek 模型，在 Codex 中以 Claudian 角色管理 Obsidian 知识库的完整教程"><meta property="og:site_name" content="My Blog"><!-- Twitter Card --><meta name="twitter:card" content="summary"><meta name="twitter:title" content="使用 Codex + DeepSeek + Obsidian 搭建本地知识库"><meta name="twitter:description" content="从零开始，通过 Codex++ 插件接入 DeepSeek 模型，在 Codex 中以 Claudian 角色管理 Obsidian 知识库的完整教程"><!-- Fonts --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><!-- Dark mode init (avoid flash) --><script>
+      (function () {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script><link rel="stylesheet" href="/_astro/Footer.DQFaz84t.css"></head><body class="min-h-screen flex flex-col antialiased"><div id="title-url-map" style="display:none;" data-map="{&quot;使用 Codex + DeepSeek + Obsidian 搭建本地知识库&quot;:&quot;/posts/tech/ai/使用-codex--deepseek--obsidian-搭建本地知识库&quot;,&quot;使用 codex + deepseek + obsidian 搭建本地知识库&quot;:&quot;/posts/tech/ai/使用-codex--deepseek--obsidian-搭建本地知识库&quot;,&quot;ai/使用-codex--deepseek--obsidian-搭建本地知识库&quot;:&quot;/posts/tech/ai/使用-codex--deepseek--obsidian-搭建本地知识库&quot;,&quot;使用-codex--deepseek--obsidian-搭建本地知识库&quot;:&quot;/posts/tech/ai/使用-codex--deepseek--obsidian-搭建本地知识库&quot;,&quot;笔记整理提示词&quot;:&quot;/posts/tech/ai/提示词/笔记整理&quot;,&quot;ai/提示词/笔记整理&quot;:&quot;/posts/tech/ai/提示词/笔记整理&quot;,&quot;笔记整理&quot;:&quot;/posts/tech/ai/提示词/笔记整理&quot;,&quot;ai/提示词/英语学习提示词&quot;:&quot;/posts/tech/ai/提示词/英语学习提示词&quot;,&quot;英语学习提示词&quot;:&quot;/posts/tech/ai/提示词/英语学习提示词&quot;,&quot;AI 完整学习路线&quot;:&quot;/posts/tech/ai/ai-完整学习路线&quot;,&quot;ai 完整学习路线&quot;:&quot;/posts/tech/ai/ai-完整学习路线&quot;,&quot;ai/ai-完整学习路线&quot;:&quot;/posts/tech/ai/ai-完整学习路线&quot;,&quot;ai-完整学习路线&quot;:&quot;/posts/tech/ai/ai-完整学习路线&quot;,&quot;AI 领域最新资讯主流获取渠道&quot;:&quot;/posts/tech/ai/ai领域最新资讯主流获取渠道&quot;,&quot;ai 领域最新资讯主流获取渠道&quot;:&quot;/posts/tech/ai/ai领域最新资讯主流获取渠道&quot;,&quot;ai/ai领域最新资讯主流获取渠道&quot;:&quot;/posts/tech/ai/ai领域最新资讯主流获取渠道&quot;,&quot;ai领域最新资讯主流获取渠道&quot;:&quot;/posts/tech/ai/ai领域最新资讯主流获取渠道&quot;,&quot;AI 名词释义&quot;:&quot;/posts/tech/ai/ai名词释义&quot;,&quot;ai 名词释义&quot;:&quot;/posts/tech/ai/ai名词释义&quot;,&quot;ai/ai名词释义&quot;:&quot;/posts/tech/ai/ai名词释义&quot;,&quot;ai名词释义&quot;:&quot;/posts/tech/ai/ai名词释义&quot;,&quot;AI运维新技术完整清单（LLM大模型运维 + AIOps）&quot;:&quot;/posts/tech/ai/ai运维新技术完整清单&quot;,&quot;ai运维新技术完整清单（llm大模型运维 + aiops）&quot;:&quot;/posts/tech/ai/ai运维新技术完整清单&quot;,&quot;ai/ai运维新技术完整清单&quot;:&quot;/posts/tech/ai/ai运维新技术完整清单&quot;,&quot;ai运维新技术完整清单&quot;:&quot;/posts/tech/ai/ai运维新技术完整清单&quot;,&quot;AIOps&quot;:&quot;/posts/tech/ai/aiops&quot;,&quot;aiops&quot;:&quot;/posts/tech/ai/aiops&quot;,&quot;ai/aiops&quot;:&quot;/posts/tech/ai/aiops&quot;,&quot;cloud-native/ansible/面试题/ansible-面试题&quot;:&quot;/posts/tech/cloud-native/ansible/面试题/ansible-面试题&quot;,&quot;ansible-面试题&quot;:&quot;/posts/tech/cloud-native/ansible/面试题/ansible-面试题&quot;,&quot;Ansible 基础与运维&quot;:&quot;/posts/tech/cloud-native/ansible/ansible-基础与运维&quot;,&quot;ansible 基础与运维&quot;:&quot;/posts/tech/cloud-native/ansible/ansible-基础与运维&quot;,&quot;cloud-native/ansible/ansible-基础与运维&quot;:&quot;/posts/tech/cloud-native/ansible/ansible-基础与运维&quot;,&quot;ansible-基础与运维&quot;:&quot;/posts/tech/cloud-native/ansible/ansible-基础与运维&quot;,&quot;Ansible Roles&quot;:&quot;/posts/tech/cloud-native/ansible/ansible-roles&quot;,&quot;ansible roles&quot;:&quot;/posts/tech/cloud-native/ansible/ansible-roles&quot;,&quot;cloud-native/ansible/ansible-roles&quot;:&quot;/posts/tech/cloud-native/ansible/ansible-roles&quot;,&quot;ansible-roles&quot;:&quot;/posts/tech/cloud-native/ansible/ansible-roles&quot;,&quot;🔄 CI/CD&quot;:&quot;/posts/tech/cloud-native/cicd/ci-cd&quot;,&quot;🔄 ci/cd&quot;:&quot;/posts/tech/cloud-native/cicd/ci-cd&quot;,&quot;cloud-native/cicd/ci-cd&quot;:&quot;/posts/tech/cloud-native/cicd/ci-cd&quot;,&quot;ci-cd&quot;:&quot;/posts/tech/cloud-native/cicd/ci-cd&quot;,&quot;Docker 磁盘爆满排查与清理&quot;:&quot;/posts/tech/cloud-native/container/故障排查/docker-磁盘爆满排查与清理&quot;,&quot;docker 磁盘爆满排查与清理&quot;:&quot;/posts/tech/cloud-native/container/故障排查/docker-磁盘爆满排查与清理&quot;,&quot;cloud-native/container/故障排查/docker-磁盘爆满排查与清理&quot;:&quot;/posts/tech/cloud-native/container/故障排查/docker-磁盘爆满排查与清理&quot;,&quot;docker-磁盘爆满排查与清理&quot;:&quot;/posts/tech/cloud-native/container/故障排查/docker-磁盘爆满排查与清理&quot;,&quot;cloud-native/container/面试题/容器运维面试题&quot;:&quot;/posts/tech/cloud-native/container/面试题/容器运维面试题&quot;,&quot;容器运维面试题&quot;:&quot;/posts/tech/cloud-native/container/面试题/容器运维面试题&quot;,&quot;cloud-native/container/面试题/云原生面试题&quot;:&quot;/posts/tech/cloud-native/container/面试题/云原生面试题&quot;,&quot;云原生面试题&quot;:&quot;/posts/tech/cloud-native/container/面试题/云原生面试题&quot;,&quot;🐳 容器技术&quot;:&quot;/posts/tech/cloud-native/container/容器技术&quot;,&quot;cloud-native/container/容器技术&quot;:&quot;/posts/tech/cloud-native/container/容器技术&quot;,&quot;容器技术&quot;:&quot;/posts/tech/cloud-native/container/容器技术&quot;,&quot;Docker 进阶完整学习路线&quot;:&quot;/posts/tech/cloud-native/container/docker-进阶完整学习路线&quot;,&quot;docker 进阶完整学习路线&quot;:&quot;/posts/tech/cloud-native/container/docker-进阶完整学习路线&quot;,&quot;cloud-native/container/docker-进阶完整学习路线&quot;:&quot;/posts/tech/cloud-native/container/docker-进阶完整学习路线&quot;,&quot;docker-进阶完整学习路线&quot;:&quot;/posts/tech/cloud-native/container/docker-进阶完整学习路线&quot;,&quot;Docker 联合文件系统&quot;:&quot;/posts/tech/cloud-native/container/docker-联合文件系统&quot;,&quot;docker 联合文件系统&quot;:&quot;/posts/tech/cloud-native/container/docker-联合文件系统&quot;,&quot;cloud-native/container/docker-联合文件系统&quot;:&quot;/posts/tech/cloud-native/container/docker-联合文件系统&quot;,&quot;docker-联合文件系统&quot;:&quot;/posts/tech/cloud-native/container/docker-联合文件系统&quot;,&quot;Docker 全套核心命令详解&quot;:&quot;/posts/tech/cloud-native/container/docker-全套核心命令详解&quot;,&quot;docker 全套核心命令详解&quot;:&quot;/posts/tech/cloud-native/container/docker-全套核心命令详解&quot;,&quot;cloud-native/container/docker-全套核心命令详解&quot;:&quot;/posts/tech/cloud-native/container/docker-全套核心命令详解&quot;,&quot;docker-全套核心命令详解&quot;:&quot;/posts/tech/cloud-native/container/docker-全套核心命令详解&quot;,&quot;Docker 容器网络深度原理&quot;:&quot;/posts/tech/cloud-native/container/docker-容器网络深度原理&quot;,&quot;docker 容器网络深度原理&quot;:&quot;/posts/tech/cloud-native/container/docker-容器网络深度原理&quot;,&quot;cloud-native/container/docker-容器网络深度原理&quot;:&quot;/posts/tech/cloud-native/container/docker-容器网络深度原理&quot;,&quot;docker-容器网络深度原理&quot;:&quot;/posts/tech/cloud-native/container/docker-容器网络深度原理&quot;,&quot;Docker 三种挂载&quot;:&quot;/posts/tech/cloud-native/container/docker-三种挂载&quot;,&quot;docker 三种挂载&quot;:&quot;/posts/tech/cloud-native/container/docker-三种挂载&quot;,&quot;cloud-native/container/docker-三种挂载&quot;:&quot;/posts/tech/cloud-native/container/docker-三种挂载&quot;,&quot;docker-三种挂载&quot;:&quot;/posts/tech/cloud-native/container/docker-三种挂载&quot;,&quot;Docker 完整深度详解&quot;:&quot;/posts/tech/cloud-native/container/docker-完整深度详解&quot;,&quot;docker 完整深度详解&quot;:&quot;/posts/tech/cloud-native/container/docker-完整深度详解&quot;,&quot;cloud-native/container/docker-完整深度详解&quot;:&quot;/posts/tech/cloud-native/container/docker-完整深度详解&quot;,&quot;docker-完整深度详解&quot;:&quot;/posts/tech/cloud-native/container/docker-完整深度详解&quot;,&quot;Docker CGroup 资源限制原理&quot;:&quot;/posts/tech/cloud-native/container/docker-cgroup-资源限制原理&quot;,&quot;docker cgroup 资源限制原理&quot;:&quot;/posts/tech/cloud-native/container/docker-cgroup-资源限制原理&quot;,&quot;cloud-native/container/docker-cgroup-资源限制原理&quot;:&quot;/posts/tech/cloud-native/container/docker-cgroup-资源限制原理&quot;,&quot;docker-cgroup-资源限制原理&quot;:&quot;/posts/tech/cloud-native/container/docker-cgroup-资源限制原理&quot;,&quot;Docker Swarm 集群完整详解&quot;:&quot;/posts/tech/cloud-native/container/docker-swarm-集群完整详解&quot;,&quot;docker swarm 集群完整详解&quot;:&quot;/posts/tech/cloud-native/container/docker-swarm-集群完整详解&quot;,&quot;cloud-native/container/docker-swarm-集群完整详解&quot;:&quot;/posts/tech/cloud-native/container/docker-swarm-集群完整详解&quot;,&quot;docker-swarm-集群完整详解&quot;:&quot;/posts/tech/cloud-native/container/docker-swarm-集群完整详解&quot;,&quot;Dockerfile 构建原理 + 镜像分层优化&quot;:&quot;/posts/tech/cloud-native/container/dockerfile-构建原理--镜像分层优化&quot;,&quot;dockerfile 构建原理 + 镜像分层优化&quot;:&quot;/posts/tech/cloud-native/container/dockerfile-构建原理--镜像分层优化&quot;,&quot;cloud-native/container/dockerfile-构建原理--镜像分层优化&quot;:&quot;/posts/tech/cloud-native/container/dockerfile-构建原理--镜像分层优化&quot;,&quot;dockerfile-构建原理--镜像分层优化&quot;:&quot;/posts/tech/cloud-native/container/dockerfile-构建原理--镜像分层优化&quot;,&quot;Helm 完整详细讲解&quot;:&quot;/posts/tech/cloud-native/container/helm-完整详细讲解&quot;,&quot;helm 完整详细讲解&quot;:&quot;/posts/tech/cloud-native/container/helm-完整详细讲解&quot;,&quot;cloud-native/container/helm-完整详细讲解&quot;:&quot;/posts/tech/cloud-native/container/helm-完整详细讲解&quot;,&quot;helm-完整详细讲解&quot;:&quot;/posts/tech/cloud-native/container/helm-完整详细讲解&quot;,&quot;Helm3 完整安装+配置教程&quot;:&quot;/posts/tech/cloud-native/container/helm3-完整安装配置教程&quot;,&quot;helm3 完整安装+配置教程&quot;:&quot;/posts/tech/cloud-native/container/helm3-完整安装配置教程&quot;,&quot;cloud-native/container/helm3-完整安装配置教程&quot;:&quot;/posts/tech/cloud-native/container/helm3-完整安装配置教程&quot;,&quot;helm3-完整安装配置教程&quot;:&quot;/posts/tech/cloud-native/container/helm3-完整安装配置教程&quot;,&quot;cloud-native/database/elasticsearch/面试题/elasticsearch-高频面试题&quot;:&quot;/posts/tech/cloud-native/database/elasticsearch/面试题/elasticsearch-高频面试题&quot;,&quot;elasticsearch-高频面试题&quot;:&quot;/posts/tech/cloud-native/database/elasticsearch/面试题/elasticsearch-高频面试题&quot;,&quot;Elasticsearch 高阶运维&amp;开发完整知识体系&quot;:&quot;/posts/tech/cloud-native/database/elasticsearch/elasticsearch-高阶运维开发完整知识体系&quot;,&quot;elasticsearch 高阶运维&amp;开发完整知识体系&quot;:&quot;/posts/tech/cloud-native/database/elasticsearch/elasticsearch-高阶运维开发完整知识体系&quot;,&quot;cloud-native/database/elasticsearch/elasticsearch-高阶运维开发完整知识体系&quot;:&quot;/posts/tech/cloud-native/database/elasticsearch/elasticsearch-高阶运维开发完整知识体系&quot;,&quot;elasticsearch-高阶运维开发完整知识体系&quot;:&quot;/posts/tech/cloud-native/database/elasticsearch/elasticsearch-高阶运维开发完整知识体系&quot;,&quot;MySQL 主从同步故障排查&quot;:&quot;/posts/tech/cloud-native/database/mysql/故障排查/mysql-主从同步故障排查&quot;,&quot;mysql 主从同步故障排查&quot;:&quot;/posts/tech/cloud-native/database/mysql/故障排查/mysql-主从同步故障排查&quot;,&quot;cloud-native/database/mysql/故障排查/mysql-主从同步故障排查&quot;:&quot;/posts/tech/cloud-native/database/mysql/故障排查/mysql-主从同步故障排查&quot;,&quot;mysql-主从同步故障排查&quot;:&quot;/posts/tech/cloud-native/database/mysql/故障排查/mysql-主从同步故障排查&quot;,&quot;MySQL GTID 主从故障排查&quot;:&quot;/posts/tech/cloud-native/database/mysql/故障排查/mysql-gtid-主从故障排查&quot;,&quot;mysql gtid 主从故障排查&quot;:&quot;/posts/tech/cloud-native/database/mysql/故障排查/mysql-gtid-主从故障排查&quot;,&quot;cloud-native/database/mysql/故障排查/mysql-gtid-主从故障排查&quot;:&quot;/posts/tech/cloud-native/database/mysql/故障排查/mysql-gtid-主从故障排查&quot;,&quot;mysql-gtid-主从故障排查&quot;:&quot;/posts/tech/cloud-native/database/mysql/故障排查/mysql-gtid-主从故障排查&quot;,&quot;MySQL 基础知识面试题&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-基础知识面试题&quot;,&quot;mysql 基础知识面试题&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-基础知识面试题&quot;,&quot;cloud-native/database/mysql/面试题/mysql-基础知识面试题&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-基础知识面试题&quot;,&quot;mysql-基础知识面试题&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-基础知识面试题&quot;,&quot;cloud-native/database/mysql/面试题/mysql-日志与复制&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-日志与复制&quot;,&quot;mysql-日志与复制&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-日志与复制&quot;,&quot;cloud-native/database/mysql/面试题/mysql-事务与锁&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-事务与锁&quot;,&quot;mysql-事务与锁&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-事务与锁&quot;,&quot;cloud-native/database/mysql/面试题/mysql-索引&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-索引&quot;,&quot;mysql-索引&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-索引&quot;,&quot;cloud-native/database/mysql/面试题/mysql-运维场景题&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-运维场景题&quot;,&quot;mysql-运维场景题&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-运维场景题&quot;,&quot;GTID 集合详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/gtid-集合详解&quot;,&quot;gtid 集合详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/gtid-集合详解&quot;,&quot;cloud-native/database/mysql/gtid-集合详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/gtid-集合详解&quot;,&quot;gtid-集合详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/gtid-集合详解&quot;,&quot;MySQL 复制原理与配置&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-复制原理与配置&quot;,&quot;mysql 复制原理与配置&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-复制原理与配置&quot;,&quot;cloud-native/database/mysql/mysql-复制原理与配置&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-复制原理与配置&quot;,&quot;mysql-复制原理与配置&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-复制原理与配置&quot;,&quot;MySQL 高阶运维知识点完整总结&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-高阶运维知识点完整总结&quot;,&quot;mysql 高阶运维知识点完整总结&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-高阶运维知识点完整总结&quot;,&quot;cloud-native/database/mysql/mysql-高阶运维知识点完整总结&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-高阶运维知识点完整总结&quot;,&quot;mysql-高阶运维知识点完整总结&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-高阶运维知识点完整总结&quot;,&quot;MySQL 高可用方案&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-高可用方案&quot;,&quot;mysql 高可用方案&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-高可用方案&quot;,&quot;cloud-native/database/mysql/mysql-高可用方案&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-高可用方案&quot;,&quot;mysql-高可用方案&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-高可用方案&quot;,&quot;MySQL 基础&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-基础&quot;,&quot;mysql 基础&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-基础&quot;,&quot;cloud-native/database/mysql/mysql-基础&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-基础&quot;,&quot;mysql-基础&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-基础&quot;,&quot;MySQL 生产部署全套重点&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-生产部署全套重点&quot;,&quot;mysql 生产部署全套重点&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-生产部署全套重点&quot;,&quot;cloud-native/database/mysql/mysql-生产部署全套重点&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-生产部署全套重点&quot;,&quot;mysql-生产部署全套重点&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-生产部署全套重点&quot;,&quot;MySQL 主从复制备份方式对比&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-主从复制备份方式对比&quot;,&quot;mysql 主从复制备份方式对比&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-主从复制备份方式对比&quot;,&quot;cloud-native/database/mysql/mysql-主从复制备份方式对比&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-主从复制备份方式对比&quot;,&quot;mysql-主从复制备份方式对比&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-主从复制备份方式对比&quot;,&quot;MySQL binlog 保留时间与清理&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-binlog-保留时间与清理&quot;,&quot;mysql binlog 保留时间与清理&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-binlog-保留时间与清理&quot;,&quot;cloud-native/database/mysql/mysql-binlog-保留时间与清理&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-binlog-保留时间与清理&quot;,&quot;mysql-binlog-保留时间与清理&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-binlog-保留时间与清理&quot;,&quot;MySQL MHA 完整详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-mha-完整详解&quot;,&quot;mysql mha 完整详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-mha-完整详解&quot;,&quot;cloud-native/database/mysql/mysql-mha-完整详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-mha-完整详解&quot;,&quot;mysql-mha-完整详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-mha-完整详解&quot;,&quot;MySQL show processlist详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-show-processlist详解&quot;,&quot;mysql show processlist详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-show-processlist详解&quot;,&quot;cloud-native/database/mysql/mysql-show-processlist详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-show-processlist详解&quot;,&quot;mysql-show-processlist详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-show-processlist详解&quot;,&quot;布隆过滤器（Bloom Filter）&quot;:&quot;/posts/tech/cloud-native/database/redis/布隆过滤器&quot;,&quot;布隆过滤器（bloom filter）&quot;:&quot;/posts/tech/cloud-native/database/redis/布隆过滤器&quot;,&quot;cloud-native/database/redis/布隆过滤器&quot;:&quot;/posts/tech/cloud-native/database/redis/布隆过滤器&quot;,&quot;布隆过滤器&quot;:&quot;/posts/tech/cloud-native/database/redis/布隆过滤器&quot;,&quot;Redis 线上高频问题&quot;:&quot;/posts/tech/cloud-native/database/redis/故障排查/redis-线上高频问题&quot;,&quot;redis 线上高频问题&quot;:&quot;/posts/tech/cloud-native/database/redis/故障排查/redis-线上高频问题&quot;,&quot;cloud-native/database/redis/故障排查/redis-线上高频问题&quot;:&quot;/posts/tech/cloud-native/database/redis/故障排查/redis-线上高频问题&quot;,&quot;redis-线上高频问题&quot;:&quot;/posts/tech/cloud-native/database/redis/故障排查/redis-线上高频问题&quot;,&quot;cloud-native/database/redis/面试题/redis-面试题&quot;:&quot;/posts/tech/cloud-native/database/redis/面试题/redis-面试题&quot;,&quot;redis-面试题&quot;:&quot;/posts/tech/cloud-native/database/redis/面试题/redis-面试题&quot;,&quot;Redis 持久化机制&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-持久化机制&quot;,&quot;redis 持久化机制&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-持久化机制&quot;,&quot;cloud-native/database/redis/redis-持久化机制&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-持久化机制&quot;,&quot;redis-持久化机制&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-持久化机制&quot;,&quot;Redis 分片完整详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-分片完整详解&quot;,&quot;redis 分片完整详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-分片完整详解&quot;,&quot;cloud-native/database/redis/redis-分片完整详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-分片完整详解&quot;,&quot;redis-分片完整详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-分片完整详解&quot;,&quot;Redis 高阶运维完整知识体系&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-高阶运维完整知识体系&quot;,&quot;redis 高阶运维完整知识体系&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-高阶运维完整知识体系&quot;,&quot;cloud-native/database/redis/redis-高阶运维完整知识体系&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-高阶运维完整知识体系&quot;,&quot;redis-高阶运维完整知识体系&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-高阶运维完整知识体系&quot;,&quot;Redis 核心原理&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-核心原理&quot;,&quot;redis 核心原理&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-核心原理&quot;,&quot;cloud-native/database/redis/redis-核心原理&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-核心原理&quot;,&quot;redis-核心原理&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-核心原理&quot;,&quot;Redis 缓存穿透、击穿、雪崩完整解决方案&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-缓存穿透击穿雪崩解决方案&quot;,&quot;redis 缓存穿透、击穿、雪崩完整解决方案&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-缓存穿透击穿雪崩解决方案&quot;,&quot;cloud-native/database/redis/redis-缓存穿透击穿雪崩解决方案&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-缓存穿透击穿雪崩解决方案&quot;,&quot;redis-缓存穿透击穿雪崩解决方案&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-缓存穿透击穿雪崩解决方案&quot;,&quot;Redis 基础&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-基础&quot;,&quot;redis 基础&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-基础&quot;,&quot;cloud-native/database/redis/redis-基础&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-基础&quot;,&quot;redis-基础&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-基础&quot;,&quot;Redis 三种高可用方案完整详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-三种高可用方案完整详解&quot;,&quot;redis 三种高可用方案完整详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-三种高可用方案完整详解&quot;,&quot;cloud-native/database/redis/redis-三种高可用方案完整详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-三种高可用方案完整详解&quot;,&quot;redis-三种高可用方案完整详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-三种高可用方案完整详解&quot;,&quot;Redis 主从同步完整深度详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-主从同步完整深度详解&quot;,&quot;redis 主从同步完整深度详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-主从同步完整深度详解&quot;,&quot;cloud-native/database/redis/redis-主从同步完整深度详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-主从同步完整深度详解&quot;,&quot;redis-主从同步完整深度详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-主从同步完整深度详解&quot;,&quot;cloud-native/gpu-computing/面试题/gpu-算力运维面试题&quot;:&quot;/posts/tech/cloud-native/gpu-computing/面试题/gpu-算力运维面试题&quot;,&quot;gpu-算力运维面试题&quot;:&quot;/posts/tech/cloud-native/gpu-computing/面试题/gpu-算力运维面试题&quot;,&quot;CPU 与 GPU 完整深度详解&quot;:&quot;/posts/tech/cloud-native/gpu-computing/cpu-与-gpu-完整深度详解&quot;,&quot;cpu 与 gpu 完整深度详解&quot;:&quot;/posts/tech/cloud-native/gpu-computing/cpu-与-gpu-完整深度详解&quot;,&quot;cloud-native/gpu-computing/cpu-与-gpu-完整深度详解&quot;:&quot;/posts/tech/cloud-native/gpu-computing/cpu-与-gpu-完整深度详解&quot;,&quot;cpu-与-gpu-完整深度详解&quot;:&quot;/posts/tech/cloud-native/gpu-computing/cpu-与-gpu-完整深度详解&quot;,&quot;GPU 计算与 CUDA 编程基础&quot;:&quot;/posts/tech/cloud-native/gpu-computing/gpu-计算与-cuda-编程基础&quot;,&quot;gpu 计算与 cuda 编程基础&quot;:&quot;/posts/tech/cloud-native/gpu-computing/gpu-计算与-cuda-编程基础&quot;,&quot;cloud-native/gpu-computing/gpu-计算与-cuda-编程基础&quot;:&quot;/posts/tech/cloud-native/gpu-computing/gpu-计算与-cuda-编程基础&quot;,&quot;gpu-计算与-cuda-编程基础&quot;:&quot;/posts/tech/cloud-native/gpu-computing/gpu-计算与-cuda-编程基础&quot;,&quot;GPU 驱动完整介绍（NVIDIA 为主）&quot;:&quot;/posts/tech/cloud-native/gpu-computing/gpu-驱动完整介绍&quot;,&quot;gpu 驱动完整介绍（nvidia 为主）&quot;:&quot;/posts/tech/cloud-native/gpu-computing/gpu-驱动完整介绍&quot;,&quot;cloud-native/gpu-computing/gpu-驱动完整介绍&quot;:&quot;/posts/tech/cloud-native/gpu-computing/gpu-驱动完整介绍&quot;,&quot;gpu-驱动完整介绍&quot;:&quot;/posts/tech/cloud-native/gpu-computing/gpu-驱动完整介绍&quot;,&quot;NVIDIA 全栈环境完整详解（AI运维视角）&quot;:&quot;/posts/tech/cloud-native/gpu-computing/nvidia-全栈环境完整详解&quot;,&quot;nvidia 全栈环境完整详解（ai运维视角）&quot;:&quot;/posts/tech/cloud-native/gpu-computing/nvidia-全栈环境完整详解&quot;,&quot;cloud-native/gpu-computing/nvidia-全栈环境完整详解&quot;:&quot;/posts/tech/cloud-native/gpu-computing/nvidia-全栈环境完整详解&quot;,&quot;nvidia-全栈环境完整详解&quot;:&quot;/posts/tech/cloud-native/gpu-computing/nvidia-全栈环境完整详解&quot;,&quot;优先副本与分区重分配&quot;:&quot;/posts/tech/cloud-native/kafka/优先副本与分区重分配&quot;,&quot;cloud-native/kafka/优先副本与分区重分配&quot;:&quot;/posts/tech/cloud-native/kafka/优先副本与分区重分配&quot;,&quot;HW、LEO、LeaderEpoch 完整原理&quot;:&quot;/posts/tech/cloud-native/kafka/hwleoleaderepoch-完整原理&quot;,&quot;hw、leo、leaderepoch 完整原理&quot;:&quot;/posts/tech/cloud-native/kafka/hwleoleaderepoch-完整原理&quot;,&quot;cloud-native/kafka/hwleoleaderepoch-完整原理&quot;:&quot;/posts/tech/cloud-native/kafka/hwleoleaderepoch-完整原理&quot;,&quot;hwleoleaderepoch-完整原理&quot;:&quot;/posts/tech/cloud-native/kafka/hwleoleaderepoch-完整原理&quot;,&quot;Kafka 底层存储完整原理深度详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-底层存储完整原理深度详解&quot;,&quot;kafka 底层存储完整原理深度详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-底层存储完整原理深度详解&quot;,&quot;cloud-native/kafka/kafka-底层存储完整原理深度详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-底层存储完整原理深度详解&quot;,&quot;kafka-底层存储完整原理深度详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-底层存储完整原理深度详解&quot;,&quot;Kafka 底层原理详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-底层原理详解&quot;,&quot;kafka 底层原理详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-底层原理详解&quot;,&quot;cloud-native/kafka/kafka-底层原理详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-底层原理详解&quot;,&quot;kafka-底层原理详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-底层原理详解&quot;,&quot;Kafka 分区 Partition 完整详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-分区-partition-完整详解&quot;,&quot;kafka 分区 partition 完整详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-分区-partition-完整详解&quot;,&quot;cloud-native/kafka/kafka-分区-partition-完整详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-分区-partition-完整详解&quot;,&quot;kafka-分区-partition-完整详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-分区-partition-完整详解&quot;,&quot;Kafka 高可用架构完整详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-高可用架构完整详解&quot;,&quot;kafka 高可用架构完整详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-高可用架构完整详解&quot;,&quot;cloud-native/kafka/kafka-高可用架构完整详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-高可用架构完整详解&quot;,&quot;kafka-高可用架构完整详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-高可用架构完整详解&quot;,&quot;Kafka 进阶系统化学习大纲&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-进阶系统化学习大纲&quot;,&quot;kafka 进阶系统化学习大纲&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-进阶系统化学习大纲&quot;,&quot;cloud-native/kafka/kafka-进阶系统化学习大纲&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-进阶系统化学习大纲&quot;,&quot;kafka-进阶系统化学习大纲&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-进阶系统化学习大纲&quot;,&quot;Kafka 零拷贝 sendfile 完整原理&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-零拷贝-sendfile-完整原理&quot;,&quot;kafka 零拷贝 sendfile 完整原理&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-零拷贝-sendfile-完整原理&quot;,&quot;cloud-native/kafka/kafka-零拷贝-sendfile-完整原理&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-零拷贝-sendfile-完整原理&quot;,&quot;kafka-零拷贝-sendfile-完整原理&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-零拷贝-sendfile-完整原理&quot;,&quot;Kafka 偏移量与高水位&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-偏移量与高水位&quot;,&quot;kafka 偏移量与高水位&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-偏移量与高水位&quot;,&quot;cloud-native/kafka/kafka-偏移量与高水位&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-偏移量与高水位&quot;,&quot;kafka-偏移量与高水位&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-偏移量与高水位&quot;,&quot;Kafka 网络模型&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-网络模型&quot;,&quot;kafka 网络模型&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-网络模型&quot;,&quot;cloud-native/kafka/kafka-网络模型&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-网络模型&quot;,&quot;kafka-网络模型&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-网络模型&quot;,&quot;Kafka 网络模型工作流程&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-网络模型工作流程&quot;,&quot;kafka 网络模型工作流程&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-网络模型工作流程&quot;,&quot;cloud-native/kafka/kafka-网络模型工作流程&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-网络模型工作流程&quot;,&quot;kafka-网络模型工作流程&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-网络模型工作流程&quot;,&quot;Kafka 组件详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-组件详解&quot;,&quot;kafka 组件详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-组件详解&quot;,&quot;cloud-native/kafka/kafka-组件详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-组件详解&quot;,&quot;kafka-组件详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-组件详解&quot;,&quot;Kafka Topic 完整迁移方案&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-topic-完整迁移方案&quot;,&quot;kafka topic 完整迁移方案&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-topic-完整迁移方案&quot;,&quot;cloud-native/kafka/kafka-topic-完整迁移方案&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-topic-完整迁移方案&quot;,&quot;kafka-topic-完整迁移方案&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-topic-完整迁移方案&quot;,&quot;Kafka 集群 Broker 节点扩缩容完整操作&quot;:&quot;/posts/tech/cloud-native/kafka/kafka集群broker节点扩缩容完整操作&quot;,&quot;kafka 集群 broker 节点扩缩容完整操作&quot;:&quot;/posts/tech/cloud-native/kafka/kafka集群broker节点扩缩容完整操作&quot;,&quot;cloud-native/kafka/kafka集群broker节点扩缩容完整操作&quot;:&quot;/posts/tech/cloud-native/kafka/kafka集群broker节点扩缩容完整操作&quot;,&quot;kafka集群broker节点扩缩容完整操作&quot;:&quot;/posts/tech/cloud-native/kafka/kafka集群broker节点扩缩容完整操作&quot;,&quot;LogSegment 日志分段与稀疏索引&quot;:&quot;/posts/tech/cloud-native/kafka/logsegment-日志分段与稀疏索引&quot;,&quot;logsegment 日志分段与稀疏索引&quot;:&quot;/posts/tech/cloud-native/kafka/logsegment-日志分段与稀疏索引&quot;,&quot;cloud-native/kafka/logsegment-日志分段与稀疏索引&quot;:&quot;/posts/tech/cloud-native/kafka/logsegment-日志分段与稀疏索引&quot;,&quot;logsegment-日志分段与稀疏索引&quot;:&quot;/posts/tech/cloud-native/kafka/logsegment-日志分段与稀疏索引&quot;,&quot;K8s 发布故障排查&quot;:&quot;/posts/tech/cloud-native/kubernetes/故障排查/k8s-发布故障排查&quot;,&quot;k8s 发布故障排查&quot;:&quot;/posts/tech/cloud-native/kubernetes/故障排查/k8s-发布故障排查&quot;,&quot;cloud-native/kubernetes/故障排查/k8s-发布故障排查&quot;:&quot;/posts/tech/cloud-native/kubernetes/故障排查/k8s-发布故障排查&quot;,&quot;k8s-发布故障排查&quot;:&quot;/posts/tech/cloud-native/kubernetes/故障排查/k8s-发布故障排查&quot;,&quot;K8s 全场景常见问题完整排查手册&quot;:&quot;/posts/tech/cloud-native/kubernetes/故障排查/k8s-全场景常见问题完整排查手册&quot;,&quot;k8s 全场景常见问题完整排查手册&quot;:&quot;/posts/tech/cloud-native/kubernetes/故障排查/k8s-全场景常见问题完整排查手册&quot;,&quot;cloud-native/kubernetes/故障排查/k8s-全场景常见问题完整排查手册&quot;:&quot;/posts/tech/cloud-native/kubernetes/故障排查/k8s-全场景常见问题完整排查手册&quot;,&quot;k8s-全场景常见问题完整排查手册&quot;:&quot;/posts/tech/cloud-native/kubernetes/故障排查/k8s-全场景常见问题完整排查手册&quot;,&quot;K8s 故障排查面试题&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/k8s-故障排查面试题&quot;,&quot;k8s 故障排查面试题&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/k8s-故障排查面试题&quot;,&quot;cloud-native/kubernetes/面试题/k8s-故障排查面试题&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/k8s-故障排查面试题&quot;,&quot;k8s-故障排查面试题&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/k8s-故障排查面试题&quot;,&quot;K8s 进阶面试题&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/k8s-进阶面试题&quot;,&quot;k8s 进阶面试题&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/k8s-进阶面试题&quot;,&quot;cloud-native/kubernetes/面试题/k8s-进阶面试题&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/k8s-进阶面试题&quot;,&quot;k8s-进阶面试题&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/k8s-进阶面试题&quot;,&quot;kube-proxy 三种模式&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/kube-proxy-三种模式&quot;,&quot;cloud-native/kubernetes/面试题/kube-proxy-三种模式&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/kube-proxy-三种模式&quot;,&quot;kube-proxy-三种模式&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/kube-proxy-三种模式&quot;,&quot;使用 kubeadm 创建集群&quot;:&quot;/posts/tech/cloud-native/kubernetes/使用-kubeadm-创建集群/使用-kubeadm-创建集群&quot;,&quot;cloud-native/kubernetes/使用-kubeadm-创建集群/使用-kubeadm-创建集群&quot;:&quot;/posts/tech/cloud-native/kubernetes/使用-kubeadm-创建集群/使用-kubeadm-创建集群&quot;,&quot;使用-kubeadm-创建集群&quot;:&quot;/posts/tech/cloud-native/kubernetes/使用-kubeadm-创建集群/使用-kubeadm-创建集群&quot;,&quot;kubeadm 参数全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/使用-kubeadm-创建集群/kubeadm-参数全解&quot;,&quot;cloud-native/kubernetes/使用-kubeadm-创建集群/kubeadm-参数全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/使用-kubeadm-创建集群/kubeadm-参数全解&quot;,&quot;kubeadm-参数全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/使用-kubeadm-创建集群/kubeadm-参数全解&quot;,&quot;Kubernetes 存储体系完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-存储体系完整详解&quot;,&quot;kubernetes 存储体系完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-存储体系完整详解&quot;,&quot;cloud-native/kubernetes/architecture/k8s-存储体系完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-存储体系完整详解&quot;,&quot;k8s-存储体系完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-存储体系完整详解&quot;,&quot;K8s 高阶配置全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-高阶配置全解&quot;,&quot;k8s 高阶配置全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-高阶配置全解&quot;,&quot;cloud-native/kubernetes/architecture/k8s-高阶配置全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-高阶配置全解&quot;,&quot;k8s-高阶配置全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-高阶配置全解&quot;,&quot;K8s 生产部署全套核心重点&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-生产部署全套核心重点&quot;,&quot;k8s 生产部署全套核心重点&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-生产部署全套核心重点&quot;,&quot;cloud-native/kubernetes/architecture/k8s-生产部署全套核心重点&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-生产部署全套核心重点&quot;,&quot;k8s-生产部署全套核心重点&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-生产部署全套核心重点&quot;,&quot;Kubernetes 集群完整高可用落地方案&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/kubernetes-集群完整高可用落地方案&quot;,&quot;kubernetes 集群完整高可用落地方案&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/kubernetes-集群完整高可用落地方案&quot;,&quot;cloud-native/kubernetes/architecture/kubernetes-集群完整高可用落地方案&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/kubernetes-集群完整高可用落地方案&quot;,&quot;kubernetes-集群完整高可用落地方案&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/kubernetes-集群完整高可用落地方案&quot;,&quot;Share-nothing 无共享架构&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/share-nothing-无共享架构&quot;,&quot;share-nothing 无共享架构&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/share-nothing-无共享架构&quot;,&quot;cloud-native/kubernetes/architecture/share-nothing-无共享架构&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/share-nothing-无共享架构&quot;,&quot;share-nothing-无共享架构&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/share-nothing-无共享架构&quot;,&quot;ZooKeeper 主备切换原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/zookeeper-主备切换原理&quot;,&quot;zookeeper 主备切换原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/zookeeper-主备切换原理&quot;,&quot;cloud-native/kubernetes/architecture/zookeeper-主备切换原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/zookeeper-主备切换原理&quot;,&quot;zookeeper-主备切换原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/zookeeper-主备切换原理&quot;,&quot;K8s 安全上下文（SecurityContext）全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-安全上下文securitycontext全解&quot;,&quot;k8s 安全上下文（securitycontext）全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-安全上下文securitycontext全解&quot;,&quot;cloud-native/kubernetes/core/k8s-安全上下文securitycontext全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-安全上下文securitycontext全解&quot;,&quot;k8s-安全上下文securitycontext全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-安全上下文securitycontext全解&quot;,&quot;K8s 核心概念&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-核心概念&quot;,&quot;k8s 核心概念&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-核心概念&quot;,&quot;cloud-native/kubernetes/core/k8s-核心概念&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-核心概念&quot;,&quot;k8s-核心概念&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-核心概念&quot;,&quot;K8s 环境变量 全维度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-环境变量-全维度详解&quot;,&quot;k8s 环境变量 全维度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-环境变量-全维度详解&quot;,&quot;cloud-native/kubernetes/core/k8s-环境变量-全维度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-环境变量-全维度详解&quot;,&quot;k8s-环境变量-全维度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-环境变量-全维度详解&quot;,&quot;K8s 组件详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-组件详解&quot;,&quot;k8s 组件详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-组件详解&quot;,&quot;cloud-native/kubernetes/core/k8s-组件详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-组件详解&quot;,&quot;k8s-组件详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-组件详解&quot;,&quot;Kubernetes 核心 kubectl 命令全详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/kubectl-命令全详解&quot;,&quot;kubernetes 核心 kubectl 命令全详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/kubectl-命令全详解&quot;,&quot;cloud-native/kubernetes/core/kubectl-命令全详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/kubectl-命令全详解&quot;,&quot;kubectl-命令全详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/kubectl-命令全详解&quot;,&quot;Kubernetes RBAC 完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/kubernetes-rbac-完整详解&quot;,&quot;kubernetes rbac 完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/kubernetes-rbac-完整详解&quot;,&quot;cloud-native/kubernetes/core/kubernetes-rbac-完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/kubernetes-rbac-完整详解&quot;,&quot;kubernetes-rbac-完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/kubernetes-rbac-完整详解&quot;,&quot;pause 容器完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/pause-容器完整详解&quot;,&quot;cloud-native/kubernetes/core/pause-容器完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/pause-容器完整详解&quot;,&quot;pause-容器完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/pause-容器完整详解&quot;,&quot;PV &amp; PVC 完整深度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/pv--pvc-完整深度详解&quot;,&quot;pv &amp; pvc 完整深度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/pv--pvc-完整深度详解&quot;,&quot;cloud-native/kubernetes/core/pv--pvc-完整深度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/pv--pvc-完整深度详解&quot;,&quot;pv--pvc-完整深度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/pv--pvc-完整深度详解&quot;,&quot;K8s 动态存储体系：StorageClass + CSI&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/storageclass--csi-动态存储体系&quot;,&quot;k8s 动态存储体系：storageclass + csi&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/storageclass--csi-动态存储体系&quot;,&quot;cloud-native/kubernetes/core/storageclass--csi-动态存储体系&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/storageclass--csi-动态存储体系&quot;,&quot;storageclass--csi-动态存储体系&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/storageclass--csi-动态存储体系&quot;,&quot;K8s 进阶学习路线&quot;:&quot;/posts/tech/cloud-native/kubernetes/k8s-进阶学习路线&quot;,&quot;k8s 进阶学习路线&quot;:&quot;/posts/tech/cloud-native/kubernetes/k8s-进阶学习路线&quot;,&quot;cloud-native/kubernetes/k8s-进阶学习路线&quot;:&quot;/posts/tech/cloud-native/kubernetes/k8s-进阶学习路线&quot;,&quot;k8s-进阶学习路线&quot;:&quot;/posts/tech/cloud-native/kubernetes/k8s-进阶学习路线&quot;,&quot;K8s 完整网络体系详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/k8s-完整网络体系详解&quot;,&quot;k8s 完整网络体系详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/k8s-完整网络体系详解&quot;,&quot;cloud-native/kubernetes/network/k8s-完整网络体系详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/k8s-完整网络体系详解&quot;,&quot;k8s-完整网络体系详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/k8s-完整网络体系详解&quot;,&quot;K8s Ingress 详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/k8s-ingress-详解&quot;,&quot;k8s ingress 详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/k8s-ingress-详解&quot;,&quot;cloud-native/kubernetes/network/k8s-ingress-详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/k8s-ingress-详解&quot;,&quot;k8s-ingress-详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/k8s-ingress-详解&quot;,&quot;kube-proxy 流量转发与代理模式详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/kube-proxy-流量转发与代理模式详解&quot;,&quot;cloud-native/kubernetes/network/kube-proxy-流量转发与代理模式详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/kube-proxy-流量转发与代理模式详解&quot;,&quot;kube-proxy-流量转发与代理模式详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/kube-proxy-流量转发与代理模式详解&quot;,&quot;Gang 调度（协同调度）完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/gang-调度协同调度完整详解&quot;,&quot;gang 调度（协同调度）完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/gang-调度协同调度完整详解&quot;,&quot;cloud-native/kubernetes/scheduling/gang-调度协同调度完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/gang-调度协同调度完整详解&quot;,&quot;gang-调度协同调度完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/gang-调度协同调度完整详解&quot;,&quot;K8s 调度体系分类与主流调度器&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-调度体系分类与主流调度器&quot;,&quot;k8s 调度体系分类与主流调度器&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-调度体系分类与主流调度器&quot;,&quot;cloud-native/kubernetes/scheduling/k8s-调度体系分类与主流调度器&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-调度体系分类与主流调度器&quot;,&quot;k8s-调度体系分类与主流调度器&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-调度体系分类与主流调度器&quot;,&quot;K8s 多调度 Profile 完整配置教程&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-多调度-profile-完整配置教程&quot;,&quot;k8s 多调度 profile 完整配置教程&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-多调度-profile-完整配置教程&quot;,&quot;cloud-native/kubernetes/scheduling/k8s-多调度-profile-完整配置教程&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-多调度-profile-完整配置教程&quot;,&quot;k8s-多调度-profile-完整配置教程&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-多调度-profile-完整配置教程&quot;,&quot;K8s 高阶调度全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-高阶调度全解&quot;,&quot;k8s 高阶调度全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-高阶调度全解&quot;,&quot;cloud-native/kubernetes/scheduling/k8s-高阶调度全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-高阶调度全解&quot;,&quot;k8s-高阶调度全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-高阶调度全解&quot;,&quot;kube-scheduler 完整工作原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/kube-scheduler-完整工作原理&quot;,&quot;cloud-native/kubernetes/scheduling/kube-scheduler-完整工作原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/kube-scheduler-完整工作原理&quot;,&quot;kube-scheduler-完整工作原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/kube-scheduler-完整工作原理&quot;,&quot;K8s Service 高级配置&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-高级配置&quot;,&quot;k8s service 高级配置&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-高级配置&quot;,&quot;cloud-native/kubernetes/service/k8s-service-高级配置&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-高级配置&quot;,&quot;k8s-service-高级配置&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-高级配置&quot;,&quot;K8s Service 核心原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-核心原理&quot;,&quot;k8s service 核心原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-核心原理&quot;,&quot;cloud-native/kubernetes/service/k8s-service-核心原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-核心原理&quot;,&quot;k8s-service-核心原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-核心原理&quot;,&quot;K8s Service DNS 实现原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-dns-实现原理&quot;,&quot;k8s service dns 实现原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-dns-实现原理&quot;,&quot;cloud-native/kubernetes/service/k8s-service-dns-实现原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-dns-实现原理&quot;,&quot;k8s-service-dns-实现原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-dns-实现原理&quot;,&quot;Deployment 完整深度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/deployment-完整深度详解&quot;,&quot;deployment 完整深度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/deployment-完整深度详解&quot;,&quot;cloud-native/kubernetes/workload/deployment-完整深度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/deployment-完整深度详解&quot;,&quot;deployment-完整深度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/deployment-完整深度详解&quot;,&quot;K8s 滚动更新与发布策略&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-滚动更新与发布策略&quot;,&quot;k8s 滚动更新与发布策略&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-滚动更新与发布策略&quot;,&quot;cloud-native/kubernetes/workload/k8s-滚动更新与发布策略&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-滚动更新与发布策略&quot;,&quot;k8s-滚动更新与发布策略&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-滚动更新与发布策略&quot;,&quot;K8s 生命周期钩子&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-生命周期钩子&quot;,&quot;k8s 生命周期钩子&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-生命周期钩子&quot;,&quot;cloud-native/kubernetes/workload/k8s-生命周期钩子&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-生命周期钩子&quot;,&quot;k8s-生命周期钩子&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-生命周期钩子&quot;,&quot;K8s 探针机制&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-探针机制&quot;,&quot;k8s 探针机制&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-探针机制&quot;,&quot;cloud-native/kubernetes/workload/k8s-探针机制&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-探针机制&quot;,&quot;k8s-探针机制&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-探针机制&quot;,&quot;K8s 完整扩缩容体系详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-完整扩缩容体系详解&quot;,&quot;k8s 完整扩缩容体系详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-完整扩缩容体系详解&quot;,&quot;cloud-native/kubernetes/workload/k8s-完整扩缩容体系详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-完整扩缩容体系详解&quot;,&quot;k8s-完整扩缩容体系详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-完整扩缩容体系详解&quot;,&quot;K8s 资源限制与 QoS&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-资源限制与-qos&quot;,&quot;k8s 资源限制与 qos&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-资源限制与-qos&quot;,&quot;cloud-native/kubernetes/workload/k8s-资源限制与-qos&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-资源限制与-qos&quot;,&quot;k8s-资源限制与-qos&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-资源限制与-qos&quot;,&quot;K8s InitContainer&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-initcontainer&quot;,&quot;k8s initcontainer&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-initcontainer&quot;,&quot;cloud-native/kubernetes/workload/k8s-initcontainer&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-initcontainer&quot;,&quot;k8s-initcontainer&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-initcontainer&quot;,&quot;K8s Pod 详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-pod-详解&quot;,&quot;k8s pod 详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-pod-详解&quot;,&quot;cloud-native/kubernetes/workload/k8s-pod-详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-pod-详解&quot;,&quot;k8s-pod-详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-pod-详解&quot;,&quot;K8s Sidecar 模式&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-sidecar-模式&quot;,&quot;k8s sidecar 模式&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-sidecar-模式&quot;,&quot;cloud-native/kubernetes/workload/k8s-sidecar-模式&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-sidecar-模式&quot;,&quot;k8s-sidecar-模式&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-sidecar-模式&quot;,&quot;K8s StatefulSet 详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-statefulset-详解&quot;,&quot;k8s statefulset 详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-statefulset-详解&quot;,&quot;cloud-native/kubernetes/workload/k8s-statefulset-详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-statefulset-详解&quot;,&quot;k8s-statefulset-详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-statefulset-详解&quot;,&quot;Pod 生命周期钩子（Hook）完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/pod-生命周期钩子hook完整详解&quot;,&quot;pod 生命周期钩子（hook）完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/pod-生命周期钩子hook完整详解&quot;,&quot;cloud-native/kubernetes/workload/pod-生命周期钩子hook完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/pod-生命周期钩子hook完整详解&quot;,&quot;pod-生命周期钩子hook完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/pod-生命周期钩子hook完整详解&quot;,&quot;ReplicaSet 完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/replicaset-完整详解&quot;,&quot;replicaset 完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/replicaset-完整详解&quot;,&quot;cloud-native/kubernetes/workload/replicaset-完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/replicaset-完整详解&quot;,&quot;replicaset-完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/replicaset-完整详解&quot;,&quot;服务器 IO 过高排查流程&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器-io-过高排查流程&quot;,&quot;服务器 io 过高排查流程&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器-io-过高排查流程&quot;,&quot;cloud-native/linux/故障排查/服务器-io-过高排查流程&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器-io-过高排查流程&quot;,&quot;服务器-io-过高排查流程&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器-io-过高排查流程&quot;,&quot;服务器磁盘 IO 异常全场景总结&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器磁盘io异常全场景总结&quot;,&quot;服务器磁盘 io 异常全场景总结&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器磁盘io异常全场景总结&quot;,&quot;cloud-native/linux/故障排查/服务器磁盘io异常全场景总结&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器磁盘io异常全场景总结&quot;,&quot;服务器磁盘io异常全场景总结&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器磁盘io异常全场景总结&quot;,&quot;服务器坏道诊断与修复&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器坏道诊断与修复&quot;,&quot;cloud-native/linux/故障排查/服务器坏道诊断与修复&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器坏道诊断与修复&quot;,&quot;服务器 CPU 异常全场景总结&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器cpu异常全场景总结&quot;,&quot;服务器 cpu 异常全场景总结&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器cpu异常全场景总结&quot;,&quot;cloud-native/linux/故障排查/服务器cpu异常全场景总结&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器cpu异常全场景总结&quot;,&quot;服务器cpu异常全场景总结&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器cpu异常全场景总结&quot;,&quot;服务器 OOM 完整原因+排查+解决方案&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器oom完整原因排查解决方案&quot;,&quot;服务器 oom 完整原因+排查+解决方案&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器oom完整原因排查解决方案&quot;,&quot;cloud-native/linux/故障排查/服务器oom完整原因排查解决方案&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器oom完整原因排查解决方案&quot;,&quot;服务器oom完整原因排查解决方案&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器oom完整原因排查解决方案&quot;,&quot;逻辑坏道 vs 物理坏道&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/逻辑坏道-vs-物理坏道&quot;,&quot;cloud-native/linux/故障排查/逻辑坏道-vs-物理坏道&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/逻辑坏道-vs-物理坏道&quot;,&quot;逻辑坏道-vs-物理坏道&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/逻辑坏道-vs-物理坏道&quot;,&quot;CentOS7 开机卡在 systemd 初始化排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/centos7-开机卡在-systemd-初始化排查&quot;,&quot;centos7 开机卡在 systemd 初始化排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/centos7-开机卡在-systemd-初始化排查&quot;,&quot;cloud-native/linux/故障排查/centos7-开机卡在-systemd-初始化排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/centos7-开机卡在-systemd-初始化排查&quot;,&quot;centos7-开机卡在-systemd-初始化排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/centos7-开机卡在-systemd-初始化排查&quot;,&quot;Crontab 脚本执行无结果排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/crontab-脚本执行无结果排查&quot;,&quot;crontab 脚本执行无结果排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/crontab-脚本执行无结果排查&quot;,&quot;cloud-native/linux/故障排查/crontab-脚本执行无结果排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/crontab-脚本执行无结果排查&quot;,&quot;crontab-脚本执行无结果排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/crontab-脚本执行无结果排查&quot;,&quot;Linux CPU 100% 排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/linux-cpu-100-排查&quot;,&quot;linux cpu 100% 排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/linux-cpu-100-排查&quot;,&quot;cloud-native/linux/故障排查/linux-cpu-100-排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/linux-cpu-100-排查&quot;,&quot;linux-cpu-100-排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/linux-cpu-100-排查&quot;,&quot;cloud-native/linux/面试题/通用运维场景题&quot;:&quot;/posts/tech/cloud-native/linux/面试题/通用运维场景题&quot;,&quot;通用运维场景题&quot;:&quot;/posts/tech/cloud-native/linux/面试题/通用运维场景题&quot;,&quot;cloud-native/linux/面试题/linux-服务面试题&quot;:&quot;/posts/tech/cloud-native/linux/面试题/linux-服务面试题&quot;,&quot;linux-服务面试题&quot;:&quot;/posts/tech/cloud-native/linux/面试题/linux-服务面试题&quot;,&quot;cloud-native/linux/面试题/linux-运维面试题&quot;:&quot;/posts/tech/cloud-native/linux/面试题/linux-运维面试题&quot;,&quot;linux-运维面试题&quot;:&quot;/posts/tech/cloud-native/linux/面试题/linux-运维面试题&quot;,&quot;cloud-native/linux/面试题/sre-运维场景题&quot;:&quot;/posts/tech/cloud-native/linux/面试题/sre-运维场景题&quot;,&quot;sre-运维场景题&quot;:&quot;/posts/tech/cloud-native/linux/面试题/sre-运维场景题&quot;,&quot;硬中断与软中断详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/硬中断与软中断详解&quot;,&quot;cloud-native/linux/kernel/硬中断与软中断详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/硬中断与软中断详解&quot;,&quot;Linux 调试与追踪工具&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-调试与追踪工具&quot;,&quot;linux 调试与追踪工具&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-调试与追踪工具&quot;,&quot;cloud-native/linux/kernel/linux-调试与追踪工具&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-调试与追踪工具&quot;,&quot;linux-调试与追踪工具&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-调试与追踪工具&quot;,&quot;Linux 命名空间&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-命名空间&quot;,&quot;linux 命名空间&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-命名空间&quot;,&quot;cloud-native/linux/kernel/linux-命名空间&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-命名空间&quot;,&quot;linux-命名空间&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-命名空间&quot;,&quot;Linux 内核深入学习路线&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-内核深入学习路线&quot;,&quot;linux 内核深入学习路线&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-内核深入学习路线&quot;,&quot;cloud-native/linux/kernel/linux-内核深入学习路线&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-内核深入学习路线&quot;,&quot;linux-内核深入学习路线&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-内核深入学习路线&quot;,&quot;Linux 内核学习&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-内核学习&quot;,&quot;linux 内核学习&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-内核学习&quot;,&quot;cloud-native/linux/kernel/linux-内核学习&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-内核学习&quot;,&quot;linux-内核学习&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-内核学习&quot;,&quot;Linux 用户态与内核态完整详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-用户态与内核态完整详解&quot;,&quot;linux 用户态与内核态完整详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-用户态与内核态完整详解&quot;,&quot;cloud-native/linux/kernel/linux-用户态与内核态完整详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-用户态与内核态完整详解&quot;,&quot;linux-用户态与内核态完整详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-用户态与内核态完整详解&quot;,&quot;PageCache 原理&quot;:&quot;/posts/tech/cloud-native/linux/kernel/pagecache-原理&quot;,&quot;pagecache 原理&quot;:&quot;/posts/tech/cloud-native/linux/kernel/pagecache-原理&quot;,&quot;cloud-native/linux/kernel/pagecache-原理&quot;:&quot;/posts/tech/cloud-native/linux/kernel/pagecache-原理&quot;,&quot;pagecache-原理&quot;:&quot;/posts/tech/cloud-native/linux/kernel/pagecache-原理&quot;,&quot;proc 文件系统完整详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/proc-文件系统完整详解&quot;,&quot;cloud-native/linux/kernel/proc-文件系统完整详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/proc-文件系统完整详解&quot;,&quot;proc-文件系统完整详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/proc-文件系统完整详解&quot;,&quot;mpstat 命令超详细讲解&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/mpstat-命令详解&quot;,&quot;cloud-native/linux/monitoring/mpstat-命令详解&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/mpstat-命令详解&quot;,&quot;mpstat-命令详解&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/mpstat-命令详解&quot;,&quot;perf 命令详解&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/perf-命令详解&quot;,&quot;cloud-native/linux/monitoring/perf-命令详解&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/perf-命令详解&quot;,&quot;perf-命令详解&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/perf-命令详解&quot;,&quot;perf top 与 top 命令区别&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/perf-top-与-top-命令区别&quot;,&quot;cloud-native/linux/monitoring/perf-top-与-top-命令区别&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/perf-top-与-top-命令区别&quot;,&quot;perf-top-与-top-命令区别&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/perf-top-与-top-命令区别&quot;,&quot;磁盘阵列 RAID&quot;:&quot;/posts/tech/cloud-native/linux/storage/磁盘阵列-raid&quot;,&quot;磁盘阵列 raid&quot;:&quot;/posts/tech/cloud-native/linux/storage/磁盘阵列-raid&quot;,&quot;cloud-native/linux/storage/磁盘阵列-raid&quot;:&quot;/posts/tech/cloud-native/linux/storage/磁盘阵列-raid&quot;,&quot;磁盘阵列-raid&quot;:&quot;/posts/tech/cloud-native/linux/storage/磁盘阵列-raid&quot;,&quot;iostat 命令详解&quot;:&quot;/posts/tech/cloud-native/linux/storage/iostat-命令详解&quot;,&quot;cloud-native/linux/storage/iostat-命令详解&quot;:&quot;/posts/tech/cloud-native/linux/storage/iostat-命令详解&quot;,&quot;iostat-命令详解&quot;:&quot;/posts/tech/cloud-native/linux/storage/iostat-命令详解&quot;,&quot;Linux 磁盘管理&quot;:&quot;/posts/tech/cloud-native/linux/storage/linux-磁盘管理&quot;,&quot;linux 磁盘管理&quot;:&quot;/posts/tech/cloud-native/linux/storage/linux-磁盘管理&quot;,&quot;cloud-native/linux/storage/linux-磁盘管理&quot;:&quot;/posts/tech/cloud-native/linux/storage/linux-磁盘管理&quot;,&quot;linux-磁盘管理&quot;:&quot;/posts/tech/cloud-native/linux/storage/linux-磁盘管理&quot;,&quot;Linux 硬链接与软链接&quot;:&quot;/posts/tech/cloud-native/linux/storage/linux-硬链接与软链接&quot;,&quot;linux 硬链接与软链接&quot;:&quot;/posts/tech/cloud-native/linux/storage/linux-硬链接与软链接&quot;,&quot;cloud-native/linux/storage/linux-硬链接与软链接&quot;:&quot;/posts/tech/cloud-native/linux/storage/linux-硬链接与软链接&quot;,&quot;linux-硬链接与软链接&quot;:&quot;/posts/tech/cloud-native/linux/storage/linux-硬链接与软链接&quot;,&quot;LVM 磁盘扩容&quot;:&quot;/posts/tech/cloud-native/linux/storage/lvm-磁盘扩容&quot;,&quot;lvm 磁盘扩容&quot;:&quot;/posts/tech/cloud-native/linux/storage/lvm-磁盘扩容&quot;,&quot;cloud-native/linux/storage/lvm-磁盘扩容&quot;:&quot;/posts/tech/cloud-native/linux/storage/lvm-磁盘扩容&quot;,&quot;lvm-磁盘扩容&quot;:&quot;/posts/tech/cloud-native/linux/storage/lvm-磁盘扩容&quot;,&quot;CPU 指令集概览&quot;:&quot;/posts/tech/cloud-native/linux/system/cpu-指令集概览&quot;,&quot;cpu 指令集概览&quot;:&quot;/posts/tech/cloud-native/linux/system/cpu-指令集概览&quot;,&quot;cloud-native/linux/system/cpu-指令集概览&quot;:&quot;/posts/tech/cloud-native/linux/system/cpu-指令集概览&quot;,&quot;cpu-指令集概览&quot;:&quot;/posts/tech/cloud-native/linux/system/cpu-指令集概览&quot;,&quot;🐧 Linux&quot;:&quot;/posts/tech/cloud-native/linux/system/linux&quot;,&quot;🐧 linux&quot;:&quot;/posts/tech/cloud-native/linux/system/linux&quot;,&quot;cloud-native/linux/system/linux&quot;:&quot;/posts/tech/cloud-native/linux/system/linux&quot;,&quot;linux&quot;:&quot;/posts/tech/cloud-native/linux/system/linux&quot;,&quot;Linux 基础&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-基础&quot;,&quot;linux 基础&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-基础&quot;,&quot;cloud-native/linux/system/linux-基础&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-基础&quot;,&quot;linux-基础&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-基础&quot;,&quot;Linux 进程状态&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-进程状态&quot;,&quot;linux 进程状态&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-进程状态&quot;,&quot;cloud-native/linux/system/linux-进程状态&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-进程状态&quot;,&quot;linux-进程状态&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-进程状态&quot;,&quot;Linux 网络服务&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-网络服务&quot;,&quot;linux 网络服务&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-网络服务&quot;,&quot;cloud-native/linux/system/linux-网络服务&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-网络服务&quot;,&quot;linux-网络服务&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-网络服务&quot;,&quot;Linux 系统管理&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-系统管理&quot;,&quot;linux 系统管理&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-系统管理&quot;,&quot;cloud-native/linux/system/linux-系统管理&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-系统管理&quot;,&quot;linux-系统管理&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-系统管理&quot;,&quot;SSH 认证原理与配置&quot;:&quot;/posts/tech/cloud-native/linux/system/ssh-认证原理与配置&quot;,&quot;ssh 认证原理与配置&quot;:&quot;/posts/tech/cloud-native/linux/system/ssh-认证原理与配置&quot;,&quot;cloud-native/linux/system/ssh-认证原理与配置&quot;:&quot;/posts/tech/cloud-native/linux/system/ssh-认证原理与配置&quot;,&quot;ssh-认证原理与配置&quot;:&quot;/posts/tech/cloud-native/linux/system/ssh-认证原理与配置&quot;,&quot;Sentinel、Hystrix、Gateway 对比&quot;:&quot;/posts/tech/cloud-native/microservices/sentinelhystrixgateway-对比&quot;,&quot;sentinel、hystrix、gateway 对比&quot;:&quot;/posts/tech/cloud-native/microservices/sentinelhystrixgateway-对比&quot;,&quot;cloud-native/microservices/sentinelhystrixgateway-对比&quot;:&quot;/posts/tech/cloud-native/microservices/sentinelhystrixgateway-对比&quot;,&quot;sentinelhystrixgateway-对比&quot;:&quot;/posts/tech/cloud-native/microservices/sentinelhystrixgateway-对比&quot;,&quot;Nginx 基础&quot;:&quot;/posts/tech/cloud-native/middleware/nginx-基础&quot;,&quot;nginx 基础&quot;:&quot;/posts/tech/cloud-native/middleware/nginx-基础&quot;,&quot;cloud-native/middleware/nginx-基础&quot;:&quot;/posts/tech/cloud-native/middleware/nginx-基础&quot;,&quot;nginx-基础&quot;:&quot;/posts/tech/cloud-native/middleware/nginx-基础&quot;,&quot;Tomcat 基础&quot;:&quot;/posts/tech/cloud-native/middleware/tomcat-基础&quot;,&quot;tomcat 基础&quot;:&quot;/posts/tech/cloud-native/middleware/tomcat-基础&quot;,&quot;cloud-native/middleware/tomcat-基础&quot;:&quot;/posts/tech/cloud-native/middleware/tomcat-基础&quot;,&quot;tomcat-基础&quot;:&quot;/posts/tech/cloud-native/middleware/tomcat-基础&quot;,&quot;监控工具与监控指标对比&quot;:&quot;/posts/tech/cloud-native/monitoring/监控工具与监控指标对比&quot;,&quot;cloud-native/monitoring/监控工具与监控指标对比&quot;:&quot;/posts/tech/cloud-native/monitoring/监控工具与监控指标对比&quot;,&quot;📊 监控与可观测性&quot;:&quot;/posts/tech/cloud-native/monitoring/监控与可观测性&quot;,&quot;cloud-native/monitoring/监控与可观测性&quot;:&quot;/posts/tech/cloud-native/monitoring/监控与可观测性&quot;,&quot;监控与可观测性&quot;:&quot;/posts/tech/cloud-native/monitoring/监控与可观测性&quot;,&quot;cloud-native/monitoring/面试题/监控面试题&quot;:&quot;/posts/tech/cloud-native/monitoring/面试题/监控面试题&quot;,&quot;监控面试题&quot;:&quot;/posts/tech/cloud-native/monitoring/面试题/监控面试题&quot;,&quot;Zabbix 监控&quot;:&quot;/posts/tech/cloud-native/monitoring/zabbix-监控&quot;,&quot;zabbix 监控&quot;:&quot;/posts/tech/cloud-native/monitoring/zabbix-监控&quot;,&quot;cloud-native/monitoring/zabbix-监控&quot;:&quot;/posts/tech/cloud-native/monitoring/zabbix-监控&quot;,&quot;zabbix-监控&quot;:&quot;/posts/tech/cloud-native/monitoring/zabbix-监控&quot;,&quot;cloud-native/network/面试题/网络面试题&quot;:&quot;/posts/tech/cloud-native/network/面试题/网络面试题&quot;,&quot;网络面试题&quot;:&quot;/posts/tech/cloud-native/network/面试题/网络面试题&quot;,&quot;🌐 网络&quot;:&quot;/posts/tech/cloud-native/network/网络&quot;,&quot;cloud-native/network/网络&quot;:&quot;/posts/tech/cloud-native/network/网络&quot;,&quot;网络&quot;:&quot;/posts/tech/cloud-native/network/网络&quot;,&quot;网络基础&quot;:&quot;/posts/tech/cloud-native/network/网络基础&quot;,&quot;cloud-native/network/网络基础&quot;:&quot;/posts/tech/cloud-native/network/网络基础&quot;,&quot;路由协议完整分类&quot;:&quot;/posts/tech/cloud-native/network/protocol/路由协议完整分类&quot;,&quot;cloud-native/network/protocol/路由协议完整分类&quot;:&quot;/posts/tech/cloud-native/network/protocol/路由协议完整分类&quot;,&quot;数字证书与 SSL/TLS&quot;:&quot;/posts/tech/cloud-native/network/protocol/数字证书与-ssl-tls&quot;,&quot;数字证书与 ssl/tls&quot;:&quot;/posts/tech/cloud-native/network/protocol/数字证书与-ssl-tls&quot;,&quot;cloud-native/network/protocol/数字证书与-ssl-tls&quot;:&quot;/posts/tech/cloud-native/network/protocol/数字证书与-ssl-tls&quot;,&quot;数字证书与-ssl-tls&quot;:&quot;/posts/tech/cloud-native/network/protocol/数字证书与-ssl-tls&quot;,&quot;CRC 循环冗余校验原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/crc-循环冗余校验原理&quot;,&quot;crc 循环冗余校验原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/crc-循环冗余校验原理&quot;,&quot;cloud-native/network/protocol/crc-循环冗余校验原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/crc-循环冗余校验原理&quot;,&quot;crc-循环冗余校验原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/crc-循环冗余校验原理&quot;,&quot;DNS 基础原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/dns-基础原理&quot;,&quot;dns 基础原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/dns-基础原理&quot;,&quot;cloud-native/network/protocol/dns-基础原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/dns-基础原理&quot;,&quot;dns-基础原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/dns-基础原理&quot;,&quot;HTTP 状态码详解&quot;:&quot;/posts/tech/cloud-native/network/protocol/http-状态码详解&quot;,&quot;http 状态码详解&quot;:&quot;/posts/tech/cloud-native/network/protocol/http-状态码详解&quot;,&quot;cloud-native/network/protocol/http-状态码详解&quot;:&quot;/posts/tech/cloud-native/network/protocol/http-状态码详解&quot;,&quot;http-状态码详解&quot;:&quot;/posts/tech/cloud-native/network/protocol/http-状态码详解&quot;,&quot;ICMP 协议原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/icmp-协议原理&quot;,&quot;icmp 协议原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/icmp-协议原理&quot;,&quot;cloud-native/network/protocol/icmp-协议&quot;:&quot;/posts/tech/cloud-native/network/protocol/icmp-协议&quot;,&quot;icmp-协议&quot;:&quot;/posts/tech/cloud-native/network/protocol/icmp-协议&quot;,&quot;cloud-native/network/protocol/icmp-协议原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/icmp-协议原理&quot;,&quot;icmp-协议原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/icmp-协议原理&quot;,&quot;Socket 工作原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/socket-工作原理&quot;,&quot;socket 工作原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/socket-工作原理&quot;,&quot;cloud-native/network/protocol/socket-工作原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/socket-工作原理&quot;,&quot;socket-工作原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/socket-工作原理&quot;,&quot;TCP 粘包拆包&quot;:&quot;/posts/tech/cloud-native/network/protocol/tcp-粘包拆包&quot;,&quot;tcp 粘包拆包&quot;:&quot;/posts/tech/cloud-native/network/protocol/tcp-粘包拆包&quot;,&quot;cloud-native/network/protocol/tcp-粘包拆包&quot;:&quot;/posts/tech/cloud-native/network/protocol/tcp-粘包拆包&quot;,&quot;tcp-粘包拆包&quot;:&quot;/posts/tech/cloud-native/network/protocol/tcp-粘包拆包&quot;,&quot;TCP 连接状态查看全套方法&quot;:&quot;/posts/tech/cloud-native/network/protocol/tcp连接状态查看全套方法&quot;,&quot;tcp 连接状态查看全套方法&quot;:&quot;/posts/tech/cloud-native/network/protocol/tcp连接状态查看全套方法&quot;,&quot;cloud-native/network/protocol/tcp连接状态查看全套方法&quot;:&quot;/posts/tech/cloud-native/network/protocol/tcp连接状态查看全套方法&quot;,&quot;tcp连接状态查看全套方法&quot;:&quot;/posts/tech/cloud-native/network/protocol/tcp连接状态查看全套方法&quot;,&quot;主流 VIP 漂移方案&quot;:&quot;/posts/tech/cloud-native/network/technology/主流vip漂移方案&quot;,&quot;主流 vip 漂移方案&quot;:&quot;/posts/tech/cloud-native/network/technology/主流vip漂移方案&quot;,&quot;cloud-native/network/technology/主流vip漂移方案&quot;:&quot;/posts/tech/cloud-native/network/technology/主流vip漂移方案&quot;,&quot;主流vip漂移方案&quot;:&quot;/posts/tech/cloud-native/network/technology/主流vip漂移方案&quot;,&quot;Calico CNI 与 Flannel 网络插件详解&quot;:&quot;/posts/tech/cloud-native/network/technology/calico-cni-网络插件详解&quot;,&quot;calico cni 与 flannel 网络插件详解&quot;:&quot;/posts/tech/cloud-native/network/technology/calico-cni-网络插件详解&quot;,&quot;cloud-native/network/technology/calico-cni-网络插件详解&quot;:&quot;/posts/tech/cloud-native/network/technology/calico-cni-网络插件详解&quot;,&quot;calico-cni-网络插件详解&quot;:&quot;/posts/tech/cloud-native/network/technology/calico-cni-网络插件详解&quot;,&quot;eBPF 技术详解&quot;:&quot;/posts/tech/cloud-native/network/technology/ebpf-技术详解&quot;,&quot;ebpf 技术详解&quot;:&quot;/posts/tech/cloud-native/network/technology/ebpf-技术详解&quot;,&quot;cloud-native/network/technology/ebpf-技术详解&quot;:&quot;/posts/tech/cloud-native/network/technology/ebpf-技术详解&quot;,&quot;ebpf-技术详解&quot;:&quot;/posts/tech/cloud-native/network/technology/ebpf-技术详解&quot;,&quot;eBPF 模式下 CNI 与 kube-proxy 完整关系详解&quot;:&quot;/posts/tech/cloud-native/network/technology/ebpf-模式下-cni-与-kube-proxy-完整关系详解&quot;,&quot;ebpf 模式下 cni 与 kube-proxy 完整关系详解&quot;:&quot;/posts/tech/cloud-native/network/technology/ebpf-模式下-cni-与-kube-proxy-完整关系详解&quot;,&quot;cloud-native/network/technology/ebpf-模式下-cni-与-kube-proxy-完整关系详解&quot;:&quot;/posts/tech/cloud-native/network/technology/ebpf-模式下-cni-与-kube-proxy-完整关系详解&quot;,&quot;ebpf-模式下-cni-与-kube-proxy-完整关系详解&quot;:&quot;/posts/tech/cloud-native/network/technology/ebpf-模式下-cni-与-kube-proxy-完整关系详解&quot;,&quot;iptables、IPVS、eBPF 完整深度对比&quot;:&quot;/posts/tech/cloud-native/network/technology/iptables-ipvs-ebpf-完整深度对比&quot;,&quot;iptables、ipvs、ebpf 完整深度对比&quot;:&quot;/posts/tech/cloud-native/network/technology/iptables-ipvs-ebpf-完整深度对比&quot;,&quot;cloud-native/network/technology/iptables-ipvs-ebpf-完整深度对比&quot;:&quot;/posts/tech/cloud-native/network/technology/iptables-ipvs-ebpf-完整深度对比&quot;,&quot;iptables-ipvs-ebpf-完整深度对比&quot;:&quot;/posts/tech/cloud-native/network/technology/iptables-ipvs-ebpf-完整深度对比&quot;,&quot;K8s 新增节点后 Calico 完整执行流程&quot;:&quot;/posts/tech/cloud-native/network/technology/k8s新增节点后calico完整执行流程&quot;,&quot;k8s 新增节点后 calico 完整执行流程&quot;:&quot;/posts/tech/cloud-native/network/technology/k8s新增节点后calico完整执行流程&quot;,&quot;cloud-native/network/technology/k8s新增节点后calico完整执行流程&quot;:&quot;/posts/tech/cloud-native/network/technology/k8s新增节点后calico完整执行流程&quot;,&quot;k8s新增节点后calico完整执行流程&quot;:&quot;/posts/tech/cloud-native/network/technology/k8s新增节点后calico完整执行流程&quot;,&quot;LVS 与 HAProxy 完整深度详解&quot;:&quot;/posts/tech/cloud-native/network/technology/lvs-与-haproxy-完整深度详解&quot;,&quot;lvs 与 haproxy 完整深度详解&quot;:&quot;/posts/tech/cloud-native/network/technology/lvs-与-haproxy-完整深度详解&quot;,&quot;cloud-native/network/technology/lvs-与-haproxy-完整深度详解&quot;:&quot;/posts/tech/cloud-native/network/technology/lvs-与-haproxy-完整深度详解&quot;,&quot;lvs-与-haproxy-完整深度详解&quot;:&quot;/posts/tech/cloud-native/network/technology/lvs-与-haproxy-完整深度详解&quot;,&quot;firewalld 与 iptables 对比&quot;:&quot;/posts/tech/cloud-native/network/tools/firewalld-与-iptables-对比&quot;,&quot;cloud-native/network/tools/firewalld-与-iptables-对比&quot;:&quot;/posts/tech/cloud-native/network/tools/firewalld-与-iptables-对比&quot;,&quot;firewalld-与-iptables-对比&quot;:&quot;/posts/tech/cloud-native/network/tools/firewalld-与-iptables-对比&quot;,&quot;iptables 完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/iptables-完整详解&quot;,&quot;cloud-native/network/tools/iptables-完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/iptables-完整详解&quot;,&quot;iptables-完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/iptables-完整详解&quot;,&quot;IPVS 完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/ipvs-完整详解&quot;,&quot;ipvs 完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/ipvs-完整详解&quot;,&quot;cloud-native/network/tools/ipvs-完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/ipvs-完整详解&quot;,&quot;ipvs-完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/ipvs-完整详解&quot;,&quot;Linux 防火墙详解&quot;:&quot;/posts/tech/cloud-native/network/tools/linux-防火墙详解&quot;,&quot;linux 防火墙详解&quot;:&quot;/posts/tech/cloud-native/network/tools/linux-防火墙详解&quot;,&quot;cloud-native/network/tools/linux-防火墙详解&quot;:&quot;/posts/tech/cloud-native/network/tools/linux-防火墙详解&quot;,&quot;linux-防火墙详解&quot;:&quot;/posts/tech/cloud-native/network/tools/linux-防火墙详解&quot;,&quot;nslookup 完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/nslookup-完整详解&quot;,&quot;cloud-native/network/tools/nslookup-完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/nslookup-完整详解&quot;,&quot;nslookup-完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/nslookup-完整详解&quot;,&quot;OpenStack 云计算平台&quot;:&quot;/posts/tech/cloud-native/openstack/openstack-云计算平台&quot;,&quot;openstack 云计算平台&quot;:&quot;/posts/tech/cloud-native/openstack/openstack-云计算平台&quot;,&quot;cloud-native/openstack/openstack-云计算平台&quot;:&quot;/posts/tech/cloud-native/openstack/openstack-云计算平台&quot;,&quot;openstack-云计算平台&quot;:&quot;/posts/tech/cloud-native/openstack/openstack-云计算平台&quot;,&quot;堆内存与栈内存&quot;:&quot;/posts/tech/cloud-native/programming/堆内存与栈内存&quot;,&quot;cloud-native/programming/堆内存与栈内存&quot;:&quot;/posts/tech/cloud-native/programming/堆内存与栈内存&quot;,&quot;🐚 Shell · 🐍 Python&quot;:&quot;/posts/tech/cloud-native/programming/脚本与编程&quot;,&quot;🐚 shell · 🐍 python&quot;:&quot;/posts/tech/cloud-native/programming/脚本与编程&quot;,&quot;cloud-native/programming/脚本与编程&quot;:&quot;/posts/tech/cloud-native/programming/脚本与编程&quot;,&quot;脚本与编程&quot;:&quot;/posts/tech/cloud-native/programming/脚本与编程&quot;,&quot;G1 GC 深度优化&quot;:&quot;/posts/tech/cloud-native/programming/java/g1-gc-深度优化&quot;,&quot;g1 gc 深度优化&quot;:&quot;/posts/tech/cloud-native/programming/java/g1-gc-深度优化&quot;,&quot;cloud-native/programming/java/g1-gc-深度优化&quot;:&quot;/posts/tech/cloud-native/programming/java/g1-gc-深度优化&quot;,&quot;g1-gc-深度优化&quot;:&quot;/posts/tech/cloud-native/programming/java/g1-gc-深度优化&quot;,&quot;Java IO 模型&quot;:&quot;/posts/tech/cloud-native/programming/java/java-io-模型&quot;,&quot;java io 模型&quot;:&quot;/posts/tech/cloud-native/programming/java/java-io-模型&quot;,&quot;cloud-native/programming/java/java-io-模型&quot;:&quot;/posts/tech/cloud-native/programming/java/java-io-模型&quot;,&quot;java-io-模型&quot;:&quot;/posts/tech/cloud-native/programming/java/java-io-模型&quot;,&quot;JVM 参数优化&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-参数优化&quot;,&quot;jvm 参数优化&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-参数优化&quot;,&quot;cloud-native/programming/java/jvm-参数优化&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-参数优化&quot;,&quot;jvm-参数优化&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-参数优化&quot;,&quot;JVM 内存结构&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-内存结构&quot;,&quot;jvm 内存结构&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-内存结构&quot;,&quot;cloud-native/programming/java/jvm-内存结构&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-内存结构&quot;,&quot;jvm-内存结构&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-内存结构&quot;,&quot;JVM 学习路线与故障排查&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-学习路线与故障排查&quot;,&quot;jvm 学习路线与故障排查&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-学习路线与故障排查&quot;,&quot;cloud-native/programming/java/jvm-学习路线与故障排查&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-学习路线与故障排查&quot;,&quot;jvm-学习路线与故障排查&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-学习路线与故障排查&quot;,&quot;Python 文件操作完整详解&quot;:&quot;/posts/tech/cloud-native/programming/python/脚本/python-文件操作完整详解&quot;,&quot;python 文件操作完整详解&quot;:&quot;/posts/tech/cloud-native/programming/python/脚本/python-文件操作完整详解&quot;,&quot;cloud-native/programming/python/脚本/python-文件操作完整详解&quot;:&quot;/posts/tech/cloud-native/programming/python/脚本/python-文件操作完整详解&quot;,&quot;python-文件操作完整详解&quot;:&quot;/posts/tech/cloud-native/programming/python/脚本/python-文件操作完整详解&quot;,&quot;Python Linux 系统运维详解&quot;:&quot;/posts/tech/cloud-native/programming/python/脚本/python-linux-系统运维详解&quot;,&quot;python linux 系统运维详解&quot;:&quot;/posts/tech/cloud-native/programming/python/脚本/python-linux-系统运维详解&quot;,&quot;cloud-native/programming/python/脚本/python-linux-系统运维详解&quot;:&quot;/posts/tech/cloud-native/programming/python/脚本/python-linux-系统运维详解&quot;,&quot;python-linux-系统运维详解&quot;:&quot;/posts/tech/cloud-native/programming/python/脚本/python-linux-系统运维详解&quot;,&quot;Python 基础&quot;:&quot;/posts/tech/cloud-native/programming/python/python-基础&quot;,&quot;python 基础&quot;:&quot;/posts/tech/cloud-native/programming/python/python-基础&quot;,&quot;cloud-native/programming/python/python-基础&quot;:&quot;/posts/tech/cloud-native/programming/python/python-基础&quot;,&quot;python-基础&quot;:&quot;/posts/tech/cloud-native/programming/python/python-基础&quot;,&quot;Python 学习大纲&quot;:&quot;/posts/tech/cloud-native/programming/python/python-学习大纲&quot;,&quot;python 学习大纲&quot;:&quot;/posts/tech/cloud-native/programming/python/python-学习大纲&quot;,&quot;cloud-native/programming/python/python-学习大纲&quot;:&quot;/posts/tech/cloud-native/programming/python/python-学习大纲&quot;,&quot;python-学习大纲&quot;:&quot;/posts/tech/cloud-native/programming/python/python-学习大纲&quot;,&quot;cloud-native/programming/shell/面试题/shell-脚本面试题&quot;:&quot;/posts/tech/cloud-native/programming/shell/面试题/shell-脚本面试题&quot;,&quot;shell-脚本面试题&quot;:&quot;/posts/tech/cloud-native/programming/shell/面试题/shell-脚本面试题&quot;,&quot;Shell 基础&quot;:&quot;/posts/tech/cloud-native/programming/shell/shell-基础&quot;,&quot;shell 基础&quot;:&quot;/posts/tech/cloud-native/programming/shell/shell-基础&quot;,&quot;cloud-native/programming/shell/shell-基础&quot;:&quot;/posts/tech/cloud-native/programming/shell/shell-基础&quot;,&quot;shell-基础&quot;:&quot;/posts/tech/cloud-native/programming/shell/shell-基础&quot;,&quot;cloud-native/storage/面试题/存储与虚拟化面试题&quot;:&quot;/posts/tech/cloud-native/storage/面试题/存储与虚拟化面试题&quot;,&quot;存储与虚拟化面试题&quot;:&quot;/posts/tech/cloud-native/storage/面试题/存储与虚拟化面试题&quot;,&quot;Ceph 分布式存储&quot;:&quot;/posts/tech/cloud-native/storage/ceph-分布式存储&quot;,&quot;ceph 分布式存储&quot;:&quot;/posts/tech/cloud-native/storage/ceph-分布式存储&quot;,&quot;cloud-native/storage/ceph-分布式存储&quot;:&quot;/posts/tech/cloud-native/storage/ceph-分布式存储&quot;,&quot;ceph-分布式存储&quot;:&quot;/posts/tech/cloud-native/storage/ceph-分布式存储&quot;,&quot;每日英语学习记录&quot;:&quot;/posts/tech/english/每日学习记录&quot;,&quot;english/每日学习记录&quot;:&quot;/posts/tech/english/每日学习记录&quot;,&quot;每日学习记录&quot;:&quot;/posts/tech/english/每日学习记录&quot;,&quot;english/英文学习规划&quot;:&quot;/posts/tech/english/英文学习规划&quot;,&quot;英文学习规划&quot;:&quot;/posts/tech/english/英文学习规划&quot;,&quot;🇬🇧 英语学习&quot;:&quot;/posts/tech/english/english&quot;,&quot;english/english&quot;:&quot;/posts/tech/english/english&quot;,&quot;english&quot;:&quot;/posts/tech/english/english&quot;,&quot;每日英语学习 -- 2026-06-05&quot;:&quot;/posts/tech/english/everyday/2026-06-05-每日英语学习&quot;,&quot;english/everyday/2026-06-05-每日英语学习&quot;:&quot;/posts/tech/english/everyday/2026-06-05-每日英语学习&quot;,&quot;2026-06-05-每日英语学习&quot;:&quot;/posts/tech/english/everyday/2026-06-05-每日英语学习&quot;,&quot;📐 语法笔记&quot;:&quot;/posts/tech/english/grammar/语法笔记&quot;,&quot;english/grammar/语法笔记&quot;:&quot;/posts/tech/english/grammar/语法笔记&quot;,&quot;语法笔记&quot;:&quot;/posts/tech/english/grammar/语法笔记&quot;,&quot;长难句精读：cgroup 驱动导致 GPU 访问丢失&quot;:&quot;/posts/tech/english/grammar/长难句精读---cgroup-gpu-访问丢失&quot;,&quot;长难句精读：cgroup 驱动导致 gpu 访问丢失&quot;:&quot;/posts/tech/english/grammar/长难句精读---cgroup-gpu-访问丢失&quot;,&quot;english/grammar/长难句精读---cgroup-gpu-访问丢失&quot;:&quot;/posts/tech/english/grammar/长难句精读---cgroup-gpu-访问丢失&quot;,&quot;长难句精读---cgroup-gpu-访问丢失&quot;:&quot;/posts/tech/english/grammar/长难句精读---cgroup-gpu-访问丢失&quot;,&quot;技术面试口语素材&quot;:&quot;/posts/tech/english/reading/技术面试口语素材&quot;,&quot;english/reading/技术面试口语素材&quot;:&quot;/posts/tech/english/reading/技术面试口语素材&quot;,&quot;面试工作介绍常用句式&quot;:&quot;/posts/tech/english/reading/面试工作介绍常用句式&quot;,&quot;english/reading/面试工作介绍常用句式&quot;:&quot;/posts/tech/english/reading/面试工作介绍常用句式&quot;,&quot;📰 阅读练习&quot;:&quot;/posts/tech/english/reading/阅读练习&quot;,&quot;english/reading/阅读练习&quot;:&quot;/posts/tech/english/reading/阅读练习&quot;,&quot;阅读练习&quot;:&quot;/posts/tech/english/reading/阅读练习&quot;,&quot;📖 词汇积累&quot;:&quot;/posts/tech/english/vocabulary/词汇积累&quot;,&quot;english/vocabulary/词汇积累&quot;:&quot;/posts/tech/english/vocabulary/词汇积累&quot;,&quot;词汇积累&quot;:&quot;/posts/tech/english/vocabulary/词汇积累&quot;,&quot;面试高频词汇&amp;词组&quot;:&quot;/posts/tech/english/vocabulary/面试高频词汇词组&quot;,&quot;english/vocabulary/面试高频词汇词组&quot;:&quot;/posts/tech/english/vocabulary/面试高频词汇词组&quot;,&quot;面试高频词汇词组&quot;:&quot;/posts/tech/english/vocabulary/面试高频词汇词组&quot;,&quot;☸️ 云原生术语&quot;:&quot;/posts/tech/english/vocabulary/云原生术语&quot;,&quot;english/vocabulary/云原生术语&quot;:&quot;/posts/tech/english/vocabulary/云原生术语&quot;,&quot;云原生术语&quot;:&quot;/posts/tech/english/vocabulary/云原生术语&quot;,&quot;云原生运维英语词汇（2026-06 更新）&quot;:&quot;/posts/tech/english/vocabulary/云原生运维英语词汇&quot;,&quot;english/vocabulary/云原生运维英语词汇&quot;:&quot;/posts/tech/english/vocabulary/云原生运维英语词汇&quot;,&quot;云原生运维英语词汇&quot;:&quot;/posts/tech/english/vocabulary/云原生运维英语词汇&quot;,&quot;GPU / CUDA 专业词汇&quot;:&quot;/posts/tech/english/vocabulary/gpu-cuda-词汇&quot;,&quot;gpu / cuda 专业词汇&quot;:&quot;/posts/tech/english/vocabulary/gpu-cuda-词汇&quot;,&quot;english/vocabulary/gpu-cuda-词汇&quot;:&quot;/posts/tech/english/vocabulary/gpu-cuda-词汇&quot;,&quot;gpu-cuda-词汇&quot;:&quot;/posts/tech/english/vocabulary/gpu-cuda-词汇&quot;,&quot;✍️ 随笔杂记&quot;:&quot;/posts/essays/随笔杂记&quot;,&quot;随笔杂记&quot;:&quot;/posts/essays/随笔杂记&quot;}"></div><header class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-bg)]/80 backdrop-blur-md"><nav class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4"><a href="/" class="font-serif text-xl font-bold tracking-tight text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors">NOVA BLOG</a><div class="hidden items-center gap-8 md:flex"><a href="/" class="text-sm font-medium transition-colors hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">首页</a><a href="/tags" class="text-sm font-medium transition-colors hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">标签</a><a href="/about" class="text-sm font-medium transition-colors hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">关于</a><a href="/search" class="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors" title="搜索"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></a><button onclick="toggleTheme()" class="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors" title="切换主题"><svg class="hidden dark:block" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg><svg class="block dark:hidden" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg></button><a href="/rss.xml" class="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]" title="订阅"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 8-8 8.5 8.5 0 0 1 7.5 4.75 8 8 0 0 1-4.5 11.25"></path><path d="M12 18a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></path></svg>订阅</a></div><button class="md:hidden text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]" id="mobile-menu-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="6" y2="6"></line><line x1="3" x2="21" y1="12" y2="12"></line><line x1="3" x2="21" y1="18" y2="18"></line></svg></button></nav><div id="mobile-menu" class="hidden border-t border-[var(--color-border)] bg-[var(--color-bg)] md:hidden"><div class="flex flex-col px-6 py-4 gap-4"><a href="/" class="text-sm font-medium transition-colors text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]">首页</a><a href="/tags" class="text-sm font-medium transition-colors text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]">标签</a><a href="/about" class="text-sm font-medium transition-colors text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]">关于</a><a href="/search" class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]">搜索</a><button onclick="toggleTheme()" class="text-sm text-left text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]">切换主题</button><a href="/rss.xml" class="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-secondary)] w-fit">订阅</a></div></div></header><script>
+  (function () {
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    if (btn && menu) {
+      btn.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+      });
+    }
+  })();
+</script><main class="mx-auto flex max-w-4xl flex-1 flex-col gap-8 px-6 py-8 md:flex-row"><div class="flex flex-col gap-8 md:flex-1"><div id="progress-bar" class="progress-bar" style="width: 0%"></div><header class="animate-fade-in"><div class="flex flex-wrap items-center gap-3 mb-4"><span class="rounded-full bg-[var(--color-accent-light)] px-3 py-1 text-xs font-medium text-[var(--color-accent)]">AI</span></div><h1 class="font-serif text-3xl font-bold leading-tight tracking-tight text-[var(--color-text)] sm:text-4xl">使用 Codex + DeepSeek + Obsidian 搭建本地知识库</h1><div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-[var(--color-text-muted)]"><time datetime="2026-05-31T00:00:00.000Z">2026年5月31日</time><span class="text-[var(--color-border)]">·</span><span>35 分钟阅读</span><span class="text-[var(--color-border)]">·</span><span>13694 字</span></div><div class="mt-4"><a key="tutorial" href="/tags/tutorial" class="inline-block rounded-full bg-[var(--color-bg-secondary)] px-2.5 py-1 text-xs text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-accent-light)] hover:text-[var(--color-accent)]">tutorial</a><a key="codex" href="/tags/codex" class="inline-block rounded-full bg-[var(--color-bg-secondary)] px-2.5 py-1 text-xs text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-accent-light)] hover:text-[var(--color-accent)]">codex</a><a key="deepseek" href="/tags/deepseek" class="inline-block rounded-full bg-[var(--color-bg-secondary)] px-2.5 py-1 text-xs text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-accent-light)] hover:text-[var(--color-accent)]">deepseek</a><a key="obsidian" href="/tags/obsidian" class="inline-block rounded-full bg-[var(--color-bg-secondary)] px-2.5 py-1 text-xs text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-accent-light)] hover:text-[var(--color-accent)]">obsidian</a><a key="knowledge-base" href="/tags/knowledge-base" class="inline-block rounded-full bg-[var(--color-bg-secondary)] px-2.5 py-1 text-xs text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-accent-light)] hover:text-[var(--color-accent)]">knowledge-base</a><a key="workflow" href="/tags/workflow" class="inline-block rounded-full bg-[var(--color-bg-secondary)] px-2.5 py-1 text-xs text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-accent-light)] hover:text-[var(--color-accent)]">workflow</a></div><div class="mt-6 rounded-xl border-l-4 border-[var(--color-accent)] bg-[var(--color-bg-secondary)] p-5"><p class="text-base leading-relaxed text-[var(--color-text-secondary)]">从零开始，通过 Codex++ 插件接入 DeepSeek 模型，在 Codex 中以 Claudian 角色管理 Obsidian 知识库的完整教程</p></div></header><details class="toc-container mb-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-5 animate-fade-in animate-delay-1"><summary class="flex cursor-pointer items-center justify-between text-sm font-semibold text-[var(--color-text)] select-none hover:text-[var(--color-accent)] transition-colors"><span>📋 目录</span><svg class="toc-chevron h-4 w-4 text-[var(--color-text-muted)] transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></summary><nav class="mt-4 pt-4 border-t border-[var(--color-border)]"><ul class="flex flex-col gap-2"><li><a href="#-工具链全景" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">📋 工具链全景</a></li><li><a href="#各组件角色" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">各组件角色</a></li><li><a href="#数据流向" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">数据流向</a></li><li><a href="#第一章环境准备-️" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">第一章：环境准备 🛠️</a></li><li><a href="#11-注册-deepseek-api" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">1.1 注册 DeepSeek API</a></li><li><a href="#12-安装-obsidian" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">1.2 安装 Obsidian</a></li><li><a href="#第二章通过-codex-接入-deepseek-" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">第二章：通过 Codex++ 接入 DeepSeek 🚀</a></li><li><a href="#21-deepseek-模型选择" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">2.1 DeepSeek 模型选择</a></li><li><a href="#22-安装-codex-插件" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">2.2 安装 Codex++ 插件</a></li><li><a href="#23-配置-codex-连接-deepseek" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">2.3 配置 Codex++ 连接 DeepSeek</a></li><li><a href="#第三章claudian-安装与配置-️" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">第三章：Claudian 安装与配置 ⚙️</a></li><li><a href="#31-claudian-安装" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">3.1 Claudian 安装</a></li><li><a href="#32-claudian-配置-codex" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">3.2 Claudian 配置 Codex</a></li><li><a href="#第四章claudian-角色的设计哲学-" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">第四章：Claudian 角色的设计哲学 🤖</a></li><li><a href="#41-claudian-的定位" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">4.1 Claudian 的定位</a></li><li><a href="#42-claudian-的核心能力" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">4.2 Claudian 的核心能力</a></li><li><a href="#43-claudian-vs-通用-ai-助手的区别" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">4.3 Claudian vs 通用 AI 助手的区别</a></li><li><a href="#44-在-claudian-中配置-codex-的核心规则" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">4.4 在 Claudian 中配置 Codex 的核心规则</a></li><li><a href="#第五章连接-codex--obsidian-" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">第五章：连接 Codex++ + Obsidian 🔗</a></li><li><a href="#51-授予-vault-访问权限" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">5.1 授予 Vault 访问权限</a></li><li><a href="#52-观察者模式current_note" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">5.2 观察者模式：&lt;current_note&gt;</a></li><li><a href="#53-选区模式editor_selection" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">5.3 选区模式：&lt;editor_selection&gt;</a></li><li><a href="#54-浏览器选择browser_selection" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">5.4 浏览器选择：&lt;browser_selection&gt;</a></li><li><a href="#第六章工作流实战-" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">第六章：工作流实战 🤝</a></li><li><a href="#61-完整工作循环" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">6.1 完整工作循环</a></li><li><a href="#62-典型使用场景" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">6.2 典型使用场景</a></li><li><a href="#63-一个典型会话示例" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">6.3 一个典型会话示例</a></li><li><a href="#第七章最佳实践与技巧-" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">第七章：最佳实践与技巧 💡</a></li><li><a href="#71-文档命名规范" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">7.1 文档命名规范</a></li><li><a href="#72-yaml-frontmatter-最佳实践" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">7.2 YAML Frontmatter 最佳实践</a></li><li><a href="#73-wiki-link-使用策略" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">7.3 Wiki-link 使用策略</a></li><li><a href="#74-callout-的使用" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">7.4 Callout 的使用</a></li><li><a href="#75-deepseek-成本控制" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">7.5 DeepSeek 成本控制</a></li><li><a href="#第八章mermaid-图表支持-" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">第八章：Mermaid 图表支持 📊</a></li><li><a href="#支持的图表类型" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">支持的图表类型</a></li><li><a href="#示例" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">示例</a></li><li><a href="#第九章高级技巧-" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">第九章：高级技巧 🚀</a></li><li><a href="#91-插件开发codex" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">9.1 插件开发（Codex++）</a></li><li><a href="#92-自定义技能skills" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">9.2 自定义技能（Skills）</a></li><li><a href="#93-个人市场personal-marketplace" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">9.3 个人市场（Personal Marketplace）</a></li><li><a href="#附录故障排除-" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">附录：故障排除 🔧</a></li><li><a href="#常见问题" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">常见问题</a></li><li><a href="#获取帮助" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">获取帮助</a></li><li><a href="#总结这套工作流的核心价值" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">总结：这套工作流的核心价值</a></li></ul></nav></details><article class="prose animate-fade-in animate-delay-1"><h1 id="-使用-codex--codex--deepseek--obsidian-搭建本地知识库">🧠 使用 Codex + Codex++ + DeepSeek + Obsidian 搭建本地知识库</h1>
+<blockquote data-callout="abstract" class="callout callout-abstract">
+<p>写在前面
+</p>
+<p>本文档记录了从零开始，利用 <strong>Codex（编程助手）</strong> + <strong>Codex++（插件）</strong> + <strong>DeepSeek（大模型）</strong> + <strong>Obsidian（知识管理）</strong> 四者联动，搭建”AI 辅助个人知识库”的完整流程。</p>
+<p>你可以将本文档作为<strong>操作手册</strong>，一步步复现这套工作流。</p>
+</blockquote>
+<hr>
+<h2 id="-工具链全景">📋 工具链全景</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#E1E4E8">flowchart LR</span></span>
+<span class="line"><span style="color:#E1E4E8">    A[💬 用户提问] --> B[🖥️ Codex 平台]</span></span>
+<span class="line"><span style="color:#E1E4E8">    B --> C[🔌 Codex++ 插件]</span></span>
+<span class="line"><span style="color:#E1E4E8">    C --> D{Claudian 角色}</span></span>
+<span class="line"><span style="color:#E1E4E8">    D --> E[🧠 DeepSeek 模型&#x3C;br/>API 推理]</span></span>
+<span class="line"><span style="color:#E1E4E8">    D --> F[📁 Obsidian Vault&#x3C;br/>读/写/分析]</span></span>
+<span class="line"><span style="color:#E1E4E8">    E --> G[📝 生成 Markdown]</span></span>
+<span class="line"><span style="color:#E1E4E8">    F --> G</span></span>
+<span class="line"><span style="color:#E1E4E8">    G --> H[✅ 知识沉淀到 Vault]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    style C fill:#FF9800,color:#fff</span></span>
+<span class="line"><span style="color:#E1E4E8">    style E fill:#4FC3F7,color:#000</span></span>
+<span class="line"><span style="color:#E1E4E8">    style D fill:#FFB74D,color:#000</span></span>
+<span class="line"><span style="color:#E1E4E8">    style F fill:#81C784,color:#000</span></span>
+<span class="line"><span style="color:#E1E4E8">    style H fill:#4CAF50,color:#fff</span></span></code></pre>
+<h3 id="各组件角色">各组件角色</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>版本/类型</th><th>角色说明</th></tr></thead><tbody><tr><td><strong>Codex</strong></td><td>AI 编程助手平台</td><td>提供 AI 交互界面、工具调用能力、文件系统访问权限</td></tr><tr><td><strong>Codex++</strong></td><td>Codex 插件（Plugin）</td><td><strong>核心桥梁</strong>，负责接入 DeepSeek 模型、管理技能与工具链</td></tr><tr><td><strong>Claudian</strong></td><td>AI 助手角色/技能</td><td>专门面向 Obsidian 的 AI 角色，具备”第二大脑”哲学</td></tr><tr><td><strong>Obsidian</strong></td><td>本地知识库</td><td>Markdown 笔记存储、图谱视图、双向链接</td></tr><tr><td><strong>DeepSeek</strong></td><td><code>deepseek-v4-flash</code> / <code>deepseek-v4-pro</code></td><td>底层大语言模型，由 Codex++ 插件调度</td></tr></tbody></table>
+<h3 id="数据流向">数据流向</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>用户输入</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>Codex（主平台）</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>Codex++（插件） ──→ DeepSeek API（模型推理）</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>Claudian 角色指令（定义行为方式）</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>文件系统操作（读取/写入 Obsidian Vault）</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>返回结果给用户</span></span></code></pre>
+<hr>
+<h2 id="第一章环境准备-️">第一章：环境准备 🛠️</h2>
+<h3 id="11-注册-deepseek-api">1.1 注册 DeepSeek API</h3>
+<p>DeepSeek 提供了与 OpenAI/Anthropic 兼容的 API 格式，可通过 Codex++ 插件接入。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#E1E4E8">flowchart LR</span></span>
+<span class="line"><span style="color:#E1E4E8">    A[访问 platform.deepseek.com] --> B[注册账号]</span></span>
+<span class="line"><span style="color:#E1E4E8">    B --> C[创建 API Key]</span></span>
+<span class="line"><span style="color:#E1E4E8">    C --> D[充值（按量付费）]</span></span>
+<span class="line"><span style="color:#E1E4E8">    D --> E[获取 API Key 和 Base URL]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    style E fill:#4FC3F7,color:#000</span></span></code></pre>
+<p><strong>关键信息速查：</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>项目</th><th>值</th></tr></thead><tbody><tr><td>官网</td><td><a href="https://platform.deepseek.com">https://platform.deepseek.com</a></td></tr><tr><td>Base URL</td><td><code>https://api.deepseek.com</code></td></tr><tr><td>推荐模型</td><td><code>deepseek-v4-flash</code>（快速）、<code>deepseek-v4-pro</code>（深度）</td></tr><tr><td>API 格式</td><td>兼容 OpenAI / Anthropic 格式</td></tr></tbody></table>
+<h3 id="12-安装-obsidian">1.2 安装 Obsidian</h3>
+<blockquote data-callout="info" class="callout callout-info">
+<p>如果你还没安装 Obsidian
+</p>
+<ol>
+<li>从 <a href="https://obsidian.md">https://obsidian.md</a> 下载安装</li>
+<li>创建或打开一个 Vault（知识库目录）</li>
+<li>建议安装以下核心插件：
+<ul>
+<li><strong>图谱视图</strong>（Graph View）— 可视化笔记关联</li>
+<li><strong>标签面板</strong>（Tag Pane）— 标签管理</li>
+<li><strong>反向链接面板</strong>（Backlinks）— 查看引用关系</li>
+</ul>
+</li>
+<li>本教程 Vault 路径示例：<code>C:\Users\用户名\Documents\obisdian</code></li>
+</ol>
+</blockquote>
+<hr>
+<h2 id="第二章通过-codex-接入-deepseek-">第二章：通过 Codex++ 接入 DeepSeek 🚀</h2>
+<h3 id="21-deepseek-模型选择">2.1 DeepSeek 模型选择</h3>
+<p>DeepSeek 提供多种模型，根据使用场景选择：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>模型名</th><th>特性</th><th>适用场景</th></tr></thead><tbody><tr><td><code>deepseek-v4-flash</code></td><td>快速响应、低成本</td><td>日常问答、文档整理、代码生成</td></tr><tr><td><code>deepseek-v4-pro</code></td><td>深度推理、更高质量</td><td>复杂分析、长文写作、架构设计</td></tr><tr><td><code>deepseek-chat</code></td><td>兼容旧版（2026/07 弃用）</td><td>—</td></tr><tr><td><code>deepseek-reasoner</code></td><td>旧版推理模型（2026/07 弃用）</td><td>—</td></tr></tbody></table>
+<blockquote data-callout="tip" class="callout callout-tip">
+<p>推荐组合
+</p>
+<p>日常使用 <strong><code>deepseek-v4-flash</code></strong> 保持高效响应和低成本，遇到复杂任务（如架构设计、深度分析）时切换到 <strong><code>deepseek-v4-pro</code></strong>。</p>
+</blockquote>
+<h3 id="22-安装-codex-插件">2.2 安装 Codex++ 插件</h3>
+<blockquote data-callout="quote" class="callout callout-quote">
+<p>Codex++ 是什么？
+</p>
+<p><strong>Codex++</strong> 是一个 Codex 插件，它的核心作用是：</p>
+<ol>
+<li><strong>模型接入</strong> — 将 DeepSeek 等第三方模型桥接到 Codex 平台</li>
+<li><strong>技能管理</strong> — 加载自定义技能（如 Claudian 角色）</li>
+<li><strong>工具扩展</strong> — 提供插件系统、个人市场等高级功能</li>
+</ol>
+<p>简单说，<strong>Codex 是”躯壳”，Codex++ 是”连接器”，DeepSeek 是”大脑”</strong>。</p>
+</blockquote>
+<p><strong>安装步骤：</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#E1E4E8">flowchart TD</span></span>
+<span class="line"><span style="color:#E1E4E8">    A[在 Codex 中打开&#x3C;br/>插件市场] --> B[搜索 Codex++]</span></span>
+<span class="line"><span style="color:#E1E4E8">    B --> C{安装方式}</span></span>
+<span class="line"><span style="color:#E1E4E8">    C -->|内置市场| D[一键安装]</span></span>
+<span class="line"><span style="color:#E1E4E8">    C -->|个人插件| E[从 .codex-plugin/ 加载]</span></span>
+<span class="line"><span style="color:#E1E4E8">    D --> F[配置 DeepSeek&#x3C;br/>API Key 与模型]</span></span>
+<span class="line"><span style="color:#E1E4E8">    E --> F</span></span>
+<span class="line"><span style="color:#E1E4E8">    F --> G[✅ 安装完成]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    style G fill:#4CAF50,color:#fff</span></span></code></pre>
+<h3 id="23-配置-codex-连接-deepseek">2.3 配置 Codex++ 连接 DeepSeek</h3>
+<p>Codex++ 安装完成后，会出现两个入口工具：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>工具</th><th>作用</th></tr></thead><tbody><tr><td><strong>Codex++</strong></td><td>配置完成后启动 Codex 的入口工具</td></tr><tr><td><strong>Codex++ 管理工具</strong></td><td><strong>配置工具</strong>，用于选择和管理大模型供应商</td></tr></tbody></table>
+<h4 id="配置步骤">配置步骤</h4>
+<h5 id="step-1打开供应商配置">Step 1：打开供应商配置</h5>
+<p>打开 <strong>Codex++ 管理工具</strong> → 点击 <strong>供应商配置</strong> → 选择 <strong>添加供应商</strong></p>
+<h5 id="step-2添加-deepseek-配置">Step 2：添加 DeepSeek 配置</h5>
+<p>!90-attachments/Pasted image 20260531153208.png</p>
+<blockquote>
+<p>上图是 Codex++ 管理工具中的 <strong>供应商配置界面</strong>，图中展示了以下关键信息：</p>
+<ol>
+<li><strong>左侧搜索栏</strong>（🔍）— 可搜索已安装的模型供应商</li>
+<li><strong>供应商列表</strong> — 当前可选的 AI 模型供应商，包括：
+<ul>
+<li><strong>Anthropic</strong>（当前选中）— 图标为绿色，配置 claude-sonnet-4-5 模型</li>
+<li><strong>DeepSeek</strong>（需选择）— 点击即可切换到 DeepSeek 模型</li>
+<li>其他可选：OpenAI、Google、Grok、Open AI Compatible Provider 等</li>
+</ul>
+</li>
+<li><strong>选中状态</strong> — 蓝色高亮表示当前激活的供应商</li>
+<li><strong>配置区域</strong> — 选中供应商后，右侧会显示该供应商的详细参数配置项</li>
+</ol>
+</blockquote>
+<h5 id="step-3填写-deepseek-api-信息">Step 3：填写 DeepSeek API 信息</h5>
+<p>选择 DeepSeek 后，在右侧配置区域填写：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>配置项</th><th>值</th><th>说明</th></tr></thead><tbody><tr><td><strong>API Key</strong></td><td>$DEEPSEEK_API_KEY</td><td>从 <a href="https://platform.deepseek.com">platform.deepseek.com</a> 获取，建议通过环境变量管理</td></tr><tr><td><strong>Base URL</strong></td><td><a href="https://api.deepseek.com">https://api.deepseek.com</a></td><td>DeepSeek API 固定端点</td></tr><tr><td><strong>默认模型</strong></td><td>deepseek-v4-flash</td><td>日常使用，快速响应、低成本</td></tr><tr><td><strong>备用模型</strong></td><td>deepseek-v4-pro</td><td>复杂任务时手动切换，深度推理能力更强</td></tr></tbody></table>
+<h5 id="step-4保存并验证">Step 4：保存并验证</h5>
+<ol>
+<li>保存配置后，使用 <strong>Codex++</strong> 工具启动 Codex</li>
+<li>发送一条简单消息测试链路是否打通：
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>用 Markdown 输出 "Hello World"</span></span></code></pre>
+</li>
+<li>如果 DeepSeek 正确返回 Markdown 格式内容，说明配置成功</li>
+</ol>
+<h4 id="配置要点">配置要点</h4>
+<ul>
+<li>🔑 <strong>API Key 安全</strong> — 建议存放在环境变量 <code>$DEEPSEEK_API_KEY</code> 中，避免硬编码</li>
+<li>🔄 <strong>闪退降级</strong> — 日常使用 <code>deepseek-v4-flash</code>，复杂任务切换到 <code>deepseek-v4-pro</code></li>
+<li>🔌 <strong>协议透明</strong> — Codex++ 在底层使用 OpenAI 兼容协议连接 DeepSeek，用户无需关心协议细节</li>
+<li>⚙️ <strong>切换供应商</strong> — 如需切换回 Claude 等其他模型，在同一个界面中重新选择即可</li>
+</ul>
+<blockquote>
+<p>注意：如果打开后仍然未能看到 DeepSeek 模型的选项，请关闭代理后重启应用，等成功进入后再开启代理即可。<strong>一定要使用 Codex++ 打开</strong>。</p>
+</blockquote>
+<h2 id="第三章claudian-安装与配置-️">第三章：Claudian 安装与配置 ⚙️</h2>
+<h3 id="31-claudian-安装">3.1 Claudian 安装</h3>
+<p>Claudian 是 Obsidian 社区的一款插件，能将 AI Agent 能力直接集成到 Obsidian 中，让你在笔记软件内就能与 AI 交互。</p>
+<p><strong>安装步骤：</strong></p>
+<ol>
+<li>
+<p>打开 Obsidian，点击左下角 <strong>设置</strong>（Settings）
+!90-attachments/Pasted image 20260531154629.png</p>
+<blockquote>
+<p>上图是 Obsidian 设置入口界面。点击左下角的齿轮图标 ⚙️ 即可进入设置页面，这是安装第三方插件的第一步。</p>
+</blockquote>
+</li>
+<li>
+<p>选择 <strong>第三方插件</strong>（Community plugins）
+!90-attachments/Pasted image 20260531154659.png</p>
+<blockquote>
+<p>上图是 Obsidian 设置页面的左侧菜单。在”第三方插件”（Community plugins）分类下，可以管理 Obsidian 社区提供的所有扩展插件。如果菜单中没有此选项，请确认你的 Obsidian 版本为 v0.15.0 以上。</p>
+</blockquote>
+</li>
+<li>
+<p>关闭 <strong>安全模式</strong>（Restricted mode）
+!90-attachments/Pasted image 20260531154755.png</p>
+<blockquote>
+<p>上图是第三方插件管理界面。Obsidian 默认启用”安全模式”（Restricted mode），关闭后才可安装社区插件。点击右侧的 <strong>Turn off restricted mode</strong> 按钮即可。若曾安装过插件，此处还会显示已安装的插件列表。</p>
+</blockquote>
+</li>
+<li>
+<p>点击 <strong>浏览社区插件市场</strong>（Browse），搜索 Claudian
+!627</p>
+<blockquote>
+<p>上图是社区插件市场界面。在搜索栏中输入 “Claudian” 即可定位该插件。请注意选择名为 <strong>Claudian</strong> 的插件（作者为 realclaudian 团队），避免误装其他同名工具。</p>
+</blockquote>
+</li>
+<li>
+<p>找到后点击 <strong>安装</strong>（Install），安装完成后点击 <strong>启用</strong>（Enable）</p>
+</li>
+</ol>
+<h3 id="32-claudian-配置-codex">3.2 Claudian 配置 Codex</h3>
+<p>安装完成后，需要配置 Claudian 与 Codex 的连接：</p>
+<ol>
+<li>
+<p>在已安装插件列表中找到 Claudian，点击 <strong>设置</strong> 进入配置页面
+!90-attachments/Pasted image 20260531155246.png</p>
+<blockquote>
+<p>上图是 Obsidian 的第三方插件设置页面。在”已安装插件”列表中找到 <strong>Claudian</strong>，点击右侧的 <strong>设置</strong>（齿轮图标）进入 Claudian 的专属配置页面。此处可配置 Codex CLI 连接路径、模型供应商等关键参数。</p>
+</blockquote>
+</li>
+<li>
+<p>将 <strong>Enable Codex provider</strong> 开关打开，并在 <strong>Codex CLI path</strong> 中填入 Codex CLI 的路径
+!90-attachments/Pasted image 20260531155421.png</p>
+<blockquote>
+<p>上图是 Claudian 插件设置页面的核心配置区域：</p>
+<ol>
+<li><strong>Enable Codex provider</strong> — 将此开关切换为开启状态（蓝色），这是让 Claudian 通过 Codex 调用 AI 模型的关键开关</li>
+<li><strong>Codex CLI path</strong> — 在此输入框中填入 Codex 命令行工具的完整路径（如 <code>C:\Users\用户名\AppData\Roaming\npm\codex.cmd</code>）</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>如果不知道路径或未安装 CLI，可在 PowerShell 中执行以下命令安装：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#79B8FF"> -g</span><span style="color:#9ECBFF"> @openai/codex</span></span></code></pre>
+<p>命令行工具安装完成后会自动同步 Codex 图形化设置，无需额外配置。</p>
+<p>如果提示没有 npm 命令，请先安装 <strong>Node.js</strong>（访问官网下载安装即可）。</p>
+</blockquote>
+<p>安装完成后，在命令行执行以下命令查找 Codex 路径：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">where.exe</span><span style="color:#9ECBFF"> codex</span></span></code></pre>
+<p>输出结果中以 <code>.cmd</code> 结尾的那一行即为所需路径。
+!90-attachments/Pasted image 20260531160401.png</p>
+<blockquote>
+<p>上图是 PowerShell 中执行 <code>where.exe codex</code> 命令的输出示例。输出通常包含两条或更多路径，应选择其中以 <strong>.cmd</strong> 结尾的那一条（如 <code>C:\Users\用户名\AppData\Roaming\npm\codex.cmd</code>），将其完整复制到第 2 步的 Codex CLI path 输入框中。</p>
+</blockquote>
+</li>
+<li>
+<p>配置保存完成后，点击左侧栏的小机器人图标即可开始使用，支持手动切换模型
+!90-attachments/Pasted image 20260531160552.png</p>
+<blockquote>
+<p>上图是 Claudian 聊天界面的侧边栏。左侧的 <strong>小机器人图标</strong> 🤖 即为 Claudian 的入口。点击后可在右侧打开聊天窗口，顶部的下拉菜单支持在 DeepSeek 等配置好的模型间手动切换。</p>
+</blockquote>
+</li>
+</ol>
+<blockquote data-callout="tip" class="callout callout-tip">
+<p>提示
+如果配置未生效，请尝试打开一个新的聊天窗口后再使用。</p>
+</blockquote>
+<hr>
+<h2 id="第四章claudian-角色的设计哲学-">第四章：Claudian 角色的设计哲学 🤖</h2>
+<h3 id="41-claudian-的定位">4.1 Claudian 的定位</h3>
+<p>Claudian 不是普通的聊天机器人，而是一个专注于 Obsidian 知识管理的专业助手。它的设计围绕三个核心原则：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#E1E4E8">flowchart LR</span></span>
+<span class="line"><span style="color:#E1E4E8">    subgraph "Claudian 三大原则"</span></span>
+<span class="line"><span style="color:#E1E4E8">        A["🧩 Obsidian 原生&#x3C;br/>Markdown、Frontmatter&#x3C;br/>Wiki-link、Callout"] </span></span>
+<span class="line"><span style="color:#E1E4E8">        B["🛡️ 安全第一&#x3C;br/>相对路径、先读后写&#x3C;br/>不覆盖数据"]</span></span>
+<span class="line"><span style="color:#E1E4E8">        C["🎯 清晰精准&#x3C;br/>最小化噪音&#x3C;br/>结构化输出"]</span></span>
+<span class="line"><span style="color:#E1E4E8">    end</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    A --> D[✅ 好的知识库]</span></span>
+<span class="line"><span style="color:#E1E4E8">    B --> D</span></span>
+<span class="line"><span style="color:#E1E4E8">    C --> D</span></span></code></pre>
+<h3 id="42-claudian-的核心能力">4.2 Claudian 的核心能力</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#E1E4E8">flowchart TD</span></span>
+<span class="line"><span style="color:#E1E4E8">    subgraph "Claudian 角色能力"</span></span>
+<span class="line"><span style="color:#E1E4E8">        A[Obsidian 文件操作] --> A1[创建/读取/编辑 Markdown]</span></span>
+<span class="line"><span style="color:#E1E4E8">        A --> A2[YAML Frontmatter 管理]</span></span>
+<span class="line"><span style="color:#E1E4E8">        A --> A3[Wiki-link 内部链接优化]</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span></span>
+<span class="line"><span style="color:#E1E4E8">        B[知识组织] --> B1[标签分类]</span></span>
+<span class="line"><span style="color:#E1E4E8">        B --> B2[文件夹结构建议]</span></span>
+<span class="line"><span style="color:#E1E4E8">        B --> B3[MOC 地图生成]</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span></span>
+<span class="line"><span style="color:#E1E4E8">        C[代码分析] --> C1[读取源码]</span></span>
+<span class="line"><span style="color:#E1E4E8">        C --> C2[技术文档生成]</span></span>
+<span class="line"><span style="color:#E1E4E8">        C --> C3[Mermaid 架构图绘制]</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span></span>
+<span class="line"><span style="color:#E1E4E8">        D[学习优化] --> D1[面试题整理]</span></span>
+<span class="line"><span style="color:#E1E4E8">        D --> D2[官方文档提炼]</span></span>
+<span class="line"><span style="color:#E1E4E8">        D --> D3[知识关联推荐]</span></span>
+<span class="line"><span style="color:#E1E4E8">    end</span></span></code></pre>
+<h3 id="43-claudian-vs-通用-ai-助手的区别">4.3 Claudian vs 通用 AI 助手的区别</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>对比维度</th><th>通用 AI 助手</th><th>Claudian（Obsidian 专家）</th></tr></thead><tbody><tr><td>文件操作</td><td>偶尔可用</td><td>精通 Markdown、Frontmatter、Wiki-link</td></tr><tr><td>知识库理解</td><td>无上下文</td><td>感知 Vault 结构、标签、链接网络</td></tr><tr><td>输出格式</td><td>普通文本</td><td>Obsidian 原生格式（Callout、Mermaid、Dataview）</td></tr><tr><td>链接处理</td><td>可能给绝对路径</td><td>始终使用 <code>[[]]</code> 可点击链接</td></tr><tr><td>安全意识</td><td>一般</td><td>相对路径、先读后写、不覆盖数据</td></tr><tr><td>面试导向</td><td>一般回答</td><td>标注考点、整理常见题、情景排查</td></tr></tbody></table>
+<h3 id="44-在-claudian-中配置-codex-的核心规则">4.4 在 Claudian 中配置 Codex 的核心规则</h3>
+<p>Claudian 之所以能在 Obsidian Vault 中精准操作，是因为在 Codex 中定义了一套<strong>系统指令（System Prompt）</strong>。这套指令是 Claudian 行为的”宪法”，规定了它如何理解 Codex 的环境、如何操作文件、如何与用户交互。</p>
+<h4 id="配置载体">配置载体</h4>
+<p>Claudian 的配置通常通过 <strong>SKILL.md</strong> 文件定义，该文件被 Codex++ 插件加载后生效：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>.codex/skills/.system/.../SKILL.md</span></span></code></pre>
+<h4 id="核心配置模块">核心配置模块</h4>
+<p>以下是在 Codex 中配置 Claudian 所需定义的<strong>六大核心规则模块</strong>：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>模块</th><th>指令内容</th><th>作用</th></tr></thead><tbody><tr><td><strong>⏰ 时间上下文</strong></td><td>使用 <code>bash: date</code> 获取当前时间，禁止猜测</td><td>确保文件创建时间、更新时间的准确性</td></tr><tr><td><strong>🧑‍💼 身份与角色</strong></td><td>定位为”Obsidian 知识管理专家”</td><td>定义 Claudian 的回答风格和行为边界</td></tr><tr><td><strong>📁 路径约定</strong></td><td>使用相对路径，禁止绝对路径</td><td>避免文件操作错误，确保跨平台兼容</td></tr><tr><td><strong>📝 Obsidian 原生语法</strong></td><td>支持 Frontmatter、Wiki-link、Callout、Mermaid、Dataview</td><td>让输出内容直接在 Obsidian 中可用</td></tr><tr><td><strong>🔗 响应格式</strong></td><td>回答中使用 <code>[[]]</code> 格式引用文件</td><td>用户可点击链接直接跳转到对应笔记</td></tr><tr><td><strong>🛡️ 安全规则</strong></td><td>先读后写、不覆盖数据、操作前确认</td><td>保护用户数据安全</td></tr></tbody></table>
+<h4 id="路径约定详解">路径约定详解</h4>
+<p>这是 Claudian 配置中最容易出错的部分，需要精确定义：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>✅ 正确写法（相对路径）：</span></span>
+<span class="line"><span>  - notes/my-note.md</span></span>
+<span class="line"><span>  - my-note.md</span></span>
+<span class="line"><span>  - folder/subfolder/file.md</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>❌ 错误写法（绝对路径）：</span></span>
+<span class="line"><span>  - /notes/my-note.md              ← 前导斜杠</span></span>
+<span class="line"><span>  - C:\Users\...\obisdian\file.md  ← 盘符绝对路径</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>工作目录：</span></span>
+<span class="line"><span>  Vault根目录 = 当前 Obsidian Vault 路径</span></span></code></pre>
+<h4 id="响应格式规则">响应格式规则</h4>
+<p>Claudian 在回答中引用文件时遵循以下格式：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>✅ 正确：</span></span>
+<span class="line"><span>  - "参见2024-01-15 的日常笔记"     ← 用户可点击跳转</span></span>
+<span class="line"><span>  - "这是 [[AI名词释义]] 中的内容"</span></span>
+<span class="line"><span>  - "![[attachments/architecture.png]]"    ← 图片直接渲染</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>❌ 错误：</span></span>
+<span class="line"><span>  - "参见 daily notes/2024-01-15"          ← 纯文本，不可点击</span></span>
+<span class="line"><span>  - "参见 /daily notes/2024-01-15"         ← 绝对路径</span></span></code></pre>
+<h4 id="上下文感知配置">上下文感知配置</h4>
+<p>Claudian 配置了三种<strong>上下文注入模式</strong>，Codex 会自动将当前环境信息传给 Claudian：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="xml"><code><span class="line"><span style="color:#6A737D">&#x3C;!-- 用户当前打开的笔记 --></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">current_note</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">path/to/note.md</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">current_note</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">&#x3C;!-- 用户选中的文本 --></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">editor_selection</span><span style="color:#B392F0"> path</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"path/to/file.md"</span><span style="color:#B392F0"> lines</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"10-15"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">选中的文本内容...</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">editor_selection</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">&#x3C;!-- 用户从浏览器选中的内容 --></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">browser_selection</span><span style="color:#B392F0"> source</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"browser:https://..."</span><span style="color:#B392F0"> title</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"页面标题"</span><span style="color:#B392F0"> url</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"..."</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">选中的网页内容</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">browser_selection</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>这三种上下文让 Claudian 能够：</p>
+<ul>
+<li>知道用户在哪个笔记中，提供上下文相关的建议</li>
+<li>精准定位用户选中的文本段落</li>
+<li>处理从外部网页抓取的内容</li>
+</ul>
+<h4 id="工具权限配置">工具权限配置</h4>
+<p>Claudian 在 Codex 中被授予以下工具调用权限：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>工具</th><th>权限</th><th>配置说明</th></tr></thead><tbody><tr><td><code>shell_command</code></td><td>✅ 可用</td><td>执行文件操作、运行命令（如 <code>Get-ChildItem</code>）</td></tr><tr><td><code>Read</code></td><td>✅ 可用</td><td>读取 Markdown 文件和图片内容</td></tr><tr><td><code>Write</code></td><td>✅ 可用</td><td>创建和编辑笔记</td></tr><tr><td><code>MCP Resources</code></td><td>✅ 可用</td><td>访问 MCP 服务器提供的资源</td></tr><tr><td><code>View Image</code></td><td>✅ 可用</td><td>查看并分析本地图片</td></tr><tr><td>删除操作</td><td>⚠️ 需确认</td><td>需用户显式确认后才执行</td></tr></tbody></table>
+<h4 id="一句话总结配置思路">一句话总结配置思路</h4>
+<blockquote data-callout="important" class="callout callout-important">
+<p>Claudian 配置的核心公式
+</p>
+<p><strong>Claudian = Codex 工具能力 × DeepSeek 推理能力 × Obsidian 格式规范 × 安全操作规则</strong></p>
+<p>配置的目标是让 AI 在<strong>正确的路径</strong>上用<strong>正确的格式</strong>做<strong>正确的事情</strong>，同时<strong>不破坏用户数据</strong>。</p>
+</blockquote>
+<hr>
+<h2 id="第五章连接-codex--obsidian-">第五章：连接 Codex++ + Obsidian 🔗</h2>
+<h3 id="51-授予-vault-访问权限">5.1 授予 Vault 访问权限</h3>
+<p>在 Codex 中，需要将 Obsidian Vault 目录设置为工作目录：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Vault 路径：C:\Users\用户名\Documents\obisdian</span></span></code></pre>
+<p>Codex++ 通过 Codex 的文件系统权限来访问 Vault，支持以下操作：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>操作</th><th>权限</th><th>示例</th></tr></thead><tbody><tr><td>读取文件</td><td>✅</td><td>读取笔记内容</td></tr><tr><td>创建文件</td><td>✅</td><td>创建新 Markdown 笔记</td></tr><tr><td>编辑文件</td><td>✅</td><td>优化文档结构、添加链接</td></tr><tr><td>删除文件</td><td>⚠️ 需确认</td><td>需用户确认后才执行</td></tr><tr><td>创建文件夹</td><td>✅</td><td>组织知识库结构</td></tr></tbody></table>
+<h3 id="52-观察者模式current_note">5.2 观察者模式：&#x3C;current_note></h3>
+<p>当用户在 Obsidian 中打开一篇笔记时，Codex 的上下文会自动包含该笔记的信息：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="xml"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">current_note</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">path/to/当前笔记.md</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">current_note</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>这使得 Claudian 能够：</p>
+<ul>
+<li>理解用户正在查看的内容</li>
+<li>基于当前笔记提供上下文相关的建议</li>
+<li>在回答中引用当前笔记中的内容</li>
+</ul>
+<h3 id="53-选区模式editor_selection">5.3 选区模式：&#x3C;editor_selection></h3>
+<p>当用户选中一段文本时，Claudian 能获取到选区的具体内容和位置：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="xml"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">editor_selection</span><span style="color:#B392F0"> path</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"path/to/file.md"</span><span style="color:#B392F0"> lines</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"10-15"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">选中的文本内容...</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">editor_selection</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>这让你可以：</p>
+<ul>
+<li>要求对特定段落进行改写/翻译</li>
+<li>选中代码块后请求解释</li>
+<li>对特定内容添加注释或链接</li>
+</ul>
+<h3 id="54-浏览器选择browser_selection">5.4 浏览器选择：&#x3C;browser_selection></h3>
+<p>当从 Obsidian 内置浏览器（如 Surfing 插件）中选中内容时：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="xml"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">browser_selection</span><span style="color:#B392F0"> source</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"browser:https://..."</span><span style="color:#B392F0"> title</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"页面标题"</span><span style="color:#B392F0"> url</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"..."</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">选中的网页内容</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">browser_selection</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>用于：</p>
+<ul>
+<li>抓取网页技术文档转化为笔记</li>
+<li>保存论坛问答到知识库</li>
+<li>摘录 API 文档到本地</li>
+</ul>
+<hr>
+<h2 id="第六章工作流实战-">第六章：工作流实战 🤝</h2>
+<h3 id="61-完整工作循环">6.1 完整工作循环</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#E1E4E8">flowchart TD</span></span>
+<span class="line"><span style="color:#E1E4E8">    A[💡 你有一个想法/问题] --> B[在 Obsidian 中&#x3C;br/>新建/打开笔记]</span></span>
+<span class="line"><span style="color:#E1E4E8">    B --> C[在 Codex 中向 Claudian&#x3C;br/>提出需求]</span></span>
+<span class="line"><span style="color:#E1E4E8">    C --> D{Claudian 处理}</span></span>
+<span class="line"><span style="color:#E1E4E8">    D --> E1[📖 读取相关笔记]</span></span>
+<span class="line"><span style="color:#E1E4E8">    D --> E2[🧠 通过 Codex++&#x3C;br/>调用 DeepSeek 推理]</span></span>
+<span class="line"><span style="color:#E1E4E8">    D --> E3[✍️ 生成/优化 Markdown]</span></span>
+<span class="line"><span style="color:#E1E4E8">    E1 &#x26; E2 &#x26; E3 --> F[写入 Vault]</span></span>
+<span class="line"><span style="color:#E1E4E8">    F --> G[✅ 知识沉淀完成]</span></span>
+<span class="line"><span style="color:#E1E4E8">    G -->|下次查询| A</span></span></code></pre>
+<h3 id="62-典型使用场景">6.2 典型使用场景</h3>
+<h4 id="场景-1文档优化从官方文档到学习笔记">场景 1：文档优化（从官方文档到学习笔记）</h4>
+<p><strong>输入</strong>：将官方文档（如 kubeadm 创建集群）粘贴给 Claudian</p>
+<p><strong>Claudian 的处理流程</strong>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#E1E4E8">flowchart LR</span></span>
+<span class="line"><span style="color:#E1E4E8">    A[原始官方文档] --> B[去除冗余外链]</span></span>
+<span class="line"><span style="color:#E1E4E8">    B --> C[添加 YAML Frontmatter]</span></span>
+<span class="line"><span style="color:#E1E4E8">    C --> D[结构化章节]</span></span>
+<span class="line"><span style="color:#E1E4E8">    D --> E[标注面试重点]</span></span>
+<span class="line"><span style="color:#E1E4E8">    E --> F[添加 Callout 提示]</span></span>
+<span class="line"><span style="color:#E1E4E8">    F --> G[加入 Wiki-link 关联]</span></span>
+<span class="line"><span style="color:#E1E4E8">    G --> H[✅ 学习版笔记]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    style H fill:#4CAF50,color:#fff</span></span>
+<span class="line"><span style="color:#E1E4E8">    style A fill:#FFCDD2,color:#000</span></span></code></pre>
+<p><strong>输出效果</strong>：从 395 行纯翻译 → 1007 行结构化学习+面试指南</p>
+<h4 id="场景-2创建术语表">场景 2：创建术语表</h4>
+<p><strong>输入</strong>：“帮我整理一个 AI 名词释义”</p>
+<p><strong>Claudian 的处理流程</strong>：</p>
+<ol>
+<li>检查 Vault 中是否已有相关文件</li>
+<li>分类整理术语（基础概念、模型类型、训练方法等）</li>
+<li>为每个术语添加清晰定义</li>
+<li>在相关术语之间建立 <strong>Wiki-link</strong></li>
+<li>添加 YAML 元数据和标签</li>
+<li>写入 Vault 作为永久参考</li>
+</ol>
+<h4 id="场景-3创建配套参考文档">场景 3：创建配套参考文档</h4>
+<p><strong>输入</strong>：“在这个文件下面的未命名文件里介绍一下 kubeadm 相关参数”</p>
+<p><strong>Claudian 的处理流程</strong>：</p>
+<ol>
+<li>查找目标位置（<code>K8s/使用 kubeadm 创建集群/未命名.md</code>）</li>
+<li>分析主文档的内容结构</li>
+<li>创建对应的<strong>配套参考手册</strong>（707 行参数全解）</li>
+<li>在主文档与配套文档之间建立双向链接</li>
+</ol>
+<h3 id="63-一个典型会话示例">6.3 一个典型会话示例</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>你：帮我优化一下 AI 名词释义这个文档</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Claudian：找到了！让我先看看文档内容...</span></span>
+<span class="line"><span>          （读取 → 分析 → 识别问题：无元数据、无内部链接、结构单一）</span></span>
+<span class="line"><span>          已经优化完成！以下是改进内容：</span></span>
+<span class="line"><span>          ✅ YAML Frontmatter</span></span>
+<span class="line"><span>          ✅ Wiki-link 内部关联</span></span>
+<span class="line"><span>          ✅ Callout 提示框</span></span>
+<span class="line"><span>          ✅ 分类 Emoji 图标</span></span>
+<span class="line"><span>          ...</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>你：缺少搭建生产环境高可用集群的内容</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Claudian：好的，我来补充 HA 章节</span></span>
+<span class="line"><span>          （读取现有文档 → 找到插入位置 → 编写完整 HA 内容）</span></span>
+<span class="line"><span>          已插入第七章：生产级高可用集群搭建</span></span>
+<span class="line"><span>          文档从 549 行 → 1007 行</span></span>
+<span class="line"><span>          ...</span></span></code></pre>
+<hr>
+<h2 id="第七章最佳实践与技巧-">第七章：最佳实践与技巧 💡</h2>
+<h3 id="71-文档命名规范">7.1 文档命名规范</h3>
+<p>为了让 Claudian 更好地理解你的 Vault 结构，建议遵循一致的命名：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>分类/文件名.md</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>示例：</span></span>
+<span class="line"><span>AI/AI名词释义.md</span></span>
+<span class="line"><span>K8s/使用 kubeadm 创建集群.md</span></span>
+<span class="line"><span>K8s/使用 kubeadm 创建集群/未命名.md   ← 子文件夹关联</span></span></code></pre>
+<h3 id="72-yaml-frontmatter-最佳实践">7.2 YAML Frontmatter 最佳实践</h3>
+<p>每个笔记都应该包含 Frontmatter，这是 Claudian 自动添加的：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#B392F0">---</span></span>
+<span class="line"><span style="color:#85E89D">title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"笔记标题"</span></span>
+<span class="line"><span style="color:#85E89D">description</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"简短描述"</span></span>
+<span class="line"><span style="color:#85E89D">created</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2026-05-31</span></span>
+<span class="line"><span style="color:#85E89D">updated</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2026-05-31</span></span>
+<span class="line"><span style="color:#85E89D">tags</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#9ECBFF">tag1</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#9ECBFF">tag2</span></span>
+<span class="line"><span style="color:#85E89D">aliases</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#9ECBFF">别名1</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#9ECBFF">别名2</span></span>
+<span class="line"><span style="color:#B392F0">---</span></span></code></pre>
+<p><strong>为什么重要？</strong></p>
+<ul>
+<li>Obsidian 搜索依赖标签和别名</li>
+<li>Dataview 插件依赖 Frontmatter 字段</li>
+<li>图谱视图的过滤依赖标签</li>
+</ul>
+<h3 id="73-wiki-link-使用策略">7.3 Wiki-link 使用策略</h3>
+<p>Claudian 会在笔记之间自动建立链接：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>✅ 正确的做法：</span></span>
+<span class="line"><span>  - [[AI名词释义]]          → 链接到另一篇笔记</span></span>
+<span class="line"><span>  - [[AI名词释义#深度学习]]  → 链接到具体标题</span></span>
+<span class="line"><span>  - [[../cloud-native/kubernetes/使用 kubeadm 创建集群/使用 kubeadm 创建集群]] → 跨文件夹链接</span></span>
+<span class="line"><span>  - 在回答中自动使用 [[]] 格式，可点击跳转</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>❌ 避免的做法：</span></span>
+<span class="line"><span>  - AI名词释义.md（纯文本，不可点击）</span></span>
+<span class="line"><span>  - /绝对路径/AI名词释义.md（路径错误）</span></span></code></pre>
+<h3 id="74-callout-的使用">7.4 Callout 的使用</h3>
+<p>Claudian 使用 Obsidian Callout 来区分不同类型的信息：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#85E89D">> [</span><span style="color:#DBEDFF;text-decoration:underline">!abstract</span><span style="color:#85E89D">] 概述</span></span>
+<span class="line"><span style="color:#85E89D">> [</span><span style="color:#DBEDFF;text-decoration:underline">!info</span><span style="color:#85E89D">] 信息</span></span>
+<span class="line"><span style="color:#85E89D">> [</span><span style="color:#DBEDFF;text-decoration:underline">!tip</span><span style="color:#85E89D">] 技巧</span></span>
+<span class="line"><span style="color:#85E89D">> [</span><span style="color:#DBEDFF;text-decoration:underline">!warning</span><span style="color:#85E89D">] 警告</span></span>
+<span class="line"><span style="color:#85E89D">> [</span><span style="color:#DBEDFF;text-decoration:underline">!question</span><span style="color:#85E89D">] 面试题</span></span>
+<span class="line"><span style="color:#85E89D">> [</span><span style="color:#DBEDFF;text-decoration:underline">!quote</span><span style="color:#85E89D">] 引用/原理</span></span>
+<span class="line"><span style="color:#85E89D">> [</span><span style="color:#DBEDFF;text-decoration:underline">!check</span><span style="color:#85E89D">] 清单</span></span>
+<span class="line"><span style="color:#85E89D">> [</span><span style="color:#DBEDFF;text-decoration:underline">!important</span><span style="color:#85E89D">] 核心要点</span></span></code></pre>
+<h3 id="75-deepseek-成本控制">7.5 DeepSeek 成本控制</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>模型</th><th>价格（相对）</th><th>建议使用场景</th></tr></thead><tbody><tr><td><code>deepseek-v4-flash</code></td><td>💰 低</td><td>日常问答、文档整理、代码生成</td></tr><tr><td><code>deepseek-v4-pro</code></td><td>💰💰 中等</td><td>复杂分析、架构设计、深度写作</td></tr></tbody></table>
+<p><strong>省钱技巧</strong>：</p>
+<ul>
+<li>日常使用 <code>flash</code> 模型</li>
+<li>仅对复杂任务切换到 <code>pro</code></li>
+<li>利用 Codex 的会话管理，避免重复上下文加载</li>
+</ul>
+<hr>
+<h2 id="第八章mermaid-图表支持-">第八章：Mermaid 图表支持 📊</h2>
+<p>Claudian 支持在笔记中嵌入 Mermaid 图表，这对于技术文档特别有用。</p>
+<h3 id="支持的图表类型">支持的图表类型</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>图表类型</th><th>Mermaid 关键字</th><th>用途</th></tr></thead><tbody><tr><td>流程图</td><td><code>flowchart</code></td><td>工作流、架构流程</td></tr><tr><td>时序图</td><td><code>sequenceDiagram</code></td><td>交互过程</td></tr><tr><td>类图</td><td><code>classDiagram</code></td><td>数据结构</td></tr><tr><td>状态图</td><td><code>stateDiagram</code></td><td>状态转换</td></tr><tr><td>甘特图</td><td><code>gantt</code></td><td>项目计划</td></tr><tr><td>思维导图</td><td><code>mindmap</code></td><td>头脑风暴</td></tr></tbody></table>
+<h3 id="示例">示例</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#E1E4E8">flowchart LR</span></span>
+<span class="line"><span style="color:#E1E4E8">    A[想法] --> B[笔记]</span></span>
+<span class="line"><span style="color:#E1E4E8">    B --> C[整理]</span></span>
+<span class="line"><span style="color:#E1E4E8">    C --> D[知识]</span></span></code></pre>
+<hr>
+<h2 id="第九章高级技巧-">第九章：高级技巧 🚀</h2>
+<h3 id="91-插件开发codex">9.1 插件开发（Codex++）</h3>
+<p>Codex++ 提供了完整的插件系统，可以创建自定义插件来扩展功能：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>.codex-plugin/</span></span>
+<span class="line"><span>├── plugin.json          # 插件元数据（名称、版本、权限等）</span></span>
+<span class="line"><span>├── skills/              # 自定义技能</span></span>
+<span class="line"><span>│   └── SKILL.md         # 技能定义文件</span></span>
+<span class="line"><span>├── scripts/             # 辅助脚本</span></span>
+<span class="line"><span>└── assets/              # 资源文件</span></span></code></pre>
+<p><strong>plugin.json 示例：</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "name"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"my-plugin"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "version"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"1.0.0"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "description"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"自定义插件"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "skills"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"skills/SKILL.md"</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#79B8FF">  "permissions"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"filesystem:read"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"filesystem:write"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="92-自定义技能skills">9.2 自定义技能（Skills）</h3>
+<p>可以通过创建 <code>SKILL.md</code> 文件让 Claudian 具备特定领域的专业知识：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#79B8FF;font-weight:bold"># SKILL.md 示例</span></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## 技能名称：K8s 专家</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> 熟练掌握 Kubernetes 架构</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> 能诊断集群故障</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> 能优化部署配置</span></span></code></pre>
+<p>当 Codex++ 加载该技能后，Claudian 就会自动具备 K8s 领域的专业行为。</p>
+<h3 id="93-个人市场personal-marketplace">9.3 个人市场（Personal Marketplace）</h3>
+<p>通过 <code>codex-personal-marketplace.json</code> 可以：</p>
+<ul>
+<li>管理个人插件的启用和排序</li>
+<li>自定义插件可用性</li>
+<li>控制插件加载优先级</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "plugins"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "codex++"</span><span style="color:#E1E4E8">: { </span><span style="color:#79B8FF">"enabled"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"order"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#79B8FF">    "my-plugin"</span><span style="color:#E1E4E8">: { </span><span style="color:#79B8FF">"enabled"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"order"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<hr>
+<h2 id="附录故障排除-">附录：故障排除 🔧</h2>
+<h3 id="常见问题">常见问题</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>问题</th><th>可能原因</th><th>解决方案</th></tr></thead><tbody><tr><td>DeepSeek 模型无响应</td><td>API Key 错误 / 余额不足</td><td>检查环境变量 <code>DEEPSEEK_API_KEY</code> 和账户余额</td></tr><tr><td>Codex++ 未生效</td><td>插件未正确加载</td><td>检查 <code>.codex-plugin/</code> 目录和 <code>plugin.json</code></td></tr><tr><td>Codex 无法读取 Vault</td><td>路径配置错误</td><td>确认 Vault 路径是否正确授予</td></tr><tr><td>Claudian 角色没生效</td><td>SKILL.md 未加载</td><td>检查技能文件路径是否正确</td></tr><tr><td>Obsidian 链接不可点击</td><td>使用了错误格式</td><td>使用 <code>[[]]</code> 格式，不要用纯文本路径</td></tr><tr><td>文件写入乱码</td><td>编码问题</td><td>使用 UTF-8 without BOM 编码</td></tr><tr><td>DeepSeek 响应慢</td><td>网络延迟 / 模型负载高</td><td>尝试切换到 <code>flash</code> 模型或检查网络</td></tr></tbody></table>
+<h3 id="获取帮助">获取帮助</h3>
+<ul>
+<li>DeepSeek API 文档：<a href="https://api-docs.deepseek.com">https://api-docs.deepseek.com</a></li>
+<li>Obsidian 帮助：<a href="https://help.obsidian.md">https://help.obsidian.md</a></li>
+<li>Codex 文档：参考 Codex 内置帮助和 Codex++ 插件文档</li>
+</ul>
+<hr>
+<h2 id="总结这套工作流的核心价值">总结：这套工作流的核心价值</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#E1E4E8">mindmap</span></span>
+<span class="line"><span style="color:#E1E4E8">  root((工具链价值))</span></span>
+<span class="line"><span style="color:#E1E4E8">    知识沉淀</span></span>
+<span class="line"><span style="color:#E1E4E8">      官方文档 → 学习笔记</span></span>
+<span class="line"><span style="color:#E1E4E8">      零散信息 → 结构化知识</span></span>
+<span class="line"><span style="color:#E1E4E8">      外部链接 → 本地永久存储</span></span>
+<span class="line"><span style="color:#E1E4E8">    能力增强</span></span>
+<span class="line"><span style="color:#E1E4E8">      AI 辅助写作</span></span>
+<span class="line"><span style="color:#E1E4E8">      智能关联推荐</span></span>
+<span class="line"><span style="color:#E1E4E8">      自动化格式优化</span></span>
+<span class="line"><span style="color:#E1E4E8">    效率提升</span></span>
+<span class="line"><span style="color:#E1E4E8">      一键创建/编辑笔记</span></span>
+<span class="line"><span style="color:#E1E4E8">      批量处理文档</span></span>
+<span class="line"><span style="color:#E1E4E8">      面试备考助手</span></span>
+<span class="line"><span style="color:#E1E4E8">    持续积累</span></span>
+<span class="line"><span style="color:#E1E4E8">      每问必记</span></span>
+<span class="line"><span style="color:#E1E4E8">      知识网络生长</span></span>
+<span class="line"><span style="color:#E1E4E8">      Vault 越用越丰富</span></span></code></pre>
+<blockquote data-callout="important" class="callout callout-important">
+<p>核心理念
+</p>
+<p><strong>你不是在跟 AI 对话，你是在给未来的自己积累知识。</strong></p>
+<p>每一次提问、每一次优化，都有一份结构化的笔记沉淀到你的 Obsidian Vault 中。
+随着时间的推移，这个”本地知识库”会越来越丰富，成为你个人最可靠的”第二大脑”。</p>
+</blockquote>
+<hr>
+<blockquote data-callout="info" class="callout callout-info">
+<p>关联笔记
+</p>
+<ul>
+<li><a href="/posts/tech/ai/ai%E5%90%8D%E8%AF%8D%E9%87%8A%E4%B9%89" class="internal-link">AI名词释义</a></li>
+<li><a href="/posts/tech/ai/ai%E5%90%8D%E8%AF%8D%E9%87%8A%E4%B9%89" class="internal-link">AI名词释义</a></li>
+</ul>
+</blockquote>
+<hr>
+<p><em>最后更新：2026-06-02</em></p></article><div class="mt-16 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-6"><div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><a href="/" class="inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-accent)]"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>返回首页</a><a href="/rss.xml" class="inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-accent)]"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 8-8 8.5 8.5 0 0 1 7.5 4.75 8 8 0 0 1-4.5 11.25"></path><path d="M12 18a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></path></svg>订阅更新</a></div></div></div><div class="hidden w-56 flex-shrink-0 lg:block"><div class="sticky top-24 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-4"><h3 class="mb-3 text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">目录</h3><nav class="flex flex-col gap-1"><a key="-工具链全景" href="#-工具链全景" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">📋 工具链全景</a><a key="各组件角色" href="#各组件角色" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">各组件角色</a><a key="数据流向" href="#数据流向" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">数据流向</a><a key="第一章环境准备-️" href="#第一章环境准备-️" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">第一章：环境准备 🛠️</a><a key="11-注册-deepseek-api" href="#11-注册-deepseek-api" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">1.1 注册 DeepSeek API</a><a key="12-安装-obsidian" href="#12-安装-obsidian" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">1.2 安装 Obsidian</a><a key="第二章通过-codex-接入-deepseek-" href="#第二章通过-codex-接入-deepseek-" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">第二章：通过 Codex++ 接入 DeepSeek 🚀</a><a key="21-deepseek-模型选择" href="#21-deepseek-模型选择" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">2.1 DeepSeek 模型选择</a><a key="22-安装-codex-插件" href="#22-安装-codex-插件" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">2.2 安装 Codex++ 插件</a><a key="23-配置-codex-连接-deepseek" href="#23-配置-codex-连接-deepseek" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">2.3 配置 Codex++ 连接 DeepSeek</a><a key="第三章claudian-安装与配置-️" href="#第三章claudian-安装与配置-️" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">第三章：Claudian 安装与配置 ⚙️</a><a key="31-claudian-安装" href="#31-claudian-安装" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">3.1 Claudian 安装</a><a key="32-claudian-配置-codex" href="#32-claudian-配置-codex" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">3.2 Claudian 配置 Codex</a><a key="第四章claudian-角色的设计哲学-" href="#第四章claudian-角色的设计哲学-" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">第四章：Claudian 角色的设计哲学 🤖</a><a key="41-claudian-的定位" href="#41-claudian-的定位" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">4.1 Claudian 的定位</a><a key="42-claudian-的核心能力" href="#42-claudian-的核心能力" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">4.2 Claudian 的核心能力</a><a key="43-claudian-vs-通用-ai-助手的区别" href="#43-claudian-vs-通用-ai-助手的区别" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">4.3 Claudian vs 通用 AI 助手的区别</a><a key="44-在-claudian-中配置-codex-的核心规则" href="#44-在-claudian-中配置-codex-的核心规则" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">4.4 在 Claudian 中配置 Codex 的核心规则</a><a key="第五章连接-codex--obsidian-" href="#第五章连接-codex--obsidian-" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">第五章：连接 Codex++ + Obsidian 🔗</a><a key="51-授予-vault-访问权限" href="#51-授予-vault-访问权限" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">5.1 授予 Vault 访问权限</a><a key="52-观察者模式current_note" href="#52-观察者模式current_note" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">5.2 观察者模式：&lt;current_note&gt;</a><a key="53-选区模式editor_selection" href="#53-选区模式editor_selection" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">5.3 选区模式：&lt;editor_selection&gt;</a><a key="54-浏览器选择browser_selection" href="#54-浏览器选择browser_selection" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">5.4 浏览器选择：&lt;browser_selection&gt;</a><a key="第六章工作流实战-" href="#第六章工作流实战-" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">第六章：工作流实战 🤝</a><a key="61-完整工作循环" href="#61-完整工作循环" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">6.1 完整工作循环</a><a key="62-典型使用场景" href="#62-典型使用场景" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">6.2 典型使用场景</a><a key="63-一个典型会话示例" href="#63-一个典型会话示例" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">6.3 一个典型会话示例</a><a key="第七章最佳实践与技巧-" href="#第七章最佳实践与技巧-" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">第七章：最佳实践与技巧 💡</a><a key="71-文档命名规范" href="#71-文档命名规范" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">7.1 文档命名规范</a><a key="72-yaml-frontmatter-最佳实践" href="#72-yaml-frontmatter-最佳实践" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">7.2 YAML Frontmatter 最佳实践</a><a key="73-wiki-link-使用策略" href="#73-wiki-link-使用策略" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">7.3 Wiki-link 使用策略</a><a key="74-callout-的使用" href="#74-callout-的使用" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">7.4 Callout 的使用</a><a key="75-deepseek-成本控制" href="#75-deepseek-成本控制" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">7.5 DeepSeek 成本控制</a><a key="第八章mermaid-图表支持-" href="#第八章mermaid-图表支持-" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">第八章：Mermaid 图表支持 📊</a><a key="支持的图表类型" href="#支持的图表类型" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">支持的图表类型</a><a key="示例" href="#示例" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">示例</a><a key="第九章高级技巧-" href="#第九章高级技巧-" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">第九章：高级技巧 🚀</a><a key="91-插件开发codex" href="#91-插件开发codex" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">9.1 插件开发（Codex++）</a><a key="92-自定义技能skills" href="#92-自定义技能skills" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">9.2 自定义技能（Skills）</a><a key="93-个人市场personal-marketplace" href="#93-个人市场personal-marketplace" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">9.3 个人市场（Personal Marketplace）</a><a key="附录故障排除-" href="#附录故障排除-" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">附录：故障排除 🔧</a><a key="常见问题" href="#常见问题" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">常见问题</a><a key="获取帮助" href="#获取帮助" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">获取帮助</a><a key="总结这套工作流的核心价值" href="#总结这套工作流的核心价值" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">总结：这套工作流的核心价值</a></nav></div></div></main><footer class="mt-auto border-t border-[var(--color-border)]"><div class="mx-auto max-w-3xl px-6 py-8"><div class="flex flex-col items-center gap-2 text-sm text-[var(--color-text-muted)]"><p>&copy; 2026 My Blog. All rights reserved.</p><p class="text-xs">Powered by <a href="https://astro.build" class="hover:text-[var(--color-accent)] transition-colors" target="_blank" rel="noopener">Astro</a>&amp;<a href="https://pages.cloudflare.com" class="hover:text-[var(--color-accent)] transition-colors" target="_blank" rel="noopener">Cloudflare Pages</a></p></div></div></footer><script>
+    (function () {
+      const bar = document.getElementById('progress-bar');
+      if (!bar) return;
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        bar.style.width = progress + '%';
+      });
+    })();
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const article = document.querySelector('article');
+      if (!article) return;
+
+      const mapElement = document.getElementById('title-url-map');
+      const rawData = mapElement ? mapElement.dataset.map : '';
+      const titleUrlMap = mapElement ? JSON.parse(rawData) : {};
+      
+      const wikilinkRegex = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g;
+
+      const resolveWikilink = function(target) {
+        let url = titleUrlMap[target];
+        if (!url) url = titleUrlMap[target.toLowerCase()];
+        
+        if (!url) {
+          const filename = target.split('/').pop() || '';
+          url = titleUrlMap[filename];
+          if (!url) url = titleUrlMap[filename.toLowerCase()];
+        }
+        
+        if (!url) {
+          const cleanTarget = target.replace(/^\.\.\//g, '').replace(/^\.\//g, '');
+          url = titleUrlMap[cleanTarget];
+          if (!url) url = titleUrlMap[cleanTarget.toLowerCase()];
+        }
+        
+        return url;
+      };
+      
+      const replaceWikilinks = function(element) {
+        element.childNodes.forEach(function(node) {
+          if (node.nodeType === Node.TEXT_NODE) {
+            const text = node.textContent;
+            if (text && text.includes('[[')) {
+              const replaced = text.replace(wikilinkRegex, function(match, target, label) {
+                let anchor = '';
+                let cleanTarget = target;
+                
+                if (target.includes('#')) {
+                  const parts = target.split('#');
+                  cleanTarget = parts[0];
+                  anchor = '#' + parts.slice(1).join('#');
+                }
+                
+                const url = resolveWikilink(cleanTarget);
+                if (url) {
+                  const encodedUrl = url.replace(/ /g, '%20');
+                  return '<a href="' + encodedUrl + anchor + '" class="internal-link">' + (label || target) + '</a>';
+                }
+                return label || target;
+              });
+              if (replaced !== text) {
+                const span = document.createElement('span');
+                span.innerHTML = replaced;
+                node.parentNode.replaceChild(span, node);
+              }
+            }
+          } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'A') {
+            replaceWikilinks(node);
+          }
+        });
+      };
+
+      replaceWikilinks(article);
+    });
+  </script><!-- Dark mode toggle script --><script>
+      window.toggleTheme = function () {
+        const html = document.documentElement;
+        const isDark = html.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      };
+    </script></body></html>

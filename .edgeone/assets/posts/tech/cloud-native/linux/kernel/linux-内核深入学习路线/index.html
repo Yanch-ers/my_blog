@@ -1,0 +1,900 @@
+<!DOCTYPE html><html lang="zh-CN" class="scroll-smooth"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Astro v7.0.6"><title>Linux 内核深入学习路线 | My Blog</title><meta name="description" content="面向运维/后端方向的 Linux 内核深度进阶路线——内核架构、子系统、驱动、调试、社区"><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:title" content="Linux 内核深入学习路线"><meta property="og:description" content="面向运维/后端方向的 Linux 内核深度进阶路线——内核架构、子系统、驱动、调试、社区"><meta property="og:site_name" content="My Blog"><!-- Twitter Card --><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Linux 内核深入学习路线"><meta name="twitter:description" content="面向运维/后端方向的 Linux 内核深度进阶路线——内核架构、子系统、驱动、调试、社区"><!-- Fonts --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><!-- Dark mode init (avoid flash) --><script>
+      (function () {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script><link rel="stylesheet" href="/_astro/Footer.DQFaz84t.css"></head><body class="min-h-screen flex flex-col antialiased"><div id="title-url-map" style="display:none;" data-map="{&quot;使用 Codex + DeepSeek + Obsidian 搭建本地知识库&quot;:&quot;/posts/tech/ai/使用-codex--deepseek--obsidian-搭建本地知识库&quot;,&quot;使用 codex + deepseek + obsidian 搭建本地知识库&quot;:&quot;/posts/tech/ai/使用-codex--deepseek--obsidian-搭建本地知识库&quot;,&quot;ai/使用-codex--deepseek--obsidian-搭建本地知识库&quot;:&quot;/posts/tech/ai/使用-codex--deepseek--obsidian-搭建本地知识库&quot;,&quot;使用-codex--deepseek--obsidian-搭建本地知识库&quot;:&quot;/posts/tech/ai/使用-codex--deepseek--obsidian-搭建本地知识库&quot;,&quot;笔记整理提示词&quot;:&quot;/posts/tech/ai/提示词/笔记整理&quot;,&quot;ai/提示词/笔记整理&quot;:&quot;/posts/tech/ai/提示词/笔记整理&quot;,&quot;笔记整理&quot;:&quot;/posts/tech/ai/提示词/笔记整理&quot;,&quot;ai/提示词/英语学习提示词&quot;:&quot;/posts/tech/ai/提示词/英语学习提示词&quot;,&quot;英语学习提示词&quot;:&quot;/posts/tech/ai/提示词/英语学习提示词&quot;,&quot;AI 完整学习路线&quot;:&quot;/posts/tech/ai/ai-完整学习路线&quot;,&quot;ai 完整学习路线&quot;:&quot;/posts/tech/ai/ai-完整学习路线&quot;,&quot;ai/ai-完整学习路线&quot;:&quot;/posts/tech/ai/ai-完整学习路线&quot;,&quot;ai-完整学习路线&quot;:&quot;/posts/tech/ai/ai-完整学习路线&quot;,&quot;AI 领域最新资讯主流获取渠道&quot;:&quot;/posts/tech/ai/ai领域最新资讯主流获取渠道&quot;,&quot;ai 领域最新资讯主流获取渠道&quot;:&quot;/posts/tech/ai/ai领域最新资讯主流获取渠道&quot;,&quot;ai/ai领域最新资讯主流获取渠道&quot;:&quot;/posts/tech/ai/ai领域最新资讯主流获取渠道&quot;,&quot;ai领域最新资讯主流获取渠道&quot;:&quot;/posts/tech/ai/ai领域最新资讯主流获取渠道&quot;,&quot;AI 名词释义&quot;:&quot;/posts/tech/ai/ai名词释义&quot;,&quot;ai 名词释义&quot;:&quot;/posts/tech/ai/ai名词释义&quot;,&quot;ai/ai名词释义&quot;:&quot;/posts/tech/ai/ai名词释义&quot;,&quot;ai名词释义&quot;:&quot;/posts/tech/ai/ai名词释义&quot;,&quot;AI运维新技术完整清单（LLM大模型运维 + AIOps）&quot;:&quot;/posts/tech/ai/ai运维新技术完整清单&quot;,&quot;ai运维新技术完整清单（llm大模型运维 + aiops）&quot;:&quot;/posts/tech/ai/ai运维新技术完整清单&quot;,&quot;ai/ai运维新技术完整清单&quot;:&quot;/posts/tech/ai/ai运维新技术完整清单&quot;,&quot;ai运维新技术完整清单&quot;:&quot;/posts/tech/ai/ai运维新技术完整清单&quot;,&quot;AIOps&quot;:&quot;/posts/tech/ai/aiops&quot;,&quot;aiops&quot;:&quot;/posts/tech/ai/aiops&quot;,&quot;ai/aiops&quot;:&quot;/posts/tech/ai/aiops&quot;,&quot;cloud-native/ansible/面试题/ansible-面试题&quot;:&quot;/posts/tech/cloud-native/ansible/面试题/ansible-面试题&quot;,&quot;ansible-面试题&quot;:&quot;/posts/tech/cloud-native/ansible/面试题/ansible-面试题&quot;,&quot;Ansible 基础与运维&quot;:&quot;/posts/tech/cloud-native/ansible/ansible-基础与运维&quot;,&quot;ansible 基础与运维&quot;:&quot;/posts/tech/cloud-native/ansible/ansible-基础与运维&quot;,&quot;cloud-native/ansible/ansible-基础与运维&quot;:&quot;/posts/tech/cloud-native/ansible/ansible-基础与运维&quot;,&quot;ansible-基础与运维&quot;:&quot;/posts/tech/cloud-native/ansible/ansible-基础与运维&quot;,&quot;Ansible Roles&quot;:&quot;/posts/tech/cloud-native/ansible/ansible-roles&quot;,&quot;ansible roles&quot;:&quot;/posts/tech/cloud-native/ansible/ansible-roles&quot;,&quot;cloud-native/ansible/ansible-roles&quot;:&quot;/posts/tech/cloud-native/ansible/ansible-roles&quot;,&quot;ansible-roles&quot;:&quot;/posts/tech/cloud-native/ansible/ansible-roles&quot;,&quot;🔄 CI/CD&quot;:&quot;/posts/tech/cloud-native/cicd/ci-cd&quot;,&quot;🔄 ci/cd&quot;:&quot;/posts/tech/cloud-native/cicd/ci-cd&quot;,&quot;cloud-native/cicd/ci-cd&quot;:&quot;/posts/tech/cloud-native/cicd/ci-cd&quot;,&quot;ci-cd&quot;:&quot;/posts/tech/cloud-native/cicd/ci-cd&quot;,&quot;Docker 磁盘爆满排查与清理&quot;:&quot;/posts/tech/cloud-native/container/故障排查/docker-磁盘爆满排查与清理&quot;,&quot;docker 磁盘爆满排查与清理&quot;:&quot;/posts/tech/cloud-native/container/故障排查/docker-磁盘爆满排查与清理&quot;,&quot;cloud-native/container/故障排查/docker-磁盘爆满排查与清理&quot;:&quot;/posts/tech/cloud-native/container/故障排查/docker-磁盘爆满排查与清理&quot;,&quot;docker-磁盘爆满排查与清理&quot;:&quot;/posts/tech/cloud-native/container/故障排查/docker-磁盘爆满排查与清理&quot;,&quot;cloud-native/container/面试题/容器运维面试题&quot;:&quot;/posts/tech/cloud-native/container/面试题/容器运维面试题&quot;,&quot;容器运维面试题&quot;:&quot;/posts/tech/cloud-native/container/面试题/容器运维面试题&quot;,&quot;cloud-native/container/面试题/云原生面试题&quot;:&quot;/posts/tech/cloud-native/container/面试题/云原生面试题&quot;,&quot;云原生面试题&quot;:&quot;/posts/tech/cloud-native/container/面试题/云原生面试题&quot;,&quot;🐳 容器技术&quot;:&quot;/posts/tech/cloud-native/container/容器技术&quot;,&quot;cloud-native/container/容器技术&quot;:&quot;/posts/tech/cloud-native/container/容器技术&quot;,&quot;容器技术&quot;:&quot;/posts/tech/cloud-native/container/容器技术&quot;,&quot;Docker 进阶完整学习路线&quot;:&quot;/posts/tech/cloud-native/container/docker-进阶完整学习路线&quot;,&quot;docker 进阶完整学习路线&quot;:&quot;/posts/tech/cloud-native/container/docker-进阶完整学习路线&quot;,&quot;cloud-native/container/docker-进阶完整学习路线&quot;:&quot;/posts/tech/cloud-native/container/docker-进阶完整学习路线&quot;,&quot;docker-进阶完整学习路线&quot;:&quot;/posts/tech/cloud-native/container/docker-进阶完整学习路线&quot;,&quot;Docker 联合文件系统&quot;:&quot;/posts/tech/cloud-native/container/docker-联合文件系统&quot;,&quot;docker 联合文件系统&quot;:&quot;/posts/tech/cloud-native/container/docker-联合文件系统&quot;,&quot;cloud-native/container/docker-联合文件系统&quot;:&quot;/posts/tech/cloud-native/container/docker-联合文件系统&quot;,&quot;docker-联合文件系统&quot;:&quot;/posts/tech/cloud-native/container/docker-联合文件系统&quot;,&quot;Docker 全套核心命令详解&quot;:&quot;/posts/tech/cloud-native/container/docker-全套核心命令详解&quot;,&quot;docker 全套核心命令详解&quot;:&quot;/posts/tech/cloud-native/container/docker-全套核心命令详解&quot;,&quot;cloud-native/container/docker-全套核心命令详解&quot;:&quot;/posts/tech/cloud-native/container/docker-全套核心命令详解&quot;,&quot;docker-全套核心命令详解&quot;:&quot;/posts/tech/cloud-native/container/docker-全套核心命令详解&quot;,&quot;Docker 容器网络深度原理&quot;:&quot;/posts/tech/cloud-native/container/docker-容器网络深度原理&quot;,&quot;docker 容器网络深度原理&quot;:&quot;/posts/tech/cloud-native/container/docker-容器网络深度原理&quot;,&quot;cloud-native/container/docker-容器网络深度原理&quot;:&quot;/posts/tech/cloud-native/container/docker-容器网络深度原理&quot;,&quot;docker-容器网络深度原理&quot;:&quot;/posts/tech/cloud-native/container/docker-容器网络深度原理&quot;,&quot;Docker 三种挂载&quot;:&quot;/posts/tech/cloud-native/container/docker-三种挂载&quot;,&quot;docker 三种挂载&quot;:&quot;/posts/tech/cloud-native/container/docker-三种挂载&quot;,&quot;cloud-native/container/docker-三种挂载&quot;:&quot;/posts/tech/cloud-native/container/docker-三种挂载&quot;,&quot;docker-三种挂载&quot;:&quot;/posts/tech/cloud-native/container/docker-三种挂载&quot;,&quot;Docker 完整深度详解&quot;:&quot;/posts/tech/cloud-native/container/docker-完整深度详解&quot;,&quot;docker 完整深度详解&quot;:&quot;/posts/tech/cloud-native/container/docker-完整深度详解&quot;,&quot;cloud-native/container/docker-完整深度详解&quot;:&quot;/posts/tech/cloud-native/container/docker-完整深度详解&quot;,&quot;docker-完整深度详解&quot;:&quot;/posts/tech/cloud-native/container/docker-完整深度详解&quot;,&quot;Docker CGroup 资源限制原理&quot;:&quot;/posts/tech/cloud-native/container/docker-cgroup-资源限制原理&quot;,&quot;docker cgroup 资源限制原理&quot;:&quot;/posts/tech/cloud-native/container/docker-cgroup-资源限制原理&quot;,&quot;cloud-native/container/docker-cgroup-资源限制原理&quot;:&quot;/posts/tech/cloud-native/container/docker-cgroup-资源限制原理&quot;,&quot;docker-cgroup-资源限制原理&quot;:&quot;/posts/tech/cloud-native/container/docker-cgroup-资源限制原理&quot;,&quot;Docker Swarm 集群完整详解&quot;:&quot;/posts/tech/cloud-native/container/docker-swarm-集群完整详解&quot;,&quot;docker swarm 集群完整详解&quot;:&quot;/posts/tech/cloud-native/container/docker-swarm-集群完整详解&quot;,&quot;cloud-native/container/docker-swarm-集群完整详解&quot;:&quot;/posts/tech/cloud-native/container/docker-swarm-集群完整详解&quot;,&quot;docker-swarm-集群完整详解&quot;:&quot;/posts/tech/cloud-native/container/docker-swarm-集群完整详解&quot;,&quot;Dockerfile 构建原理 + 镜像分层优化&quot;:&quot;/posts/tech/cloud-native/container/dockerfile-构建原理--镜像分层优化&quot;,&quot;dockerfile 构建原理 + 镜像分层优化&quot;:&quot;/posts/tech/cloud-native/container/dockerfile-构建原理--镜像分层优化&quot;,&quot;cloud-native/container/dockerfile-构建原理--镜像分层优化&quot;:&quot;/posts/tech/cloud-native/container/dockerfile-构建原理--镜像分层优化&quot;,&quot;dockerfile-构建原理--镜像分层优化&quot;:&quot;/posts/tech/cloud-native/container/dockerfile-构建原理--镜像分层优化&quot;,&quot;Helm 完整详细讲解&quot;:&quot;/posts/tech/cloud-native/container/helm-完整详细讲解&quot;,&quot;helm 完整详细讲解&quot;:&quot;/posts/tech/cloud-native/container/helm-完整详细讲解&quot;,&quot;cloud-native/container/helm-完整详细讲解&quot;:&quot;/posts/tech/cloud-native/container/helm-完整详细讲解&quot;,&quot;helm-完整详细讲解&quot;:&quot;/posts/tech/cloud-native/container/helm-完整详细讲解&quot;,&quot;Helm3 完整安装+配置教程&quot;:&quot;/posts/tech/cloud-native/container/helm3-完整安装配置教程&quot;,&quot;helm3 完整安装+配置教程&quot;:&quot;/posts/tech/cloud-native/container/helm3-完整安装配置教程&quot;,&quot;cloud-native/container/helm3-完整安装配置教程&quot;:&quot;/posts/tech/cloud-native/container/helm3-完整安装配置教程&quot;,&quot;helm3-完整安装配置教程&quot;:&quot;/posts/tech/cloud-native/container/helm3-完整安装配置教程&quot;,&quot;cloud-native/database/elasticsearch/面试题/elasticsearch-高频面试题&quot;:&quot;/posts/tech/cloud-native/database/elasticsearch/面试题/elasticsearch-高频面试题&quot;,&quot;elasticsearch-高频面试题&quot;:&quot;/posts/tech/cloud-native/database/elasticsearch/面试题/elasticsearch-高频面试题&quot;,&quot;Elasticsearch 高阶运维&amp;开发完整知识体系&quot;:&quot;/posts/tech/cloud-native/database/elasticsearch/elasticsearch-高阶运维开发完整知识体系&quot;,&quot;elasticsearch 高阶运维&amp;开发完整知识体系&quot;:&quot;/posts/tech/cloud-native/database/elasticsearch/elasticsearch-高阶运维开发完整知识体系&quot;,&quot;cloud-native/database/elasticsearch/elasticsearch-高阶运维开发完整知识体系&quot;:&quot;/posts/tech/cloud-native/database/elasticsearch/elasticsearch-高阶运维开发完整知识体系&quot;,&quot;elasticsearch-高阶运维开发完整知识体系&quot;:&quot;/posts/tech/cloud-native/database/elasticsearch/elasticsearch-高阶运维开发完整知识体系&quot;,&quot;MySQL 主从同步故障排查&quot;:&quot;/posts/tech/cloud-native/database/mysql/故障排查/mysql-主从同步故障排查&quot;,&quot;mysql 主从同步故障排查&quot;:&quot;/posts/tech/cloud-native/database/mysql/故障排查/mysql-主从同步故障排查&quot;,&quot;cloud-native/database/mysql/故障排查/mysql-主从同步故障排查&quot;:&quot;/posts/tech/cloud-native/database/mysql/故障排查/mysql-主从同步故障排查&quot;,&quot;mysql-主从同步故障排查&quot;:&quot;/posts/tech/cloud-native/database/mysql/故障排查/mysql-主从同步故障排查&quot;,&quot;MySQL GTID 主从故障排查&quot;:&quot;/posts/tech/cloud-native/database/mysql/故障排查/mysql-gtid-主从故障排查&quot;,&quot;mysql gtid 主从故障排查&quot;:&quot;/posts/tech/cloud-native/database/mysql/故障排查/mysql-gtid-主从故障排查&quot;,&quot;cloud-native/database/mysql/故障排查/mysql-gtid-主从故障排查&quot;:&quot;/posts/tech/cloud-native/database/mysql/故障排查/mysql-gtid-主从故障排查&quot;,&quot;mysql-gtid-主从故障排查&quot;:&quot;/posts/tech/cloud-native/database/mysql/故障排查/mysql-gtid-主从故障排查&quot;,&quot;MySQL 基础知识面试题&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-基础知识面试题&quot;,&quot;mysql 基础知识面试题&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-基础知识面试题&quot;,&quot;cloud-native/database/mysql/面试题/mysql-基础知识面试题&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-基础知识面试题&quot;,&quot;mysql-基础知识面试题&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-基础知识面试题&quot;,&quot;cloud-native/database/mysql/面试题/mysql-日志与复制&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-日志与复制&quot;,&quot;mysql-日志与复制&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-日志与复制&quot;,&quot;cloud-native/database/mysql/面试题/mysql-事务与锁&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-事务与锁&quot;,&quot;mysql-事务与锁&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-事务与锁&quot;,&quot;cloud-native/database/mysql/面试题/mysql-索引&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-索引&quot;,&quot;mysql-索引&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-索引&quot;,&quot;cloud-native/database/mysql/面试题/mysql-运维场景题&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-运维场景题&quot;,&quot;mysql-运维场景题&quot;:&quot;/posts/tech/cloud-native/database/mysql/面试题/mysql-运维场景题&quot;,&quot;GTID 集合详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/gtid-集合详解&quot;,&quot;gtid 集合详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/gtid-集合详解&quot;,&quot;cloud-native/database/mysql/gtid-集合详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/gtid-集合详解&quot;,&quot;gtid-集合详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/gtid-集合详解&quot;,&quot;MySQL 复制原理与配置&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-复制原理与配置&quot;,&quot;mysql 复制原理与配置&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-复制原理与配置&quot;,&quot;cloud-native/database/mysql/mysql-复制原理与配置&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-复制原理与配置&quot;,&quot;mysql-复制原理与配置&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-复制原理与配置&quot;,&quot;MySQL 高阶运维知识点完整总结&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-高阶运维知识点完整总结&quot;,&quot;mysql 高阶运维知识点完整总结&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-高阶运维知识点完整总结&quot;,&quot;cloud-native/database/mysql/mysql-高阶运维知识点完整总结&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-高阶运维知识点完整总结&quot;,&quot;mysql-高阶运维知识点完整总结&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-高阶运维知识点完整总结&quot;,&quot;MySQL 高可用方案&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-高可用方案&quot;,&quot;mysql 高可用方案&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-高可用方案&quot;,&quot;cloud-native/database/mysql/mysql-高可用方案&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-高可用方案&quot;,&quot;mysql-高可用方案&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-高可用方案&quot;,&quot;MySQL 基础&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-基础&quot;,&quot;mysql 基础&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-基础&quot;,&quot;cloud-native/database/mysql/mysql-基础&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-基础&quot;,&quot;mysql-基础&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-基础&quot;,&quot;MySQL 生产部署全套重点&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-生产部署全套重点&quot;,&quot;mysql 生产部署全套重点&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-生产部署全套重点&quot;,&quot;cloud-native/database/mysql/mysql-生产部署全套重点&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-生产部署全套重点&quot;,&quot;mysql-生产部署全套重点&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-生产部署全套重点&quot;,&quot;MySQL 主从复制备份方式对比&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-主从复制备份方式对比&quot;,&quot;mysql 主从复制备份方式对比&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-主从复制备份方式对比&quot;,&quot;cloud-native/database/mysql/mysql-主从复制备份方式对比&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-主从复制备份方式对比&quot;,&quot;mysql-主从复制备份方式对比&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-主从复制备份方式对比&quot;,&quot;MySQL binlog 保留时间与清理&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-binlog-保留时间与清理&quot;,&quot;mysql binlog 保留时间与清理&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-binlog-保留时间与清理&quot;,&quot;cloud-native/database/mysql/mysql-binlog-保留时间与清理&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-binlog-保留时间与清理&quot;,&quot;mysql-binlog-保留时间与清理&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-binlog-保留时间与清理&quot;,&quot;MySQL MHA 完整详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-mha-完整详解&quot;,&quot;mysql mha 完整详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-mha-完整详解&quot;,&quot;cloud-native/database/mysql/mysql-mha-完整详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-mha-完整详解&quot;,&quot;mysql-mha-完整详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-mha-完整详解&quot;,&quot;MySQL show processlist详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-show-processlist详解&quot;,&quot;mysql show processlist详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-show-processlist详解&quot;,&quot;cloud-native/database/mysql/mysql-show-processlist详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-show-processlist详解&quot;,&quot;mysql-show-processlist详解&quot;:&quot;/posts/tech/cloud-native/database/mysql/mysql-show-processlist详解&quot;,&quot;布隆过滤器（Bloom Filter）&quot;:&quot;/posts/tech/cloud-native/database/redis/布隆过滤器&quot;,&quot;布隆过滤器（bloom filter）&quot;:&quot;/posts/tech/cloud-native/database/redis/布隆过滤器&quot;,&quot;cloud-native/database/redis/布隆过滤器&quot;:&quot;/posts/tech/cloud-native/database/redis/布隆过滤器&quot;,&quot;布隆过滤器&quot;:&quot;/posts/tech/cloud-native/database/redis/布隆过滤器&quot;,&quot;Redis 线上高频问题&quot;:&quot;/posts/tech/cloud-native/database/redis/故障排查/redis-线上高频问题&quot;,&quot;redis 线上高频问题&quot;:&quot;/posts/tech/cloud-native/database/redis/故障排查/redis-线上高频问题&quot;,&quot;cloud-native/database/redis/故障排查/redis-线上高频问题&quot;:&quot;/posts/tech/cloud-native/database/redis/故障排查/redis-线上高频问题&quot;,&quot;redis-线上高频问题&quot;:&quot;/posts/tech/cloud-native/database/redis/故障排查/redis-线上高频问题&quot;,&quot;cloud-native/database/redis/面试题/redis-面试题&quot;:&quot;/posts/tech/cloud-native/database/redis/面试题/redis-面试题&quot;,&quot;redis-面试题&quot;:&quot;/posts/tech/cloud-native/database/redis/面试题/redis-面试题&quot;,&quot;Redis 持久化机制&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-持久化机制&quot;,&quot;redis 持久化机制&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-持久化机制&quot;,&quot;cloud-native/database/redis/redis-持久化机制&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-持久化机制&quot;,&quot;redis-持久化机制&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-持久化机制&quot;,&quot;Redis 分片完整详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-分片完整详解&quot;,&quot;redis 分片完整详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-分片完整详解&quot;,&quot;cloud-native/database/redis/redis-分片完整详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-分片完整详解&quot;,&quot;redis-分片完整详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-分片完整详解&quot;,&quot;Redis 高阶运维完整知识体系&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-高阶运维完整知识体系&quot;,&quot;redis 高阶运维完整知识体系&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-高阶运维完整知识体系&quot;,&quot;cloud-native/database/redis/redis-高阶运维完整知识体系&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-高阶运维完整知识体系&quot;,&quot;redis-高阶运维完整知识体系&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-高阶运维完整知识体系&quot;,&quot;Redis 核心原理&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-核心原理&quot;,&quot;redis 核心原理&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-核心原理&quot;,&quot;cloud-native/database/redis/redis-核心原理&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-核心原理&quot;,&quot;redis-核心原理&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-核心原理&quot;,&quot;Redis 缓存穿透、击穿、雪崩完整解决方案&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-缓存穿透击穿雪崩解决方案&quot;,&quot;redis 缓存穿透、击穿、雪崩完整解决方案&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-缓存穿透击穿雪崩解决方案&quot;,&quot;cloud-native/database/redis/redis-缓存穿透击穿雪崩解决方案&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-缓存穿透击穿雪崩解决方案&quot;,&quot;redis-缓存穿透击穿雪崩解决方案&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-缓存穿透击穿雪崩解决方案&quot;,&quot;Redis 基础&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-基础&quot;,&quot;redis 基础&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-基础&quot;,&quot;cloud-native/database/redis/redis-基础&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-基础&quot;,&quot;redis-基础&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-基础&quot;,&quot;Redis 三种高可用方案完整详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-三种高可用方案完整详解&quot;,&quot;redis 三种高可用方案完整详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-三种高可用方案完整详解&quot;,&quot;cloud-native/database/redis/redis-三种高可用方案完整详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-三种高可用方案完整详解&quot;,&quot;redis-三种高可用方案完整详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-三种高可用方案完整详解&quot;,&quot;Redis 主从同步完整深度详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-主从同步完整深度详解&quot;,&quot;redis 主从同步完整深度详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-主从同步完整深度详解&quot;,&quot;cloud-native/database/redis/redis-主从同步完整深度详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-主从同步完整深度详解&quot;,&quot;redis-主从同步完整深度详解&quot;:&quot;/posts/tech/cloud-native/database/redis/redis-主从同步完整深度详解&quot;,&quot;cloud-native/gpu-computing/面试题/gpu-算力运维面试题&quot;:&quot;/posts/tech/cloud-native/gpu-computing/面试题/gpu-算力运维面试题&quot;,&quot;gpu-算力运维面试题&quot;:&quot;/posts/tech/cloud-native/gpu-computing/面试题/gpu-算力运维面试题&quot;,&quot;CPU 与 GPU 完整深度详解&quot;:&quot;/posts/tech/cloud-native/gpu-computing/cpu-与-gpu-完整深度详解&quot;,&quot;cpu 与 gpu 完整深度详解&quot;:&quot;/posts/tech/cloud-native/gpu-computing/cpu-与-gpu-完整深度详解&quot;,&quot;cloud-native/gpu-computing/cpu-与-gpu-完整深度详解&quot;:&quot;/posts/tech/cloud-native/gpu-computing/cpu-与-gpu-完整深度详解&quot;,&quot;cpu-与-gpu-完整深度详解&quot;:&quot;/posts/tech/cloud-native/gpu-computing/cpu-与-gpu-完整深度详解&quot;,&quot;GPU 计算与 CUDA 编程基础&quot;:&quot;/posts/tech/cloud-native/gpu-computing/gpu-计算与-cuda-编程基础&quot;,&quot;gpu 计算与 cuda 编程基础&quot;:&quot;/posts/tech/cloud-native/gpu-computing/gpu-计算与-cuda-编程基础&quot;,&quot;cloud-native/gpu-computing/gpu-计算与-cuda-编程基础&quot;:&quot;/posts/tech/cloud-native/gpu-computing/gpu-计算与-cuda-编程基础&quot;,&quot;gpu-计算与-cuda-编程基础&quot;:&quot;/posts/tech/cloud-native/gpu-computing/gpu-计算与-cuda-编程基础&quot;,&quot;GPU 驱动完整介绍（NVIDIA 为主）&quot;:&quot;/posts/tech/cloud-native/gpu-computing/gpu-驱动完整介绍&quot;,&quot;gpu 驱动完整介绍（nvidia 为主）&quot;:&quot;/posts/tech/cloud-native/gpu-computing/gpu-驱动完整介绍&quot;,&quot;cloud-native/gpu-computing/gpu-驱动完整介绍&quot;:&quot;/posts/tech/cloud-native/gpu-computing/gpu-驱动完整介绍&quot;,&quot;gpu-驱动完整介绍&quot;:&quot;/posts/tech/cloud-native/gpu-computing/gpu-驱动完整介绍&quot;,&quot;NVIDIA 全栈环境完整详解（AI运维视角）&quot;:&quot;/posts/tech/cloud-native/gpu-computing/nvidia-全栈环境完整详解&quot;,&quot;nvidia 全栈环境完整详解（ai运维视角）&quot;:&quot;/posts/tech/cloud-native/gpu-computing/nvidia-全栈环境完整详解&quot;,&quot;cloud-native/gpu-computing/nvidia-全栈环境完整详解&quot;:&quot;/posts/tech/cloud-native/gpu-computing/nvidia-全栈环境完整详解&quot;,&quot;nvidia-全栈环境完整详解&quot;:&quot;/posts/tech/cloud-native/gpu-computing/nvidia-全栈环境完整详解&quot;,&quot;优先副本与分区重分配&quot;:&quot;/posts/tech/cloud-native/kafka/优先副本与分区重分配&quot;,&quot;cloud-native/kafka/优先副本与分区重分配&quot;:&quot;/posts/tech/cloud-native/kafka/优先副本与分区重分配&quot;,&quot;HW、LEO、LeaderEpoch 完整原理&quot;:&quot;/posts/tech/cloud-native/kafka/hwleoleaderepoch-完整原理&quot;,&quot;hw、leo、leaderepoch 完整原理&quot;:&quot;/posts/tech/cloud-native/kafka/hwleoleaderepoch-完整原理&quot;,&quot;cloud-native/kafka/hwleoleaderepoch-完整原理&quot;:&quot;/posts/tech/cloud-native/kafka/hwleoleaderepoch-完整原理&quot;,&quot;hwleoleaderepoch-完整原理&quot;:&quot;/posts/tech/cloud-native/kafka/hwleoleaderepoch-完整原理&quot;,&quot;Kafka 底层存储完整原理深度详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-底层存储完整原理深度详解&quot;,&quot;kafka 底层存储完整原理深度详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-底层存储完整原理深度详解&quot;,&quot;cloud-native/kafka/kafka-底层存储完整原理深度详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-底层存储完整原理深度详解&quot;,&quot;kafka-底层存储完整原理深度详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-底层存储完整原理深度详解&quot;,&quot;Kafka 底层原理详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-底层原理详解&quot;,&quot;kafka 底层原理详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-底层原理详解&quot;,&quot;cloud-native/kafka/kafka-底层原理详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-底层原理详解&quot;,&quot;kafka-底层原理详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-底层原理详解&quot;,&quot;Kafka 分区 Partition 完整详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-分区-partition-完整详解&quot;,&quot;kafka 分区 partition 完整详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-分区-partition-完整详解&quot;,&quot;cloud-native/kafka/kafka-分区-partition-完整详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-分区-partition-完整详解&quot;,&quot;kafka-分区-partition-完整详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-分区-partition-完整详解&quot;,&quot;Kafka 高可用架构完整详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-高可用架构完整详解&quot;,&quot;kafka 高可用架构完整详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-高可用架构完整详解&quot;,&quot;cloud-native/kafka/kafka-高可用架构完整详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-高可用架构完整详解&quot;,&quot;kafka-高可用架构完整详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-高可用架构完整详解&quot;,&quot;Kafka 进阶系统化学习大纲&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-进阶系统化学习大纲&quot;,&quot;kafka 进阶系统化学习大纲&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-进阶系统化学习大纲&quot;,&quot;cloud-native/kafka/kafka-进阶系统化学习大纲&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-进阶系统化学习大纲&quot;,&quot;kafka-进阶系统化学习大纲&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-进阶系统化学习大纲&quot;,&quot;Kafka 零拷贝 sendfile 完整原理&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-零拷贝-sendfile-完整原理&quot;,&quot;kafka 零拷贝 sendfile 完整原理&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-零拷贝-sendfile-完整原理&quot;,&quot;cloud-native/kafka/kafka-零拷贝-sendfile-完整原理&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-零拷贝-sendfile-完整原理&quot;,&quot;kafka-零拷贝-sendfile-完整原理&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-零拷贝-sendfile-完整原理&quot;,&quot;Kafka 偏移量与高水位&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-偏移量与高水位&quot;,&quot;kafka 偏移量与高水位&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-偏移量与高水位&quot;,&quot;cloud-native/kafka/kafka-偏移量与高水位&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-偏移量与高水位&quot;,&quot;kafka-偏移量与高水位&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-偏移量与高水位&quot;,&quot;Kafka 网络模型&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-网络模型&quot;,&quot;kafka 网络模型&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-网络模型&quot;,&quot;cloud-native/kafka/kafka-网络模型&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-网络模型&quot;,&quot;kafka-网络模型&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-网络模型&quot;,&quot;Kafka 网络模型工作流程&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-网络模型工作流程&quot;,&quot;kafka 网络模型工作流程&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-网络模型工作流程&quot;,&quot;cloud-native/kafka/kafka-网络模型工作流程&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-网络模型工作流程&quot;,&quot;kafka-网络模型工作流程&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-网络模型工作流程&quot;,&quot;Kafka 组件详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-组件详解&quot;,&quot;kafka 组件详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-组件详解&quot;,&quot;cloud-native/kafka/kafka-组件详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-组件详解&quot;,&quot;kafka-组件详解&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-组件详解&quot;,&quot;Kafka Topic 完整迁移方案&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-topic-完整迁移方案&quot;,&quot;kafka topic 完整迁移方案&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-topic-完整迁移方案&quot;,&quot;cloud-native/kafka/kafka-topic-完整迁移方案&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-topic-完整迁移方案&quot;,&quot;kafka-topic-完整迁移方案&quot;:&quot;/posts/tech/cloud-native/kafka/kafka-topic-完整迁移方案&quot;,&quot;Kafka 集群 Broker 节点扩缩容完整操作&quot;:&quot;/posts/tech/cloud-native/kafka/kafka集群broker节点扩缩容完整操作&quot;,&quot;kafka 集群 broker 节点扩缩容完整操作&quot;:&quot;/posts/tech/cloud-native/kafka/kafka集群broker节点扩缩容完整操作&quot;,&quot;cloud-native/kafka/kafka集群broker节点扩缩容完整操作&quot;:&quot;/posts/tech/cloud-native/kafka/kafka集群broker节点扩缩容完整操作&quot;,&quot;kafka集群broker节点扩缩容完整操作&quot;:&quot;/posts/tech/cloud-native/kafka/kafka集群broker节点扩缩容完整操作&quot;,&quot;LogSegment 日志分段与稀疏索引&quot;:&quot;/posts/tech/cloud-native/kafka/logsegment-日志分段与稀疏索引&quot;,&quot;logsegment 日志分段与稀疏索引&quot;:&quot;/posts/tech/cloud-native/kafka/logsegment-日志分段与稀疏索引&quot;,&quot;cloud-native/kafka/logsegment-日志分段与稀疏索引&quot;:&quot;/posts/tech/cloud-native/kafka/logsegment-日志分段与稀疏索引&quot;,&quot;logsegment-日志分段与稀疏索引&quot;:&quot;/posts/tech/cloud-native/kafka/logsegment-日志分段与稀疏索引&quot;,&quot;K8s 发布故障排查&quot;:&quot;/posts/tech/cloud-native/kubernetes/故障排查/k8s-发布故障排查&quot;,&quot;k8s 发布故障排查&quot;:&quot;/posts/tech/cloud-native/kubernetes/故障排查/k8s-发布故障排查&quot;,&quot;cloud-native/kubernetes/故障排查/k8s-发布故障排查&quot;:&quot;/posts/tech/cloud-native/kubernetes/故障排查/k8s-发布故障排查&quot;,&quot;k8s-发布故障排查&quot;:&quot;/posts/tech/cloud-native/kubernetes/故障排查/k8s-发布故障排查&quot;,&quot;K8s 全场景常见问题完整排查手册&quot;:&quot;/posts/tech/cloud-native/kubernetes/故障排查/k8s-全场景常见问题完整排查手册&quot;,&quot;k8s 全场景常见问题完整排查手册&quot;:&quot;/posts/tech/cloud-native/kubernetes/故障排查/k8s-全场景常见问题完整排查手册&quot;,&quot;cloud-native/kubernetes/故障排查/k8s-全场景常见问题完整排查手册&quot;:&quot;/posts/tech/cloud-native/kubernetes/故障排查/k8s-全场景常见问题完整排查手册&quot;,&quot;k8s-全场景常见问题完整排查手册&quot;:&quot;/posts/tech/cloud-native/kubernetes/故障排查/k8s-全场景常见问题完整排查手册&quot;,&quot;K8s 故障排查面试题&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/k8s-故障排查面试题&quot;,&quot;k8s 故障排查面试题&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/k8s-故障排查面试题&quot;,&quot;cloud-native/kubernetes/面试题/k8s-故障排查面试题&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/k8s-故障排查面试题&quot;,&quot;k8s-故障排查面试题&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/k8s-故障排查面试题&quot;,&quot;K8s 进阶面试题&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/k8s-进阶面试题&quot;,&quot;k8s 进阶面试题&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/k8s-进阶面试题&quot;,&quot;cloud-native/kubernetes/面试题/k8s-进阶面试题&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/k8s-进阶面试题&quot;,&quot;k8s-进阶面试题&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/k8s-进阶面试题&quot;,&quot;kube-proxy 三种模式&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/kube-proxy-三种模式&quot;,&quot;cloud-native/kubernetes/面试题/kube-proxy-三种模式&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/kube-proxy-三种模式&quot;,&quot;kube-proxy-三种模式&quot;:&quot;/posts/tech/cloud-native/kubernetes/面试题/kube-proxy-三种模式&quot;,&quot;使用 kubeadm 创建集群&quot;:&quot;/posts/tech/cloud-native/kubernetes/使用-kubeadm-创建集群/使用-kubeadm-创建集群&quot;,&quot;cloud-native/kubernetes/使用-kubeadm-创建集群/使用-kubeadm-创建集群&quot;:&quot;/posts/tech/cloud-native/kubernetes/使用-kubeadm-创建集群/使用-kubeadm-创建集群&quot;,&quot;使用-kubeadm-创建集群&quot;:&quot;/posts/tech/cloud-native/kubernetes/使用-kubeadm-创建集群/使用-kubeadm-创建集群&quot;,&quot;kubeadm 参数全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/使用-kubeadm-创建集群/kubeadm-参数全解&quot;,&quot;cloud-native/kubernetes/使用-kubeadm-创建集群/kubeadm-参数全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/使用-kubeadm-创建集群/kubeadm-参数全解&quot;,&quot;kubeadm-参数全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/使用-kubeadm-创建集群/kubeadm-参数全解&quot;,&quot;Kubernetes 存储体系完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-存储体系完整详解&quot;,&quot;kubernetes 存储体系完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-存储体系完整详解&quot;,&quot;cloud-native/kubernetes/architecture/k8s-存储体系完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-存储体系完整详解&quot;,&quot;k8s-存储体系完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-存储体系完整详解&quot;,&quot;K8s 高阶配置全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-高阶配置全解&quot;,&quot;k8s 高阶配置全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-高阶配置全解&quot;,&quot;cloud-native/kubernetes/architecture/k8s-高阶配置全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-高阶配置全解&quot;,&quot;k8s-高阶配置全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-高阶配置全解&quot;,&quot;K8s 生产部署全套核心重点&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-生产部署全套核心重点&quot;,&quot;k8s 生产部署全套核心重点&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-生产部署全套核心重点&quot;,&quot;cloud-native/kubernetes/architecture/k8s-生产部署全套核心重点&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-生产部署全套核心重点&quot;,&quot;k8s-生产部署全套核心重点&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/k8s-生产部署全套核心重点&quot;,&quot;Kubernetes 集群完整高可用落地方案&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/kubernetes-集群完整高可用落地方案&quot;,&quot;kubernetes 集群完整高可用落地方案&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/kubernetes-集群完整高可用落地方案&quot;,&quot;cloud-native/kubernetes/architecture/kubernetes-集群完整高可用落地方案&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/kubernetes-集群完整高可用落地方案&quot;,&quot;kubernetes-集群完整高可用落地方案&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/kubernetes-集群完整高可用落地方案&quot;,&quot;Share-nothing 无共享架构&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/share-nothing-无共享架构&quot;,&quot;share-nothing 无共享架构&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/share-nothing-无共享架构&quot;,&quot;cloud-native/kubernetes/architecture/share-nothing-无共享架构&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/share-nothing-无共享架构&quot;,&quot;share-nothing-无共享架构&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/share-nothing-无共享架构&quot;,&quot;ZooKeeper 主备切换原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/zookeeper-主备切换原理&quot;,&quot;zookeeper 主备切换原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/zookeeper-主备切换原理&quot;,&quot;cloud-native/kubernetes/architecture/zookeeper-主备切换原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/zookeeper-主备切换原理&quot;,&quot;zookeeper-主备切换原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/architecture/zookeeper-主备切换原理&quot;,&quot;K8s 安全上下文（SecurityContext）全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-安全上下文securitycontext全解&quot;,&quot;k8s 安全上下文（securitycontext）全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-安全上下文securitycontext全解&quot;,&quot;cloud-native/kubernetes/core/k8s-安全上下文securitycontext全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-安全上下文securitycontext全解&quot;,&quot;k8s-安全上下文securitycontext全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-安全上下文securitycontext全解&quot;,&quot;K8s 核心概念&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-核心概念&quot;,&quot;k8s 核心概念&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-核心概念&quot;,&quot;cloud-native/kubernetes/core/k8s-核心概念&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-核心概念&quot;,&quot;k8s-核心概念&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-核心概念&quot;,&quot;K8s 环境变量 全维度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-环境变量-全维度详解&quot;,&quot;k8s 环境变量 全维度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-环境变量-全维度详解&quot;,&quot;cloud-native/kubernetes/core/k8s-环境变量-全维度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-环境变量-全维度详解&quot;,&quot;k8s-环境变量-全维度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-环境变量-全维度详解&quot;,&quot;K8s 组件详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-组件详解&quot;,&quot;k8s 组件详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-组件详解&quot;,&quot;cloud-native/kubernetes/core/k8s-组件详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-组件详解&quot;,&quot;k8s-组件详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/k8s-组件详解&quot;,&quot;Kubernetes 核心 kubectl 命令全详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/kubectl-命令全详解&quot;,&quot;kubernetes 核心 kubectl 命令全详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/kubectl-命令全详解&quot;,&quot;cloud-native/kubernetes/core/kubectl-命令全详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/kubectl-命令全详解&quot;,&quot;kubectl-命令全详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/kubectl-命令全详解&quot;,&quot;Kubernetes RBAC 完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/kubernetes-rbac-完整详解&quot;,&quot;kubernetes rbac 完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/kubernetes-rbac-完整详解&quot;,&quot;cloud-native/kubernetes/core/kubernetes-rbac-完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/kubernetes-rbac-完整详解&quot;,&quot;kubernetes-rbac-完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/kubernetes-rbac-完整详解&quot;,&quot;pause 容器完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/pause-容器完整详解&quot;,&quot;cloud-native/kubernetes/core/pause-容器完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/pause-容器完整详解&quot;,&quot;pause-容器完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/pause-容器完整详解&quot;,&quot;PV &amp; PVC 完整深度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/pv--pvc-完整深度详解&quot;,&quot;pv &amp; pvc 完整深度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/pv--pvc-完整深度详解&quot;,&quot;cloud-native/kubernetes/core/pv--pvc-完整深度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/pv--pvc-完整深度详解&quot;,&quot;pv--pvc-完整深度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/pv--pvc-完整深度详解&quot;,&quot;K8s 动态存储体系：StorageClass + CSI&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/storageclass--csi-动态存储体系&quot;,&quot;k8s 动态存储体系：storageclass + csi&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/storageclass--csi-动态存储体系&quot;,&quot;cloud-native/kubernetes/core/storageclass--csi-动态存储体系&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/storageclass--csi-动态存储体系&quot;,&quot;storageclass--csi-动态存储体系&quot;:&quot;/posts/tech/cloud-native/kubernetes/core/storageclass--csi-动态存储体系&quot;,&quot;K8s 进阶学习路线&quot;:&quot;/posts/tech/cloud-native/kubernetes/k8s-进阶学习路线&quot;,&quot;k8s 进阶学习路线&quot;:&quot;/posts/tech/cloud-native/kubernetes/k8s-进阶学习路线&quot;,&quot;cloud-native/kubernetes/k8s-进阶学习路线&quot;:&quot;/posts/tech/cloud-native/kubernetes/k8s-进阶学习路线&quot;,&quot;k8s-进阶学习路线&quot;:&quot;/posts/tech/cloud-native/kubernetes/k8s-进阶学习路线&quot;,&quot;K8s 完整网络体系详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/k8s-完整网络体系详解&quot;,&quot;k8s 完整网络体系详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/k8s-完整网络体系详解&quot;,&quot;cloud-native/kubernetes/network/k8s-完整网络体系详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/k8s-完整网络体系详解&quot;,&quot;k8s-完整网络体系详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/k8s-完整网络体系详解&quot;,&quot;K8s Ingress 详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/k8s-ingress-详解&quot;,&quot;k8s ingress 详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/k8s-ingress-详解&quot;,&quot;cloud-native/kubernetes/network/k8s-ingress-详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/k8s-ingress-详解&quot;,&quot;k8s-ingress-详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/k8s-ingress-详解&quot;,&quot;kube-proxy 流量转发与代理模式详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/kube-proxy-流量转发与代理模式详解&quot;,&quot;cloud-native/kubernetes/network/kube-proxy-流量转发与代理模式详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/kube-proxy-流量转发与代理模式详解&quot;,&quot;kube-proxy-流量转发与代理模式详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/network/kube-proxy-流量转发与代理模式详解&quot;,&quot;Gang 调度（协同调度）完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/gang-调度协同调度完整详解&quot;,&quot;gang 调度（协同调度）完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/gang-调度协同调度完整详解&quot;,&quot;cloud-native/kubernetes/scheduling/gang-调度协同调度完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/gang-调度协同调度完整详解&quot;,&quot;gang-调度协同调度完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/gang-调度协同调度完整详解&quot;,&quot;K8s 调度体系分类与主流调度器&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-调度体系分类与主流调度器&quot;,&quot;k8s 调度体系分类与主流调度器&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-调度体系分类与主流调度器&quot;,&quot;cloud-native/kubernetes/scheduling/k8s-调度体系分类与主流调度器&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-调度体系分类与主流调度器&quot;,&quot;k8s-调度体系分类与主流调度器&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-调度体系分类与主流调度器&quot;,&quot;K8s 多调度 Profile 完整配置教程&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-多调度-profile-完整配置教程&quot;,&quot;k8s 多调度 profile 完整配置教程&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-多调度-profile-完整配置教程&quot;,&quot;cloud-native/kubernetes/scheduling/k8s-多调度-profile-完整配置教程&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-多调度-profile-完整配置教程&quot;,&quot;k8s-多调度-profile-完整配置教程&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-多调度-profile-完整配置教程&quot;,&quot;K8s 高阶调度全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-高阶调度全解&quot;,&quot;k8s 高阶调度全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-高阶调度全解&quot;,&quot;cloud-native/kubernetes/scheduling/k8s-高阶调度全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-高阶调度全解&quot;,&quot;k8s-高阶调度全解&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/k8s-高阶调度全解&quot;,&quot;kube-scheduler 完整工作原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/kube-scheduler-完整工作原理&quot;,&quot;cloud-native/kubernetes/scheduling/kube-scheduler-完整工作原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/kube-scheduler-完整工作原理&quot;,&quot;kube-scheduler-完整工作原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/scheduling/kube-scheduler-完整工作原理&quot;,&quot;K8s Service 高级配置&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-高级配置&quot;,&quot;k8s service 高级配置&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-高级配置&quot;,&quot;cloud-native/kubernetes/service/k8s-service-高级配置&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-高级配置&quot;,&quot;k8s-service-高级配置&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-高级配置&quot;,&quot;K8s Service 核心原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-核心原理&quot;,&quot;k8s service 核心原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-核心原理&quot;,&quot;cloud-native/kubernetes/service/k8s-service-核心原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-核心原理&quot;,&quot;k8s-service-核心原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-核心原理&quot;,&quot;K8s Service DNS 实现原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-dns-实现原理&quot;,&quot;k8s service dns 实现原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-dns-实现原理&quot;,&quot;cloud-native/kubernetes/service/k8s-service-dns-实现原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-dns-实现原理&quot;,&quot;k8s-service-dns-实现原理&quot;:&quot;/posts/tech/cloud-native/kubernetes/service/k8s-service-dns-实现原理&quot;,&quot;Deployment 完整深度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/deployment-完整深度详解&quot;,&quot;deployment 完整深度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/deployment-完整深度详解&quot;,&quot;cloud-native/kubernetes/workload/deployment-完整深度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/deployment-完整深度详解&quot;,&quot;deployment-完整深度详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/deployment-完整深度详解&quot;,&quot;K8s 滚动更新与发布策略&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-滚动更新与发布策略&quot;,&quot;k8s 滚动更新与发布策略&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-滚动更新与发布策略&quot;,&quot;cloud-native/kubernetes/workload/k8s-滚动更新与发布策略&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-滚动更新与发布策略&quot;,&quot;k8s-滚动更新与发布策略&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-滚动更新与发布策略&quot;,&quot;K8s 生命周期钩子&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-生命周期钩子&quot;,&quot;k8s 生命周期钩子&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-生命周期钩子&quot;,&quot;cloud-native/kubernetes/workload/k8s-生命周期钩子&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-生命周期钩子&quot;,&quot;k8s-生命周期钩子&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-生命周期钩子&quot;,&quot;K8s 探针机制&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-探针机制&quot;,&quot;k8s 探针机制&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-探针机制&quot;,&quot;cloud-native/kubernetes/workload/k8s-探针机制&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-探针机制&quot;,&quot;k8s-探针机制&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-探针机制&quot;,&quot;K8s 完整扩缩容体系详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-完整扩缩容体系详解&quot;,&quot;k8s 完整扩缩容体系详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-完整扩缩容体系详解&quot;,&quot;cloud-native/kubernetes/workload/k8s-完整扩缩容体系详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-完整扩缩容体系详解&quot;,&quot;k8s-完整扩缩容体系详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-完整扩缩容体系详解&quot;,&quot;K8s 资源限制与 QoS&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-资源限制与-qos&quot;,&quot;k8s 资源限制与 qos&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-资源限制与-qos&quot;,&quot;cloud-native/kubernetes/workload/k8s-资源限制与-qos&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-资源限制与-qos&quot;,&quot;k8s-资源限制与-qos&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-资源限制与-qos&quot;,&quot;K8s InitContainer&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-initcontainer&quot;,&quot;k8s initcontainer&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-initcontainer&quot;,&quot;cloud-native/kubernetes/workload/k8s-initcontainer&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-initcontainer&quot;,&quot;k8s-initcontainer&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-initcontainer&quot;,&quot;K8s Pod 详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-pod-详解&quot;,&quot;k8s pod 详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-pod-详解&quot;,&quot;cloud-native/kubernetes/workload/k8s-pod-详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-pod-详解&quot;,&quot;k8s-pod-详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-pod-详解&quot;,&quot;K8s Sidecar 模式&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-sidecar-模式&quot;,&quot;k8s sidecar 模式&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-sidecar-模式&quot;,&quot;cloud-native/kubernetes/workload/k8s-sidecar-模式&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-sidecar-模式&quot;,&quot;k8s-sidecar-模式&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-sidecar-模式&quot;,&quot;K8s StatefulSet 详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-statefulset-详解&quot;,&quot;k8s statefulset 详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-statefulset-详解&quot;,&quot;cloud-native/kubernetes/workload/k8s-statefulset-详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-statefulset-详解&quot;,&quot;k8s-statefulset-详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/k8s-statefulset-详解&quot;,&quot;Pod 生命周期钩子（Hook）完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/pod-生命周期钩子hook完整详解&quot;,&quot;pod 生命周期钩子（hook）完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/pod-生命周期钩子hook完整详解&quot;,&quot;cloud-native/kubernetes/workload/pod-生命周期钩子hook完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/pod-生命周期钩子hook完整详解&quot;,&quot;pod-生命周期钩子hook完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/pod-生命周期钩子hook完整详解&quot;,&quot;ReplicaSet 完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/replicaset-完整详解&quot;,&quot;replicaset 完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/replicaset-完整详解&quot;,&quot;cloud-native/kubernetes/workload/replicaset-完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/replicaset-完整详解&quot;,&quot;replicaset-完整详解&quot;:&quot;/posts/tech/cloud-native/kubernetes/workload/replicaset-完整详解&quot;,&quot;服务器 IO 过高排查流程&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器-io-过高排查流程&quot;,&quot;服务器 io 过高排查流程&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器-io-过高排查流程&quot;,&quot;cloud-native/linux/故障排查/服务器-io-过高排查流程&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器-io-过高排查流程&quot;,&quot;服务器-io-过高排查流程&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器-io-过高排查流程&quot;,&quot;服务器磁盘 IO 异常全场景总结&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器磁盘io异常全场景总结&quot;,&quot;服务器磁盘 io 异常全场景总结&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器磁盘io异常全场景总结&quot;,&quot;cloud-native/linux/故障排查/服务器磁盘io异常全场景总结&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器磁盘io异常全场景总结&quot;,&quot;服务器磁盘io异常全场景总结&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器磁盘io异常全场景总结&quot;,&quot;服务器坏道诊断与修复&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器坏道诊断与修复&quot;,&quot;cloud-native/linux/故障排查/服务器坏道诊断与修复&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器坏道诊断与修复&quot;,&quot;服务器 CPU 异常全场景总结&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器cpu异常全场景总结&quot;,&quot;服务器 cpu 异常全场景总结&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器cpu异常全场景总结&quot;,&quot;cloud-native/linux/故障排查/服务器cpu异常全场景总结&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器cpu异常全场景总结&quot;,&quot;服务器cpu异常全场景总结&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器cpu异常全场景总结&quot;,&quot;服务器 OOM 完整原因+排查+解决方案&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器oom完整原因排查解决方案&quot;,&quot;服务器 oom 完整原因+排查+解决方案&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器oom完整原因排查解决方案&quot;,&quot;cloud-native/linux/故障排查/服务器oom完整原因排查解决方案&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器oom完整原因排查解决方案&quot;,&quot;服务器oom完整原因排查解决方案&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/服务器oom完整原因排查解决方案&quot;,&quot;逻辑坏道 vs 物理坏道&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/逻辑坏道-vs-物理坏道&quot;,&quot;cloud-native/linux/故障排查/逻辑坏道-vs-物理坏道&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/逻辑坏道-vs-物理坏道&quot;,&quot;逻辑坏道-vs-物理坏道&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/逻辑坏道-vs-物理坏道&quot;,&quot;CentOS7 开机卡在 systemd 初始化排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/centos7-开机卡在-systemd-初始化排查&quot;,&quot;centos7 开机卡在 systemd 初始化排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/centos7-开机卡在-systemd-初始化排查&quot;,&quot;cloud-native/linux/故障排查/centos7-开机卡在-systemd-初始化排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/centos7-开机卡在-systemd-初始化排查&quot;,&quot;centos7-开机卡在-systemd-初始化排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/centos7-开机卡在-systemd-初始化排查&quot;,&quot;Crontab 脚本执行无结果排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/crontab-脚本执行无结果排查&quot;,&quot;crontab 脚本执行无结果排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/crontab-脚本执行无结果排查&quot;,&quot;cloud-native/linux/故障排查/crontab-脚本执行无结果排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/crontab-脚本执行无结果排查&quot;,&quot;crontab-脚本执行无结果排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/crontab-脚本执行无结果排查&quot;,&quot;Linux CPU 100% 排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/linux-cpu-100-排查&quot;,&quot;linux cpu 100% 排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/linux-cpu-100-排查&quot;,&quot;cloud-native/linux/故障排查/linux-cpu-100-排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/linux-cpu-100-排查&quot;,&quot;linux-cpu-100-排查&quot;:&quot;/posts/tech/cloud-native/linux/故障排查/linux-cpu-100-排查&quot;,&quot;cloud-native/linux/面试题/通用运维场景题&quot;:&quot;/posts/tech/cloud-native/linux/面试题/通用运维场景题&quot;,&quot;通用运维场景题&quot;:&quot;/posts/tech/cloud-native/linux/面试题/通用运维场景题&quot;,&quot;cloud-native/linux/面试题/linux-服务面试题&quot;:&quot;/posts/tech/cloud-native/linux/面试题/linux-服务面试题&quot;,&quot;linux-服务面试题&quot;:&quot;/posts/tech/cloud-native/linux/面试题/linux-服务面试题&quot;,&quot;cloud-native/linux/面试题/linux-运维面试题&quot;:&quot;/posts/tech/cloud-native/linux/面试题/linux-运维面试题&quot;,&quot;linux-运维面试题&quot;:&quot;/posts/tech/cloud-native/linux/面试题/linux-运维面试题&quot;,&quot;cloud-native/linux/面试题/sre-运维场景题&quot;:&quot;/posts/tech/cloud-native/linux/面试题/sre-运维场景题&quot;,&quot;sre-运维场景题&quot;:&quot;/posts/tech/cloud-native/linux/面试题/sre-运维场景题&quot;,&quot;硬中断与软中断详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/硬中断与软中断详解&quot;,&quot;cloud-native/linux/kernel/硬中断与软中断详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/硬中断与软中断详解&quot;,&quot;Linux 调试与追踪工具&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-调试与追踪工具&quot;,&quot;linux 调试与追踪工具&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-调试与追踪工具&quot;,&quot;cloud-native/linux/kernel/linux-调试与追踪工具&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-调试与追踪工具&quot;,&quot;linux-调试与追踪工具&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-调试与追踪工具&quot;,&quot;Linux 命名空间&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-命名空间&quot;,&quot;linux 命名空间&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-命名空间&quot;,&quot;cloud-native/linux/kernel/linux-命名空间&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-命名空间&quot;,&quot;linux-命名空间&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-命名空间&quot;,&quot;Linux 内核深入学习路线&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-内核深入学习路线&quot;,&quot;linux 内核深入学习路线&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-内核深入学习路线&quot;,&quot;cloud-native/linux/kernel/linux-内核深入学习路线&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-内核深入学习路线&quot;,&quot;linux-内核深入学习路线&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-内核深入学习路线&quot;,&quot;Linux 内核学习&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-内核学习&quot;,&quot;linux 内核学习&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-内核学习&quot;,&quot;cloud-native/linux/kernel/linux-内核学习&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-内核学习&quot;,&quot;linux-内核学习&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-内核学习&quot;,&quot;Linux 用户态与内核态完整详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-用户态与内核态完整详解&quot;,&quot;linux 用户态与内核态完整详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-用户态与内核态完整详解&quot;,&quot;cloud-native/linux/kernel/linux-用户态与内核态完整详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-用户态与内核态完整详解&quot;,&quot;linux-用户态与内核态完整详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/linux-用户态与内核态完整详解&quot;,&quot;PageCache 原理&quot;:&quot;/posts/tech/cloud-native/linux/kernel/pagecache-原理&quot;,&quot;pagecache 原理&quot;:&quot;/posts/tech/cloud-native/linux/kernel/pagecache-原理&quot;,&quot;cloud-native/linux/kernel/pagecache-原理&quot;:&quot;/posts/tech/cloud-native/linux/kernel/pagecache-原理&quot;,&quot;pagecache-原理&quot;:&quot;/posts/tech/cloud-native/linux/kernel/pagecache-原理&quot;,&quot;proc 文件系统完整详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/proc-文件系统完整详解&quot;,&quot;cloud-native/linux/kernel/proc-文件系统完整详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/proc-文件系统完整详解&quot;,&quot;proc-文件系统完整详解&quot;:&quot;/posts/tech/cloud-native/linux/kernel/proc-文件系统完整详解&quot;,&quot;mpstat 命令超详细讲解&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/mpstat-命令详解&quot;,&quot;cloud-native/linux/monitoring/mpstat-命令详解&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/mpstat-命令详解&quot;,&quot;mpstat-命令详解&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/mpstat-命令详解&quot;,&quot;perf 命令详解&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/perf-命令详解&quot;,&quot;cloud-native/linux/monitoring/perf-命令详解&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/perf-命令详解&quot;,&quot;perf-命令详解&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/perf-命令详解&quot;,&quot;perf top 与 top 命令区别&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/perf-top-与-top-命令区别&quot;,&quot;cloud-native/linux/monitoring/perf-top-与-top-命令区别&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/perf-top-与-top-命令区别&quot;,&quot;perf-top-与-top-命令区别&quot;:&quot;/posts/tech/cloud-native/linux/monitoring/perf-top-与-top-命令区别&quot;,&quot;磁盘阵列 RAID&quot;:&quot;/posts/tech/cloud-native/linux/storage/磁盘阵列-raid&quot;,&quot;磁盘阵列 raid&quot;:&quot;/posts/tech/cloud-native/linux/storage/磁盘阵列-raid&quot;,&quot;cloud-native/linux/storage/磁盘阵列-raid&quot;:&quot;/posts/tech/cloud-native/linux/storage/磁盘阵列-raid&quot;,&quot;磁盘阵列-raid&quot;:&quot;/posts/tech/cloud-native/linux/storage/磁盘阵列-raid&quot;,&quot;iostat 命令详解&quot;:&quot;/posts/tech/cloud-native/linux/storage/iostat-命令详解&quot;,&quot;cloud-native/linux/storage/iostat-命令详解&quot;:&quot;/posts/tech/cloud-native/linux/storage/iostat-命令详解&quot;,&quot;iostat-命令详解&quot;:&quot;/posts/tech/cloud-native/linux/storage/iostat-命令详解&quot;,&quot;Linux 磁盘管理&quot;:&quot;/posts/tech/cloud-native/linux/storage/linux-磁盘管理&quot;,&quot;linux 磁盘管理&quot;:&quot;/posts/tech/cloud-native/linux/storage/linux-磁盘管理&quot;,&quot;cloud-native/linux/storage/linux-磁盘管理&quot;:&quot;/posts/tech/cloud-native/linux/storage/linux-磁盘管理&quot;,&quot;linux-磁盘管理&quot;:&quot;/posts/tech/cloud-native/linux/storage/linux-磁盘管理&quot;,&quot;Linux 硬链接与软链接&quot;:&quot;/posts/tech/cloud-native/linux/storage/linux-硬链接与软链接&quot;,&quot;linux 硬链接与软链接&quot;:&quot;/posts/tech/cloud-native/linux/storage/linux-硬链接与软链接&quot;,&quot;cloud-native/linux/storage/linux-硬链接与软链接&quot;:&quot;/posts/tech/cloud-native/linux/storage/linux-硬链接与软链接&quot;,&quot;linux-硬链接与软链接&quot;:&quot;/posts/tech/cloud-native/linux/storage/linux-硬链接与软链接&quot;,&quot;LVM 磁盘扩容&quot;:&quot;/posts/tech/cloud-native/linux/storage/lvm-磁盘扩容&quot;,&quot;lvm 磁盘扩容&quot;:&quot;/posts/tech/cloud-native/linux/storage/lvm-磁盘扩容&quot;,&quot;cloud-native/linux/storage/lvm-磁盘扩容&quot;:&quot;/posts/tech/cloud-native/linux/storage/lvm-磁盘扩容&quot;,&quot;lvm-磁盘扩容&quot;:&quot;/posts/tech/cloud-native/linux/storage/lvm-磁盘扩容&quot;,&quot;CPU 指令集概览&quot;:&quot;/posts/tech/cloud-native/linux/system/cpu-指令集概览&quot;,&quot;cpu 指令集概览&quot;:&quot;/posts/tech/cloud-native/linux/system/cpu-指令集概览&quot;,&quot;cloud-native/linux/system/cpu-指令集概览&quot;:&quot;/posts/tech/cloud-native/linux/system/cpu-指令集概览&quot;,&quot;cpu-指令集概览&quot;:&quot;/posts/tech/cloud-native/linux/system/cpu-指令集概览&quot;,&quot;🐧 Linux&quot;:&quot;/posts/tech/cloud-native/linux/system/linux&quot;,&quot;🐧 linux&quot;:&quot;/posts/tech/cloud-native/linux/system/linux&quot;,&quot;cloud-native/linux/system/linux&quot;:&quot;/posts/tech/cloud-native/linux/system/linux&quot;,&quot;linux&quot;:&quot;/posts/tech/cloud-native/linux/system/linux&quot;,&quot;Linux 基础&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-基础&quot;,&quot;linux 基础&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-基础&quot;,&quot;cloud-native/linux/system/linux-基础&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-基础&quot;,&quot;linux-基础&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-基础&quot;,&quot;Linux 进程状态&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-进程状态&quot;,&quot;linux 进程状态&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-进程状态&quot;,&quot;cloud-native/linux/system/linux-进程状态&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-进程状态&quot;,&quot;linux-进程状态&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-进程状态&quot;,&quot;Linux 网络服务&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-网络服务&quot;,&quot;linux 网络服务&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-网络服务&quot;,&quot;cloud-native/linux/system/linux-网络服务&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-网络服务&quot;,&quot;linux-网络服务&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-网络服务&quot;,&quot;Linux 系统管理&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-系统管理&quot;,&quot;linux 系统管理&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-系统管理&quot;,&quot;cloud-native/linux/system/linux-系统管理&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-系统管理&quot;,&quot;linux-系统管理&quot;:&quot;/posts/tech/cloud-native/linux/system/linux-系统管理&quot;,&quot;SSH 认证原理与配置&quot;:&quot;/posts/tech/cloud-native/linux/system/ssh-认证原理与配置&quot;,&quot;ssh 认证原理与配置&quot;:&quot;/posts/tech/cloud-native/linux/system/ssh-认证原理与配置&quot;,&quot;cloud-native/linux/system/ssh-认证原理与配置&quot;:&quot;/posts/tech/cloud-native/linux/system/ssh-认证原理与配置&quot;,&quot;ssh-认证原理与配置&quot;:&quot;/posts/tech/cloud-native/linux/system/ssh-认证原理与配置&quot;,&quot;Sentinel、Hystrix、Gateway 对比&quot;:&quot;/posts/tech/cloud-native/microservices/sentinelhystrixgateway-对比&quot;,&quot;sentinel、hystrix、gateway 对比&quot;:&quot;/posts/tech/cloud-native/microservices/sentinelhystrixgateway-对比&quot;,&quot;cloud-native/microservices/sentinelhystrixgateway-对比&quot;:&quot;/posts/tech/cloud-native/microservices/sentinelhystrixgateway-对比&quot;,&quot;sentinelhystrixgateway-对比&quot;:&quot;/posts/tech/cloud-native/microservices/sentinelhystrixgateway-对比&quot;,&quot;Nginx 基础&quot;:&quot;/posts/tech/cloud-native/middleware/nginx-基础&quot;,&quot;nginx 基础&quot;:&quot;/posts/tech/cloud-native/middleware/nginx-基础&quot;,&quot;cloud-native/middleware/nginx-基础&quot;:&quot;/posts/tech/cloud-native/middleware/nginx-基础&quot;,&quot;nginx-基础&quot;:&quot;/posts/tech/cloud-native/middleware/nginx-基础&quot;,&quot;Tomcat 基础&quot;:&quot;/posts/tech/cloud-native/middleware/tomcat-基础&quot;,&quot;tomcat 基础&quot;:&quot;/posts/tech/cloud-native/middleware/tomcat-基础&quot;,&quot;cloud-native/middleware/tomcat-基础&quot;:&quot;/posts/tech/cloud-native/middleware/tomcat-基础&quot;,&quot;tomcat-基础&quot;:&quot;/posts/tech/cloud-native/middleware/tomcat-基础&quot;,&quot;监控工具与监控指标对比&quot;:&quot;/posts/tech/cloud-native/monitoring/监控工具与监控指标对比&quot;,&quot;cloud-native/monitoring/监控工具与监控指标对比&quot;:&quot;/posts/tech/cloud-native/monitoring/监控工具与监控指标对比&quot;,&quot;📊 监控与可观测性&quot;:&quot;/posts/tech/cloud-native/monitoring/监控与可观测性&quot;,&quot;cloud-native/monitoring/监控与可观测性&quot;:&quot;/posts/tech/cloud-native/monitoring/监控与可观测性&quot;,&quot;监控与可观测性&quot;:&quot;/posts/tech/cloud-native/monitoring/监控与可观测性&quot;,&quot;cloud-native/monitoring/面试题/监控面试题&quot;:&quot;/posts/tech/cloud-native/monitoring/面试题/监控面试题&quot;,&quot;监控面试题&quot;:&quot;/posts/tech/cloud-native/monitoring/面试题/监控面试题&quot;,&quot;Zabbix 监控&quot;:&quot;/posts/tech/cloud-native/monitoring/zabbix-监控&quot;,&quot;zabbix 监控&quot;:&quot;/posts/tech/cloud-native/monitoring/zabbix-监控&quot;,&quot;cloud-native/monitoring/zabbix-监控&quot;:&quot;/posts/tech/cloud-native/monitoring/zabbix-监控&quot;,&quot;zabbix-监控&quot;:&quot;/posts/tech/cloud-native/monitoring/zabbix-监控&quot;,&quot;cloud-native/network/面试题/网络面试题&quot;:&quot;/posts/tech/cloud-native/network/面试题/网络面试题&quot;,&quot;网络面试题&quot;:&quot;/posts/tech/cloud-native/network/面试题/网络面试题&quot;,&quot;🌐 网络&quot;:&quot;/posts/tech/cloud-native/network/网络&quot;,&quot;cloud-native/network/网络&quot;:&quot;/posts/tech/cloud-native/network/网络&quot;,&quot;网络&quot;:&quot;/posts/tech/cloud-native/network/网络&quot;,&quot;网络基础&quot;:&quot;/posts/tech/cloud-native/network/网络基础&quot;,&quot;cloud-native/network/网络基础&quot;:&quot;/posts/tech/cloud-native/network/网络基础&quot;,&quot;路由协议完整分类&quot;:&quot;/posts/tech/cloud-native/network/protocol/路由协议完整分类&quot;,&quot;cloud-native/network/protocol/路由协议完整分类&quot;:&quot;/posts/tech/cloud-native/network/protocol/路由协议完整分类&quot;,&quot;数字证书与 SSL/TLS&quot;:&quot;/posts/tech/cloud-native/network/protocol/数字证书与-ssl-tls&quot;,&quot;数字证书与 ssl/tls&quot;:&quot;/posts/tech/cloud-native/network/protocol/数字证书与-ssl-tls&quot;,&quot;cloud-native/network/protocol/数字证书与-ssl-tls&quot;:&quot;/posts/tech/cloud-native/network/protocol/数字证书与-ssl-tls&quot;,&quot;数字证书与-ssl-tls&quot;:&quot;/posts/tech/cloud-native/network/protocol/数字证书与-ssl-tls&quot;,&quot;CRC 循环冗余校验原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/crc-循环冗余校验原理&quot;,&quot;crc 循环冗余校验原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/crc-循环冗余校验原理&quot;,&quot;cloud-native/network/protocol/crc-循环冗余校验原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/crc-循环冗余校验原理&quot;,&quot;crc-循环冗余校验原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/crc-循环冗余校验原理&quot;,&quot;DNS 基础原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/dns-基础原理&quot;,&quot;dns 基础原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/dns-基础原理&quot;,&quot;cloud-native/network/protocol/dns-基础原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/dns-基础原理&quot;,&quot;dns-基础原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/dns-基础原理&quot;,&quot;HTTP 状态码详解&quot;:&quot;/posts/tech/cloud-native/network/protocol/http-状态码详解&quot;,&quot;http 状态码详解&quot;:&quot;/posts/tech/cloud-native/network/protocol/http-状态码详解&quot;,&quot;cloud-native/network/protocol/http-状态码详解&quot;:&quot;/posts/tech/cloud-native/network/protocol/http-状态码详解&quot;,&quot;http-状态码详解&quot;:&quot;/posts/tech/cloud-native/network/protocol/http-状态码详解&quot;,&quot;ICMP 协议原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/icmp-协议原理&quot;,&quot;icmp 协议原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/icmp-协议原理&quot;,&quot;cloud-native/network/protocol/icmp-协议&quot;:&quot;/posts/tech/cloud-native/network/protocol/icmp-协议&quot;,&quot;icmp-协议&quot;:&quot;/posts/tech/cloud-native/network/protocol/icmp-协议&quot;,&quot;cloud-native/network/protocol/icmp-协议原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/icmp-协议原理&quot;,&quot;icmp-协议原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/icmp-协议原理&quot;,&quot;Socket 工作原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/socket-工作原理&quot;,&quot;socket 工作原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/socket-工作原理&quot;,&quot;cloud-native/network/protocol/socket-工作原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/socket-工作原理&quot;,&quot;socket-工作原理&quot;:&quot;/posts/tech/cloud-native/network/protocol/socket-工作原理&quot;,&quot;TCP 粘包拆包&quot;:&quot;/posts/tech/cloud-native/network/protocol/tcp-粘包拆包&quot;,&quot;tcp 粘包拆包&quot;:&quot;/posts/tech/cloud-native/network/protocol/tcp-粘包拆包&quot;,&quot;cloud-native/network/protocol/tcp-粘包拆包&quot;:&quot;/posts/tech/cloud-native/network/protocol/tcp-粘包拆包&quot;,&quot;tcp-粘包拆包&quot;:&quot;/posts/tech/cloud-native/network/protocol/tcp-粘包拆包&quot;,&quot;TCP 连接状态查看全套方法&quot;:&quot;/posts/tech/cloud-native/network/protocol/tcp连接状态查看全套方法&quot;,&quot;tcp 连接状态查看全套方法&quot;:&quot;/posts/tech/cloud-native/network/protocol/tcp连接状态查看全套方法&quot;,&quot;cloud-native/network/protocol/tcp连接状态查看全套方法&quot;:&quot;/posts/tech/cloud-native/network/protocol/tcp连接状态查看全套方法&quot;,&quot;tcp连接状态查看全套方法&quot;:&quot;/posts/tech/cloud-native/network/protocol/tcp连接状态查看全套方法&quot;,&quot;主流 VIP 漂移方案&quot;:&quot;/posts/tech/cloud-native/network/technology/主流vip漂移方案&quot;,&quot;主流 vip 漂移方案&quot;:&quot;/posts/tech/cloud-native/network/technology/主流vip漂移方案&quot;,&quot;cloud-native/network/technology/主流vip漂移方案&quot;:&quot;/posts/tech/cloud-native/network/technology/主流vip漂移方案&quot;,&quot;主流vip漂移方案&quot;:&quot;/posts/tech/cloud-native/network/technology/主流vip漂移方案&quot;,&quot;Calico CNI 与 Flannel 网络插件详解&quot;:&quot;/posts/tech/cloud-native/network/technology/calico-cni-网络插件详解&quot;,&quot;calico cni 与 flannel 网络插件详解&quot;:&quot;/posts/tech/cloud-native/network/technology/calico-cni-网络插件详解&quot;,&quot;cloud-native/network/technology/calico-cni-网络插件详解&quot;:&quot;/posts/tech/cloud-native/network/technology/calico-cni-网络插件详解&quot;,&quot;calico-cni-网络插件详解&quot;:&quot;/posts/tech/cloud-native/network/technology/calico-cni-网络插件详解&quot;,&quot;eBPF 技术详解&quot;:&quot;/posts/tech/cloud-native/network/technology/ebpf-技术详解&quot;,&quot;ebpf 技术详解&quot;:&quot;/posts/tech/cloud-native/network/technology/ebpf-技术详解&quot;,&quot;cloud-native/network/technology/ebpf-技术详解&quot;:&quot;/posts/tech/cloud-native/network/technology/ebpf-技术详解&quot;,&quot;ebpf-技术详解&quot;:&quot;/posts/tech/cloud-native/network/technology/ebpf-技术详解&quot;,&quot;eBPF 模式下 CNI 与 kube-proxy 完整关系详解&quot;:&quot;/posts/tech/cloud-native/network/technology/ebpf-模式下-cni-与-kube-proxy-完整关系详解&quot;,&quot;ebpf 模式下 cni 与 kube-proxy 完整关系详解&quot;:&quot;/posts/tech/cloud-native/network/technology/ebpf-模式下-cni-与-kube-proxy-完整关系详解&quot;,&quot;cloud-native/network/technology/ebpf-模式下-cni-与-kube-proxy-完整关系详解&quot;:&quot;/posts/tech/cloud-native/network/technology/ebpf-模式下-cni-与-kube-proxy-完整关系详解&quot;,&quot;ebpf-模式下-cni-与-kube-proxy-完整关系详解&quot;:&quot;/posts/tech/cloud-native/network/technology/ebpf-模式下-cni-与-kube-proxy-完整关系详解&quot;,&quot;iptables、IPVS、eBPF 完整深度对比&quot;:&quot;/posts/tech/cloud-native/network/technology/iptables-ipvs-ebpf-完整深度对比&quot;,&quot;iptables、ipvs、ebpf 完整深度对比&quot;:&quot;/posts/tech/cloud-native/network/technology/iptables-ipvs-ebpf-完整深度对比&quot;,&quot;cloud-native/network/technology/iptables-ipvs-ebpf-完整深度对比&quot;:&quot;/posts/tech/cloud-native/network/technology/iptables-ipvs-ebpf-完整深度对比&quot;,&quot;iptables-ipvs-ebpf-完整深度对比&quot;:&quot;/posts/tech/cloud-native/network/technology/iptables-ipvs-ebpf-完整深度对比&quot;,&quot;K8s 新增节点后 Calico 完整执行流程&quot;:&quot;/posts/tech/cloud-native/network/technology/k8s新增节点后calico完整执行流程&quot;,&quot;k8s 新增节点后 calico 完整执行流程&quot;:&quot;/posts/tech/cloud-native/network/technology/k8s新增节点后calico完整执行流程&quot;,&quot;cloud-native/network/technology/k8s新增节点后calico完整执行流程&quot;:&quot;/posts/tech/cloud-native/network/technology/k8s新增节点后calico完整执行流程&quot;,&quot;k8s新增节点后calico完整执行流程&quot;:&quot;/posts/tech/cloud-native/network/technology/k8s新增节点后calico完整执行流程&quot;,&quot;LVS 与 HAProxy 完整深度详解&quot;:&quot;/posts/tech/cloud-native/network/technology/lvs-与-haproxy-完整深度详解&quot;,&quot;lvs 与 haproxy 完整深度详解&quot;:&quot;/posts/tech/cloud-native/network/technology/lvs-与-haproxy-完整深度详解&quot;,&quot;cloud-native/network/technology/lvs-与-haproxy-完整深度详解&quot;:&quot;/posts/tech/cloud-native/network/technology/lvs-与-haproxy-完整深度详解&quot;,&quot;lvs-与-haproxy-完整深度详解&quot;:&quot;/posts/tech/cloud-native/network/technology/lvs-与-haproxy-完整深度详解&quot;,&quot;firewalld 与 iptables 对比&quot;:&quot;/posts/tech/cloud-native/network/tools/firewalld-与-iptables-对比&quot;,&quot;cloud-native/network/tools/firewalld-与-iptables-对比&quot;:&quot;/posts/tech/cloud-native/network/tools/firewalld-与-iptables-对比&quot;,&quot;firewalld-与-iptables-对比&quot;:&quot;/posts/tech/cloud-native/network/tools/firewalld-与-iptables-对比&quot;,&quot;iptables 完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/iptables-完整详解&quot;,&quot;cloud-native/network/tools/iptables-完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/iptables-完整详解&quot;,&quot;iptables-完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/iptables-完整详解&quot;,&quot;IPVS 完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/ipvs-完整详解&quot;,&quot;ipvs 完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/ipvs-完整详解&quot;,&quot;cloud-native/network/tools/ipvs-完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/ipvs-完整详解&quot;,&quot;ipvs-完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/ipvs-完整详解&quot;,&quot;Linux 防火墙详解&quot;:&quot;/posts/tech/cloud-native/network/tools/linux-防火墙详解&quot;,&quot;linux 防火墙详解&quot;:&quot;/posts/tech/cloud-native/network/tools/linux-防火墙详解&quot;,&quot;cloud-native/network/tools/linux-防火墙详解&quot;:&quot;/posts/tech/cloud-native/network/tools/linux-防火墙详解&quot;,&quot;linux-防火墙详解&quot;:&quot;/posts/tech/cloud-native/network/tools/linux-防火墙详解&quot;,&quot;nslookup 完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/nslookup-完整详解&quot;,&quot;cloud-native/network/tools/nslookup-完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/nslookup-完整详解&quot;,&quot;nslookup-完整详解&quot;:&quot;/posts/tech/cloud-native/network/tools/nslookup-完整详解&quot;,&quot;OpenStack 云计算平台&quot;:&quot;/posts/tech/cloud-native/openstack/openstack-云计算平台&quot;,&quot;openstack 云计算平台&quot;:&quot;/posts/tech/cloud-native/openstack/openstack-云计算平台&quot;,&quot;cloud-native/openstack/openstack-云计算平台&quot;:&quot;/posts/tech/cloud-native/openstack/openstack-云计算平台&quot;,&quot;openstack-云计算平台&quot;:&quot;/posts/tech/cloud-native/openstack/openstack-云计算平台&quot;,&quot;堆内存与栈内存&quot;:&quot;/posts/tech/cloud-native/programming/堆内存与栈内存&quot;,&quot;cloud-native/programming/堆内存与栈内存&quot;:&quot;/posts/tech/cloud-native/programming/堆内存与栈内存&quot;,&quot;🐚 Shell · 🐍 Python&quot;:&quot;/posts/tech/cloud-native/programming/脚本与编程&quot;,&quot;🐚 shell · 🐍 python&quot;:&quot;/posts/tech/cloud-native/programming/脚本与编程&quot;,&quot;cloud-native/programming/脚本与编程&quot;:&quot;/posts/tech/cloud-native/programming/脚本与编程&quot;,&quot;脚本与编程&quot;:&quot;/posts/tech/cloud-native/programming/脚本与编程&quot;,&quot;G1 GC 深度优化&quot;:&quot;/posts/tech/cloud-native/programming/java/g1-gc-深度优化&quot;,&quot;g1 gc 深度优化&quot;:&quot;/posts/tech/cloud-native/programming/java/g1-gc-深度优化&quot;,&quot;cloud-native/programming/java/g1-gc-深度优化&quot;:&quot;/posts/tech/cloud-native/programming/java/g1-gc-深度优化&quot;,&quot;g1-gc-深度优化&quot;:&quot;/posts/tech/cloud-native/programming/java/g1-gc-深度优化&quot;,&quot;Java IO 模型&quot;:&quot;/posts/tech/cloud-native/programming/java/java-io-模型&quot;,&quot;java io 模型&quot;:&quot;/posts/tech/cloud-native/programming/java/java-io-模型&quot;,&quot;cloud-native/programming/java/java-io-模型&quot;:&quot;/posts/tech/cloud-native/programming/java/java-io-模型&quot;,&quot;java-io-模型&quot;:&quot;/posts/tech/cloud-native/programming/java/java-io-模型&quot;,&quot;JVM 参数优化&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-参数优化&quot;,&quot;jvm 参数优化&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-参数优化&quot;,&quot;cloud-native/programming/java/jvm-参数优化&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-参数优化&quot;,&quot;jvm-参数优化&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-参数优化&quot;,&quot;JVM 内存结构&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-内存结构&quot;,&quot;jvm 内存结构&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-内存结构&quot;,&quot;cloud-native/programming/java/jvm-内存结构&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-内存结构&quot;,&quot;jvm-内存结构&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-内存结构&quot;,&quot;JVM 学习路线与故障排查&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-学习路线与故障排查&quot;,&quot;jvm 学习路线与故障排查&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-学习路线与故障排查&quot;,&quot;cloud-native/programming/java/jvm-学习路线与故障排查&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-学习路线与故障排查&quot;,&quot;jvm-学习路线与故障排查&quot;:&quot;/posts/tech/cloud-native/programming/java/jvm-学习路线与故障排查&quot;,&quot;Python 文件操作完整详解&quot;:&quot;/posts/tech/cloud-native/programming/python/脚本/python-文件操作完整详解&quot;,&quot;python 文件操作完整详解&quot;:&quot;/posts/tech/cloud-native/programming/python/脚本/python-文件操作完整详解&quot;,&quot;cloud-native/programming/python/脚本/python-文件操作完整详解&quot;:&quot;/posts/tech/cloud-native/programming/python/脚本/python-文件操作完整详解&quot;,&quot;python-文件操作完整详解&quot;:&quot;/posts/tech/cloud-native/programming/python/脚本/python-文件操作完整详解&quot;,&quot;Python Linux 系统运维详解&quot;:&quot;/posts/tech/cloud-native/programming/python/脚本/python-linux-系统运维详解&quot;,&quot;python linux 系统运维详解&quot;:&quot;/posts/tech/cloud-native/programming/python/脚本/python-linux-系统运维详解&quot;,&quot;cloud-native/programming/python/脚本/python-linux-系统运维详解&quot;:&quot;/posts/tech/cloud-native/programming/python/脚本/python-linux-系统运维详解&quot;,&quot;python-linux-系统运维详解&quot;:&quot;/posts/tech/cloud-native/programming/python/脚本/python-linux-系统运维详解&quot;,&quot;Python 基础&quot;:&quot;/posts/tech/cloud-native/programming/python/python-基础&quot;,&quot;python 基础&quot;:&quot;/posts/tech/cloud-native/programming/python/python-基础&quot;,&quot;cloud-native/programming/python/python-基础&quot;:&quot;/posts/tech/cloud-native/programming/python/python-基础&quot;,&quot;python-基础&quot;:&quot;/posts/tech/cloud-native/programming/python/python-基础&quot;,&quot;Python 学习大纲&quot;:&quot;/posts/tech/cloud-native/programming/python/python-学习大纲&quot;,&quot;python 学习大纲&quot;:&quot;/posts/tech/cloud-native/programming/python/python-学习大纲&quot;,&quot;cloud-native/programming/python/python-学习大纲&quot;:&quot;/posts/tech/cloud-native/programming/python/python-学习大纲&quot;,&quot;python-学习大纲&quot;:&quot;/posts/tech/cloud-native/programming/python/python-学习大纲&quot;,&quot;cloud-native/programming/shell/面试题/shell-脚本面试题&quot;:&quot;/posts/tech/cloud-native/programming/shell/面试题/shell-脚本面试题&quot;,&quot;shell-脚本面试题&quot;:&quot;/posts/tech/cloud-native/programming/shell/面试题/shell-脚本面试题&quot;,&quot;Shell 基础&quot;:&quot;/posts/tech/cloud-native/programming/shell/shell-基础&quot;,&quot;shell 基础&quot;:&quot;/posts/tech/cloud-native/programming/shell/shell-基础&quot;,&quot;cloud-native/programming/shell/shell-基础&quot;:&quot;/posts/tech/cloud-native/programming/shell/shell-基础&quot;,&quot;shell-基础&quot;:&quot;/posts/tech/cloud-native/programming/shell/shell-基础&quot;,&quot;cloud-native/storage/面试题/存储与虚拟化面试题&quot;:&quot;/posts/tech/cloud-native/storage/面试题/存储与虚拟化面试题&quot;,&quot;存储与虚拟化面试题&quot;:&quot;/posts/tech/cloud-native/storage/面试题/存储与虚拟化面试题&quot;,&quot;Ceph 分布式存储&quot;:&quot;/posts/tech/cloud-native/storage/ceph-分布式存储&quot;,&quot;ceph 分布式存储&quot;:&quot;/posts/tech/cloud-native/storage/ceph-分布式存储&quot;,&quot;cloud-native/storage/ceph-分布式存储&quot;:&quot;/posts/tech/cloud-native/storage/ceph-分布式存储&quot;,&quot;ceph-分布式存储&quot;:&quot;/posts/tech/cloud-native/storage/ceph-分布式存储&quot;,&quot;每日英语学习记录&quot;:&quot;/posts/tech/english/每日学习记录&quot;,&quot;english/每日学习记录&quot;:&quot;/posts/tech/english/每日学习记录&quot;,&quot;每日学习记录&quot;:&quot;/posts/tech/english/每日学习记录&quot;,&quot;english/英文学习规划&quot;:&quot;/posts/tech/english/英文学习规划&quot;,&quot;英文学习规划&quot;:&quot;/posts/tech/english/英文学习规划&quot;,&quot;🇬🇧 英语学习&quot;:&quot;/posts/tech/english/english&quot;,&quot;english/english&quot;:&quot;/posts/tech/english/english&quot;,&quot;english&quot;:&quot;/posts/tech/english/english&quot;,&quot;每日英语学习 -- 2026-06-05&quot;:&quot;/posts/tech/english/everyday/2026-06-05-每日英语学习&quot;,&quot;english/everyday/2026-06-05-每日英语学习&quot;:&quot;/posts/tech/english/everyday/2026-06-05-每日英语学习&quot;,&quot;2026-06-05-每日英语学习&quot;:&quot;/posts/tech/english/everyday/2026-06-05-每日英语学习&quot;,&quot;📐 语法笔记&quot;:&quot;/posts/tech/english/grammar/语法笔记&quot;,&quot;english/grammar/语法笔记&quot;:&quot;/posts/tech/english/grammar/语法笔记&quot;,&quot;语法笔记&quot;:&quot;/posts/tech/english/grammar/语法笔记&quot;,&quot;长难句精读：cgroup 驱动导致 GPU 访问丢失&quot;:&quot;/posts/tech/english/grammar/长难句精读---cgroup-gpu-访问丢失&quot;,&quot;长难句精读：cgroup 驱动导致 gpu 访问丢失&quot;:&quot;/posts/tech/english/grammar/长难句精读---cgroup-gpu-访问丢失&quot;,&quot;english/grammar/长难句精读---cgroup-gpu-访问丢失&quot;:&quot;/posts/tech/english/grammar/长难句精读---cgroup-gpu-访问丢失&quot;,&quot;长难句精读---cgroup-gpu-访问丢失&quot;:&quot;/posts/tech/english/grammar/长难句精读---cgroup-gpu-访问丢失&quot;,&quot;技术面试口语素材&quot;:&quot;/posts/tech/english/reading/技术面试口语素材&quot;,&quot;english/reading/技术面试口语素材&quot;:&quot;/posts/tech/english/reading/技术面试口语素材&quot;,&quot;面试工作介绍常用句式&quot;:&quot;/posts/tech/english/reading/面试工作介绍常用句式&quot;,&quot;english/reading/面试工作介绍常用句式&quot;:&quot;/posts/tech/english/reading/面试工作介绍常用句式&quot;,&quot;📰 阅读练习&quot;:&quot;/posts/tech/english/reading/阅读练习&quot;,&quot;english/reading/阅读练习&quot;:&quot;/posts/tech/english/reading/阅读练习&quot;,&quot;阅读练习&quot;:&quot;/posts/tech/english/reading/阅读练习&quot;,&quot;📖 词汇积累&quot;:&quot;/posts/tech/english/vocabulary/词汇积累&quot;,&quot;english/vocabulary/词汇积累&quot;:&quot;/posts/tech/english/vocabulary/词汇积累&quot;,&quot;词汇积累&quot;:&quot;/posts/tech/english/vocabulary/词汇积累&quot;,&quot;面试高频词汇&amp;词组&quot;:&quot;/posts/tech/english/vocabulary/面试高频词汇词组&quot;,&quot;english/vocabulary/面试高频词汇词组&quot;:&quot;/posts/tech/english/vocabulary/面试高频词汇词组&quot;,&quot;面试高频词汇词组&quot;:&quot;/posts/tech/english/vocabulary/面试高频词汇词组&quot;,&quot;☸️ 云原生术语&quot;:&quot;/posts/tech/english/vocabulary/云原生术语&quot;,&quot;english/vocabulary/云原生术语&quot;:&quot;/posts/tech/english/vocabulary/云原生术语&quot;,&quot;云原生术语&quot;:&quot;/posts/tech/english/vocabulary/云原生术语&quot;,&quot;云原生运维英语词汇（2026-06 更新）&quot;:&quot;/posts/tech/english/vocabulary/云原生运维英语词汇&quot;,&quot;english/vocabulary/云原生运维英语词汇&quot;:&quot;/posts/tech/english/vocabulary/云原生运维英语词汇&quot;,&quot;云原生运维英语词汇&quot;:&quot;/posts/tech/english/vocabulary/云原生运维英语词汇&quot;,&quot;GPU / CUDA 专业词汇&quot;:&quot;/posts/tech/english/vocabulary/gpu-cuda-词汇&quot;,&quot;gpu / cuda 专业词汇&quot;:&quot;/posts/tech/english/vocabulary/gpu-cuda-词汇&quot;,&quot;english/vocabulary/gpu-cuda-词汇&quot;:&quot;/posts/tech/english/vocabulary/gpu-cuda-词汇&quot;,&quot;gpu-cuda-词汇&quot;:&quot;/posts/tech/english/vocabulary/gpu-cuda-词汇&quot;,&quot;✍️ 随笔杂记&quot;:&quot;/posts/essays/随笔杂记&quot;,&quot;随笔杂记&quot;:&quot;/posts/essays/随笔杂记&quot;}"></div><header class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-bg)]/80 backdrop-blur-md"><nav class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4"><a href="/" class="font-serif text-xl font-bold tracking-tight text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors">NOVA BLOG</a><div class="hidden items-center gap-8 md:flex"><a href="/" class="text-sm font-medium transition-colors hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">首页</a><a href="/tags" class="text-sm font-medium transition-colors hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">标签</a><a href="/about" class="text-sm font-medium transition-colors hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">关于</a><a href="/search" class="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors" title="搜索"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></a><button onclick="toggleTheme()" class="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors" title="切换主题"><svg class="hidden dark:block" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg><svg class="block dark:hidden" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg></button><a href="/rss.xml" class="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]" title="订阅"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 8-8 8.5 8.5 0 0 1 7.5 4.75 8 8 0 0 1-4.5 11.25"></path><path d="M12 18a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></path></svg>订阅</a></div><button class="md:hidden text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]" id="mobile-menu-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="6" y2="6"></line><line x1="3" x2="21" y1="12" y2="12"></line><line x1="3" x2="21" y1="18" y2="18"></line></svg></button></nav><div id="mobile-menu" class="hidden border-t border-[var(--color-border)] bg-[var(--color-bg)] md:hidden"><div class="flex flex-col px-6 py-4 gap-4"><a href="/" class="text-sm font-medium transition-colors text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]">首页</a><a href="/tags" class="text-sm font-medium transition-colors text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]">标签</a><a href="/about" class="text-sm font-medium transition-colors text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]">关于</a><a href="/search" class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]">搜索</a><button onclick="toggleTheme()" class="text-sm text-left text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]">切换主题</button><a href="/rss.xml" class="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-secondary)] w-fit">订阅</a></div></div></header><script>
+  (function () {
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    if (btn && menu) {
+      btn.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+      });
+    }
+  })();
+</script><main class="mx-auto flex max-w-4xl flex-1 flex-col gap-8 px-6 py-8 md:flex-row"><div class="flex flex-col gap-8 md:flex-1"><div id="progress-bar" class="progress-bar" style="width: 0%"></div><header class="animate-fade-in"><div class="flex flex-wrap items-center gap-3 mb-4"><span class="rounded-full bg-[var(--color-accent-light)] px-3 py-1 text-xs font-medium text-[var(--color-accent)]">Linux</span></div><h1 class="font-serif text-3xl font-bold leading-tight tracking-tight text-[var(--color-text)] sm:text-4xl">Linux 内核深入学习路线</h1><div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-[var(--color-text-muted)]"><time datetime="2026-06-12T00:00:00.000Z">2026年6月12日</time><span class="text-[var(--color-border)]">·</span><span>20 分钟阅读</span><span class="text-[var(--color-border)]">·</span><span>7672 字</span></div><div class="mt-4"><a key="linux" href="/tags/linux" class="inline-block rounded-full bg-[var(--color-bg-secondary)] px-2.5 py-1 text-xs text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-accent-light)] hover:text-[var(--color-accent)]">linux</a><a key="kernel" href="/tags/kernel" class="inline-block rounded-full bg-[var(--color-bg-secondary)] px-2.5 py-1 text-xs text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-accent-light)] hover:text-[var(--color-accent)]">kernel</a><a key="learning-path" href="/tags/learning-path" class="inline-block rounded-full bg-[var(--color-bg-secondary)] px-2.5 py-1 text-xs text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-accent-light)] hover:text-[var(--color-accent)]">learning-path</a><a key="advanced" href="/tags/advanced" class="inline-block rounded-full bg-[var(--color-bg-secondary)] px-2.5 py-1 text-xs text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-accent-light)] hover:text-[var(--color-accent)]">advanced</a></div><div class="mt-6 rounded-xl border-l-4 border-[var(--color-accent)] bg-[var(--color-bg-secondary)] p-5"><p class="text-base leading-relaxed text-[var(--color-text-secondary)]">面向运维/后端方向的 Linux 内核深度进阶路线——内核架构、子系统、驱动、调试、社区</p></div></header><details class="toc-container mb-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-5 animate-fade-in animate-delay-1"><summary class="flex cursor-pointer items-center justify-between text-sm font-semibold text-[var(--color-text)] select-none hover:text-[var(--color-accent)] transition-colors"><span>📋 目录</span><svg class="toc-chevron h-4 w-4 text-[var(--color-text-muted)] transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></summary><nav class="mt-4 pt-4 border-t border-[var(--color-border)]"><ul class="flex flex-col gap-2"><li><a href="#-前置基础必须先掌握否则寸步难行" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">📖 前置基础（必须先掌握，否则寸步难行）</a></li><li><a href="#-1-操作系统基础理论计算机底层" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">📖 1. 操作系统基础理论（计算机底层）</a></li><li><a href="#-2-c-语言内核唯一主力语言" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">📌 2. C 语言（内核唯一主力语言）</a></li><li><a href="#-3-汇编语言了解为主" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">📌 3. 汇编语言（了解为主）</a></li><li><a href="#-4-已掌握的-linux-实操能力" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">📌 4. 已掌握的 Linux 实操能力</a></li><li><a href="#️--第一阶段内核整体架构--启动流程入门总览12-周" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🏗️ ⚡ 第一阶段：内核整体架构 &amp; 启动流程（入门总览，1~2 周）</a></li><li><a href="#️-1-linux-内核整体架构" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🏗️ 1. Linux 内核整体架构</a></li><li><a href="#分层模型" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">分层模型</a></li><li><a href="#核心概念" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">核心概念</a></li><li><a href="#-2-linux-完整启动流程从上电到应用启动" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🎯 2. Linux 完整启动流程（从上电到应用启动）</a></li><li><a href="#配套实操" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">配套实操</a></li><li><a href="#-第二阶段内核核心子系统重中之重运维--排障核心48-周" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🔧 第二阶段：内核核心子系统（重中之重，运维 / 排障核心，4~8 周）</a></li><li><a href="#--子系统-1进程管理--调度器最高频" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">📌 ⏰ 子系统 1：进程管理 &amp; 调度器（最高频）</a></li><li><a href="#1-基础概念" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">1. 基础概念</a></li><li><a href="#2-进程调度" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">2. 进程调度</a></li><li><a href="#3-中断--软中断--硬中断" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">3. 中断 &amp; 软中断 &amp; 硬中断</a></li><li><a href="#4-工具--内核参数--故障" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">4. 工具 &amp; 内核参数 &amp; 故障</a></li><li><a href="#-子系统-2内存管理虚拟内存第二核心" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🧠 子系统 2：内存管理（虚拟内存，第二核心）</a></li><li><a href="#1-虚拟内存原理linux-内存核心" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">1. 虚拟内存原理（Linux 内存核心）</a></li><li><a href="#2-内核内存布局" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">2. 内核内存布局</a></li><li><a href="#3-页缓存--buffer--脏页" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">3. 页缓存 &amp; Buffer &amp; 脏页</a></li><li><a href="#4-swap-交换机制底层" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">4. Swap 交换机制（底层）</a></li><li><a href="#5-oom-killer-内存溢出" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">5. OOM Killer 内存溢出</a></li><li><a href="#6-内存泄漏--内核内存泄漏" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">6. 内存泄漏 &amp; 内核内存泄漏</a></li><li><a href="#7-工具--故障" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">7. 工具 &amp; 故障</a></li><li><a href="#-子系统-3文件系统--块设备-io" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">💾 子系统 3：文件系统 &amp; 块设备 IO</a></li><li><a href="#1-虚拟文件系统-vfslinux-设计精髓" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">1. 虚拟文件系统 VFS（Linux 设计精髓）</a></li><li><a href="#2-主流本地文件系统" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">2. 主流本地文件系统</a></li><li><a href="#3-inode--硬链接--软链接" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">3. Inode &amp; 硬链接 &amp; 软链接</a></li><li><a href="#4-块设备--io-调度" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">4. 块设备 &amp; IO 调度</a></li><li><a href="#5-日志轮转文件锁权限底层实现" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">5. 日志轮转、文件锁、权限底层实现</a></li><li><a href="#工具--故障" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">工具 &amp; 故障</a></li><li><a href="#-子系统-4网络子系统网络排障终极底层" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🌐 子系统 4：网络子系统（网络排障终极底层）</a></li><li><a href="#1-linux-网络协议栈分层" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">1. Linux 网络协议栈分层</a></li><li><a href="#2-socket-内核实现" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">2. Socket 内核实现</a></li><li><a href="#3-tcp-内核深度运维必学" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">3. TCP 内核深度（运维必学）</a></li><li><a href="#4-网络收包--发包全流程" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">4. 网络收包 / 发包全流程</a></li><li><a href="#5-防火墙-netfilteriptables-内核框架" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">5. 防火墙 netfilter/iptables 内核框架</a></li><li><a href="#6-工具--故障" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">6. 工具 &amp; 故障</a></li><li><a href="#-子系统-5系统调用--内核调试基础" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">📖 子系统 5：系统调用 &amp; 内核调试基础</a></li><li><a href="#1-系统调用" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">1. 系统调用</a></li><li><a href="#2-strace-使用运维神器" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">2. strace 使用（运维神器）</a></li><li><a href="#-第三阶段内核观测--性能分析工具栈运维落地核心" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🔧 第三阶段：内核观测 &amp; 性能分析工具栈（运维落地核心）</a></li><li><a href="#-1-综合监控" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">📊 1. 综合监控</a></li><li><a href="#-2-cpu-分析" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🔍 2. CPU 分析</a></li><li><a href="#-3-内存分析" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🔍 3. 内存分析</a></li><li><a href="#-4-磁盘-io-分析" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🔍 4. 磁盘 IO 分析</a></li><li><a href="#-5-网络分析" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🔍 5. 网络分析</a></li><li><a href="#-6-跟踪--调试" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🔍 6. 跟踪 &amp; 调试</a></li><li><a href="#-️-第四阶段内核源码阅读进阶偏深度研发--高级运维" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">📌 ⚙️ 第四阶段：内核源码阅读（进阶，偏深度研发 / 高级运维）</a></li><li><a href="#-1-环境准备" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">📌 1. 环境准备</a></li><li><a href="#️-2-源码目录结构重点目录" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🏗️ 2. 源码目录结构（重点目录）</a></li><li><a href="#-3-源码阅读顺序由浅入深" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">📌 3. 源码阅读顺序（由浅入深）</a></li><li><a href="#-4-简单内核模块开发入门实验" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">📌 4. 简单内核模块开发（入门实验）</a></li><li><a href="#-第五阶段内核调优--疑难故障实战运维终极目标" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🚀 第五阶段：内核调优 &amp; 疑难故障实战（运维终极目标）</a></li><li><a href="#️-️-1-内核参数调优体系" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">⚙️ ⚙️ 1. 内核参数调优体系</a></li><li><a href="#1内存类" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">（1）内存类</a></li><li><a href="#2文件句柄--进程限制" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">（2）文件句柄 &amp; 进程限制</a></li><li><a href="#3网络类高并发服务必备" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">（3）网络类（高并发服务必备）</a></li><li><a href="#4进程调度类" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">（4）进程调度类</a></li><li><a href="#-2-经典内核级故障实战逐个复现排查" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🔍 2. 经典内核级故障实战（逐个复现排查）</a></li><li><a href="#-分阶段学习周期--学习路线总览" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🌐 分阶段学习周期 &amp; 学习路线总览</a></li><li><a href="#-路线一运维--sre-方向推荐以排障调优工具使用为主" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🎯 路线一：运维 / SRE 方向（推荐，以排障、调优、工具使用为主）</a></li><li><a href="#-路线二内核开发--驱动方向偏研发" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">📌 路线二：内核开发 / 驱动方向（偏研发）</a></li><li><a href="#-优质学习资源书籍--文档--社区" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">💾 优质学习资源（书籍 + 文档 + 社区）</a></li><li><a href="#-经典书籍按优先级" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">📖 经典书籍（按优先级）</a></li><li><a href="#入门--运维向" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">入门 &amp; 运维向</a></li><li><a href="#源码--开发向" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-6 text-[var(--color-text-muted)]">源码 &amp; 开发向</a></li><li><a href="#--在线文档--官方资料" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">📌 ⚡ 在线文档 &amp; 官方资料</a></li><li><a href="#-实验环境" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🔧 实验环境</a></li><li><a href="#-学习避坑建议针对运维人群" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">🔒 学习避坑建议（针对运维人群）</a></li><li><a href="#-极简学习清单速记版" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] font-medium text-[var(--color-text-secondary)]">📊 极简学习清单（速记版）</a></li></ul></nav></details><article class="prose animate-fade-in animate-delay-1"><h1 id="linux-内核深入学习路线">Linux 内核深入学习路线</h1>
+<blockquote>
+<p>面向运维/后端方向的 Linux 内核深度进阶路线——从内核架构到各子系统再到调试与社区贡献。</p>
+</blockquote>
+<hr>
+<p>整体学习逻辑：<strong>先吃透内核理论与子系统 → 掌握观测工具与故障分析 → 内核源码阅读 → 模块开发 / 调试</strong>，全程坚持「理论 + 命令观测 + 实验复现」。</p>
+<hr>
+<h2 id="-前置基础必须先掌握否则寸步难行">📖 前置基础（必须先掌握，否则寸步难行）</h2>
+<p>在深入内核前，你需要补齐以下基础，也是你之前 Linux 进阶的延伸：</p>
+<h2 id="-1-操作系统基础理论计算机底层">📖 1. 操作系统基础理论（计算机底层）</h2>
+<ol>
+<li>
+<p>计算机体系结构：CPU 架构（x86_64 为主）、寄存器、内存、总线、中断、IO 模型</p>
+</li>
+<li>
+<p>操作系统核心概念：进程 / 线程、调度、虚拟内存、文件系统、设备驱动、系统调用</p>
+</li>
+<li>
+<p>并发基础：临界区、锁、信号量、竞态条件、死锁</p>
+</li>
+</ol>
+<h2 id="-2-c-语言内核唯一主力语言">📌 2. C 语言（内核唯一主力语言）</h2>
+<p>Linux 内核由纯 C 语言 + 少量汇编编写，<strong>不会 C 只能停留在 “使用工具” 层面，无法读源码、改内核</strong>。
+必学 C 知识点：</p>
+<ul>
+<li>
+<p>基础语法、指针（重中之重，内核到处是指针）、指针数组、函数指针</p>
+</li>
+<li>
+<p>结构体、联合体、位运算（内核大量使用位掩码）</p>
+</li>
+<li>
+<p>内存管理：栈、堆、静态内存，<code>malloc/free</code> 底层逻辑</p>
+</li>
+<li>
+<p>预处理、宏定义、条件编译（内核宏极多）</p>
+</li>
+<li>
+<p>简单 Makefile 编译基础</p>
+</li>
+</ul>
+<blockquote>
+<p>运维建议：不用学到高级 C 开发，<strong>看懂代码、理解指针和内存模型</strong>即可。</p>
+</blockquote>
+<h2 id="-3-汇编语言了解为主">📌 3. 汇编语言（了解为主）</h2>
+<ul>
+<li>
+<p>x86/x86_64 基础汇编指令、寄存器作用</p>
+</li>
+<li>
+<p>重点看懂：<strong>系统调用入口、中断处理、上下文切换</strong>相关汇编，不用手写复杂汇编</p>
+</li>
+</ul>
+<h2 id="-4-已掌握的-linux-实操能力">📌 4. 已掌握的 Linux 实操能力</h2>
+<ul>
+<li>
+<p>熟练使用 <code>top/htop/vmstat/iostat/sar/ss/tcpdump/strace/perf</code> 等观测工具</p>
+</li>
+<li>
+<p>理解进程、内存、磁盘、网络、权限、启动流程</p>
+</li>
+<li>
+<p>会分析日志、排查 CPU / 内存 / IO / 网络故障</p>
+</li>
+</ul>
+<hr>
+<h2 id="️--第一阶段内核整体架构--启动流程入门总览12-周">🏗️ ⚡ 第一阶段：内核整体架构 &#x26; 启动流程（入门总览，1~2 周）</h2>
+<p>目标：建立内核全局认知，知道内核由哪些模块组成、系统开机完整链路。</p>
+<h2 id="️-1-linux-内核整体架构">🏗️ 1. Linux 内核整体架构</h2>
+<h3 id="分层模型">分层模型</h3>
+<ol>
+<li>
+<p><strong>用户空间</strong>：应用程序（Shell、Python、Java、中间件），权限低 Ring3</p>
+</li>
+<li>
+<p><strong>内核空间</strong>：Linux 内核本身，权限高 Ring0，所有硬件、核心逻辑都在这里</p>
+<ul>
+<li>
+<p>系统调用接口（用户态 ↔ 内核态唯一入口）</p>
+</li>
+<li>
+<p>进程管理子系统</p>
+</li>
+<li>
+<p>内存管理子系统</p>
+</li>
+<li>
+<p>文件系统子系统</p>
+</li>
+<li>
+<p>网络子系统</p>
+</li>
+<li>
+<p>设备驱动子系统</p>
+</li>
+<li>
+<p>中断 &#x26; 软中断子系统</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="核心概念">核心概念</h3>
+<ul>
+<li>
+<p>内核态 / 用户态 切换：触发场景、开销、系统调用执行流程</p>
+</li>
+<li>
+<p>内核版本规则：主线版、稳定版、长期支持版（LTS），企业常用 <code>3.10</code> / <code>4.19</code> / <code>5.4</code></p>
+</li>
+<li>
+<p>单内核 vs 微内核：Linux 是<strong>单内核</strong>，所有子系统运行在同一地址空间，效率高</p>
+</li>
+</ul>
+<h2 id="-2-linux-完整启动流程从上电到应用启动">🎯 2. Linux 完整启动流程（从上电到应用启动）</h2>
+<p>逐阶段拆解，结合实际故障排查：</p>
+<ol>
+<li>
+<p>硬件上电 → BIOS/UEFI 初始化硬件</p>
+</li>
+<li>
+<p>GRUB 引导加载器：加载内核镜像 <code>vmlinuz</code>、临时根文件系统 <code>initramfs</code></p>
+</li>
+<li>
+<p>内核解压、初始化内核各子系统（内存、中断、驱动、调度器）</p>
+</li>
+<li>
+<p>挂载真实根文件系统</p>
+</li>
+<li>
+<p>启动 <code>systemd</code>（CentOS7+）/ <code>init</code>（CentOS6），拉起系统服务、终端、应用</p>
+</li>
+</ol>
+<h3 id="配套实操">配套实操</h3>
+<ul>
+<li>
+<p>查看内核镜像、initramfs：<code>ls /boot</code></p>
+</li>
+<li>
+<p>查看内核启动日志：<code>dmesg</code>、<code>journalctl -k</code></p>
+</li>
+<li>
+<p>分析开机耗时：<code>systemd-analyze</code></p>
+</li>
+</ul>
+<hr>
+<h2 id="-第二阶段内核核心子系统重中之重运维--排障核心48-周">🔧 第二阶段：内核核心子系统（重中之重，运维 / 排障核心，4~8 周）</h2>
+<p>这是<strong>运维工程师深入内核的核心板块</strong>，也是性能调优、疑难故障（D 状态进程、CPU 高、内存泄漏、网络卡顿、IO 阻塞）的根源。
+按优先级排序，每个子系统包含：<strong>原理 + 内核参数 + 观测工具 + 故障场景</strong>。</p>
+<h2 id="--子系统-1进程管理--调度器最高频">📌 ⏰ 子系统 1：进程管理 &#x26; 调度器（最高频）</h2>
+<h3 id="1-基础概念">1. 基础概念</h3>
+<ul>
+<li>
+<p>进程、线程、轻量级进程（LWP）、线程组</p>
+</li>
+<li>
+<p>进程描述符 <code>task_struct</code>（内核管理进程的核心结构体）</p>
+</li>
+<li>
+<p>进程状态：<code>R/S/D/T/Z/I</code> 内核态真实含义（重点 <strong>D 不可中断睡眠</strong> 排障）</p>
+</li>
+<li>
+<p>孤儿进程、僵尸进程、守护进程、内核线程</p>
+</li>
+</ul>
+<h3 id="2-进程调度">2. 进程调度</h3>
+<ol>
+<li>
+<p>调度器发展：O (1) 调度器 → CFS 完全公平调度器（现代 Linux 默认）</p>
+</li>
+<li>
+<p>调度策略：</p>
+<ul>
+<li>
+<p>普通分时策略 <code>SCHED_OTHER</code>（绝大多数业务进程）</p>
+</li>
+<li>
+<p>实时调度 <code>SCHED_FIFO</code> / <code>SCHED_RR</code>（内核、高优先级服务）</p>
+</li>
+</ul>
+</li>
+<li>
+<p>优先级：静态优先级、动态优先级、nice 值、实时优先级</p>
+</li>
+<li>
+<p>时间片、上下文切换（CPU 上下文切换过高是经典性能问题）</p>
+</li>
+</ol>
+<h3 id="3-中断--软中断--硬中断">3. 中断 &#x26; 软中断 &#x26; 硬中断</h3>
+<ul>
+<li>
+<p>硬中断（IRQ）：硬件触发（网卡、磁盘、键盘），处理快、不可嵌套</p>
+</li>
+<li>
+<p>软中断：中断下半部，延迟处理耗时逻辑（网络收包、磁盘 IO 大量依赖软中断）</p>
+</li>
+<li>
+<p>中断队列、中断均衡、CPU 中断飙高排查</p>
+</li>
+</ul>
+<h3 id="4-工具--内核参数--故障">4. 工具 &#x26; 内核参数 &#x26; 故障</h3>
+<p><strong>观测工具</strong>
+<code>top</code>、<code>htop</code>、<code>ps</code>、<code>pstree</code>、<code>pidstat</code>、<code>mpstat</code>、<code>vmstat</code>、<code>watch -d</code>、<code>strace</code>（跟踪系统调用）、<code>pstack</code>（栈分析）</p>
+<p><strong>常见故障</strong></p>
+<ul>
+<li>
+<p>CPU 整体负载高、用户态 / 内核态 CPU 占比异常</p>
+</li>
+<li>
+<p>上下文切换（<code>cs</code>）频繁、中断（<code>in</code>）过高</p>
+</li>
+<li>
+<p>大量 D 状态进程（IO 阻塞、内核死锁）</p>
+</li>
+<li>
+<p>僵尸进程堆积</p>
+</li>
+</ul>
+<p><strong>内核参数</strong>
+进程最大数、线程数限制、调度相关内核调优参数。</p>
+<hr>
+<h2 id="-子系统-2内存管理虚拟内存第二核心">🧠 子系统 2：内存管理（虚拟内存，第二核心）</h2>
+<p>结合你之前学的物理内存、Swap、OOM，向内核底层深挖。</p>
+<h3 id="1-虚拟内存原理linux-内存核心">1. 虚拟内存原理（Linux 内存核心）</h3>
+<ul>
+<li>
+<p>虚拟地址空间 vs 物理地址空间</p>
+</li>
+<li>
+<p>分页机制、页表、页框、MMU 内存管理单元</p>
+</li>
+<li>
+<p>地址翻译全过程（虚拟地址 → 页表 → 物理内存）</p>
+</li>
+<li>
+<p>内存隔离：每个进程拥有独立虚拟地址空间，互不干扰</p>
+</li>
+</ul>
+<h3 id="2-内核内存布局">2. 内核内存布局</h3>
+<ul>
+<li>
+<p>用户空间地址分布：代码段、数据段、BSS、堆、栈、共享库</p>
+</li>
+<li>
+<p>内核空间地址布局：线性映射、vmalloc 动态内存、高端内存（老版本）</p>
+</li>
+</ul>
+<h3 id="3-页缓存--buffer--脏页">3. 页缓存 &#x26; Buffer &#x26; 脏页</h3>
+<ul>
+<li>
+<p>页缓存（Page Cache）实现原理、回收机制</p>
+</li>
+<li>
+<p>脏页回写机制、pdflush 内核线程</p>
+</li>
+<li>
+<p>内存水位：最小空闲水位、内存紧张触发回收的逻辑</p>
+</li>
+</ul>
+<h3 id="4-swap-交换机制底层">4. Swap 交换机制（底层）</h3>
+<ul>
+<li>
+<p>页换出、页换入完整流程</p>
+</li>
+<li>
+<p><code>swappiness</code> 内核参数底层逻辑</p>
+</li>
+<li>
+<p>交换分区缓存、预读机制</p>
+</li>
+</ul>
+<h3 id="5-oom-killer-内存溢出">5. OOM Killer 内存溢出</h3>
+<ul>
+<li>
+<p>OOM 打分算法、选择被杀进程逻辑</p>
+</li>
+<li>
+<p>OOM 日志内核态输出、cgroup 内存限制下的 OOM</p>
+</li>
+</ul>
+<h3 id="6-内存泄漏--内核内存泄漏">6. 内存泄漏 &#x26; 内核内存泄漏</h3>
+<ul>
+<li>
+<p>用户态内存泄漏：堆内存未释放</p>
+</li>
+<li>
+<p><strong>内核内存泄漏</strong>：<code>slab</code> 内存占用持续上涨（运维高阶故障）</p>
+</li>
+<li>
+<p>SLUB/SLUB 内存分配器（内核小内存管理）</p>
+</li>
+</ul>
+<h3 id="7-工具--故障">7. 工具 &#x26; 故障</h3>
+<p><strong>观测工具</strong>
+<code>free</code>、<code>vmstat</code>、<code>sar -r</code>、<code>slabtop</code>（查看内核 SLAB 缓存）、<code>valgrind</code>（应用内存泄漏）、<code>echo /proc/pid/maps</code>（进程地址空间）</p>
+<p><strong>典型故障</strong></p>
+<ul>
+<li>
+<p>物理内存持续上涨、无法释放</p>
+</li>
+<li>
+<p>SLAB 占用过高、内核内存泄漏</p>
+</li>
+<li>
+<p>频繁 Swap 换入换出、业务卡顿</p>
+</li>
+<li>
+<p>突发 OOM 杀死进程</p>
+</li>
+</ul>
+<hr>
+<h2 id="-子系统-3文件系统--块设备-io">💾 子系统 3：文件系统 &#x26; 块设备 IO</h2>
+<h3 id="1-虚拟文件系统-vfslinux-设计精髓">1. 虚拟文件系统 VFS（Linux 设计精髓）</h3>
+<ul>
+<li>
+<p>VFS 抽象层：统一接口，兼容 ext4/xfs/nfs/tmpfs 等不同文件系统</p>
+</li>
+<li>
+<p>四大核心对象：超级块、索引节点 inode、目录项 dentry、文件对象</p>
+</li>
+</ul>
+<h3 id="2-主流本地文件系统">2. 主流本地文件系统</h3>
+<ul>
+<li>
+<p>ext4：日志文件系统、日志模式、碎片、预分配</p>
+</li>
+<li>
+<p>XFS：CentOS7+ 默认，大文件、大分区优化、日志机制</p>
+</li>
+<li>
+<p>tmpfs：内存文件系统（/dev/shm）</p>
+</li>
+</ul>
+<h3 id="3-inode--硬链接--软链接">3. Inode &#x26; 硬链接 &#x26; 软链接</h3>
+<ul>
+<li>
+<p>inode 结构、文件元数据、inode 耗尽故障（常见线上问题）</p>
+</li>
+<li>
+<p>目录项缓存（dentry cache）</p>
+</li>
+</ul>
+<h3 id="4-块设备--io-调度">4. 块设备 &#x26; IO 调度</h3>
+<ul>
+<li>
+<p>块设备、通用块层、IO 队列</p>
+</li>
+<li>
+<p>IO 调度器：<code>noop</code> / <code>mq-deadline</code> / <code>mq-kyber</code> 适用场景（SSD / 机械盘区别）</p>
+</li>
+<li>
+<p>同步 IO、异步 IO、Direct IO（绕过页缓存，数据库常用）</p>
+</li>
+</ul>
+<h3 id="5-日志轮转文件锁权限底层实现">5. 日志轮转、文件锁、权限底层实现</h3>
+<h3 id="工具--故障">工具 &#x26; 故障</h3>
+<p><code>iostat</code>、<code>iotop</code>、<code>blktrace</code>（内核 IO 追踪）、<code>df -i</code>（查看 inode）
+<strong>故障</strong>：磁盘 IO 100%、IO 延迟高、inode 耗尽、文件无法删除、磁盘卡死。</p>
+<hr>
+<h2 id="-子系统-4网络子系统网络排障终极底层">🌐 子系统 4：网络子系统（网络排障终极底层）</h2>
+<p>结合你学的 TCP/IP、Socket、粘包拆包、连接状态，深入内核网络协议栈。</p>
+<h3 id="1-linux-网络协议栈分层">1. Linux 网络协议栈分层</h3>
+<p>应用层 Socket → 套接字层 → 网络协议层（IP/TCP/UDP）→ 网络设备层 → 网卡驱动</p>
+<h3 id="2-socket-内核实现">2. Socket 内核实现</h3>
+<ul>
+<li>
+<p>Socket 本质：内核中的特殊文件</p>
+</li>
+<li>
+<p>文件描述符 fd 与 Socket 关系、最大文件句柄数限制</p>
+</li>
+</ul>
+<h3 id="3-tcp-内核深度运维必学">3. TCP 内核深度（运维必学）</h3>
+<ul>
+<li>
+<p>TCP 三次握手 / 四次挥手内核流程</p>
+</li>
+<li>
+<p>半连接队列（syn queue）、全连接队列（accept queue）溢出问题</p>
+</li>
+<li>
+<p>TCP 连接状态完整流转：<code>LISTEN</code>/<code>SYN_RECV</code>/<code>ESTABLISHED</code>/<code>TIME_WAIT</code>/<code>CLOSE_WAIT</code></p>
+</li>
+<li>
+<p>TIME_WAIT 状态作用、回收机制、内核参数调优</p>
+</li>
+<li>
+<p>CLOSE_WAIT 大量堆积根因（应用不调用 close）</p>
+</li>
+<li>
+<p>TCP 滑动窗口、拥塞控制、重传、Nagle 算法、延迟 ACK</p>
+</li>
+</ul>
+<h3 id="4-网络收包--发包全流程">4. 网络收包 / 发包全流程</h3>
+<ul>
+<li>
+<p>网卡中断 → 软中断（<code>ksoftirqd</code>）→ 协议栈处理 → 应用读取</p>
+</li>
+<li>
+<p>多队列网卡、RSS 网卡多队列（多核 CPU 网络负载均衡）</p>
+</li>
+</ul>
+<h3 id="5-防火墙-netfilteriptables-内核框架">5. 防火墙 netfilter/iptables 内核框架</h3>
+<ul>
+<li>
+<p>netfilter 五个钩子点（PREROUTING/INPUT/FORWARD/OUTPUT/POSTROUTING）</p>
+</li>
+<li>
+<p>iptables 规则在内核中的执行逻辑</p>
+</li>
+</ul>
+<h3 id="6-工具--故障">6. 工具 &#x26; 故障</h3>
+<p><strong>观测工具</strong>
+<code>ss</code>、<code>netstat</code>、<code>tcpdump</code>、<code>wireshark</code>、<code>nstat</code>、<code>sysctl</code> 网络参数
+<strong>典型故障</strong></p>
+<ul>
+<li>
+<p>端口无法监听、连接队列溢出</p>
+</li>
+<li>
+<p>大量 TIME_WAIT / CLOSE_WAIT</p>
+</li>
+<li>
+<p>网络丢包、延迟高、软中断 CPU 占满</p>
+</li>
+<li>
+<p>防火墙规则导致访问异常</p>
+</li>
+</ul>
+<hr>
+<h2 id="-子系统-5系统调用--内核调试基础">📖 子系统 5：系统调用 &#x26; 内核调试基础</h2>
+<h3 id="1-系统调用">1. 系统调用</h3>
+<ul>
+<li>
+<p>定义：用户态进程进入内核态执行内核功能的唯一接口</p>
+</li>
+<li>
+<p>常用系统调用：<code>open/read/write/connect/socket/fork/exec</code></p>
+</li>
+<li>
+<p>执行流程：触发中断 → 内核处理 → 返回用户态</p>
+</li>
+</ul>
+<h3 id="2-strace-使用运维神器">2. strace 使用（运维神器）</h3>
+<p>跟踪进程所有系统调用、参数、返回值，<strong>定位应用卡死、文件打不开、网络连不上的终极工具</strong>。</p>
+<hr>
+<h2 id="-第三阶段内核观测--性能分析工具栈运维落地核心">🔧 第三阶段：内核观测 &#x26; 性能分析工具栈（运维落地核心）</h2>
+<p>学完子系统理论，必须用工具验证、排障、调优，这是<strong>理论落地的关键</strong>。
+分为：<strong>通用监控、CPU、内存、IO、网络、跟踪调试</strong>六大类。</p>
+<h2 id="-1-综合监控">📊 1. 综合监控</h2>
+<ul>
+<li>
+<p><code>top/htop</code>：进程全局状态</p>
+</li>
+<li>
+<p><code>uptime</code>：系统负载</p>
+</li>
+<li>
+<p><code>vmstat</code>：CPU、内存、IO、中断、上下文切换综合统计</p>
+</li>
+<li>
+<p><code>sar</code>：全能时序监控，可回看历史性能数据</p>
+</li>
+<li>
+<p><code>dstat</code>：实时多维度统计</p>
+</li>
+</ul>
+<h2 id="-2-cpu-分析">🔍 2. CPU 分析</h2>
+<ul>
+<li>
+<p><code>mpstat</code>：单 CPU 核心状态、中断</p>
+</li>
+<li>
+<p><code>pidstat</code>：单个进程 CPU、线程、上下文切换</p>
+</li>
+<li>
+<p><code>perf</code>（<strong>Linux 官方性能剖析工具，内核级神器</strong>）</p>
+<ul>
+<li>
+<p>采样 CPU 热点函数、追查 CPU 高占用根因</p>
+</li>
+<li>
+<p>查看内核 / 应用调用栈、软中断、调度问题</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="-3-内存分析">🔍 3. 内存分析</h2>
+<ul>
+<li>
+<p><code>slabtop</code>：内核 SLAB 内存分配统计</p>
+</li>
+<li>
+<p><code>cat /proc/meminfo</code>：完整内核内存信息</p>
+</li>
+<li>
+<p><code>valgrind</code>：应用内存泄漏检测</p>
+</li>
+</ul>
+<h2 id="-4-磁盘-io-分析">🔍 4. 磁盘 IO 分析</h2>
+<ul>
+<li>
+<p><code>iostat</code>、<code>iotop</code></p>
+</li>
+<li>
+<p><code>blktrace</code>：内核 IO 请求追踪</p>
+</li>
+</ul>
+<h2 id="-5-网络分析">🔍 5. 网络分析</h2>
+<ul>
+<li>
+<p><code>ss/netstat</code>：连接状态</p>
+</li>
+<li>
+<p><code>tcpdump</code>：抓包</p>
+</li>
+<li>
+<p><code>ethtool</code>：网卡硬件、中断、RSS 队列配置</p>
+</li>
+</ul>
+<h2 id="-6-跟踪--调试">🔍 6. 跟踪 &#x26; 调试</h2>
+<ul>
+<li>
+<p><code>strace</code>：系统调用跟踪</p>
+</li>
+<li>
+<p><code>ltrace</code>：库函数调用跟踪</p>
+</li>
+<li>
+<p><code>gdb + kgdb</code>：内核源码调试（进阶）</p>
+</li>
+</ul>
+<blockquote>
+<p>学习建议：<strong>每学一个子系统，立刻用对应工具观测内核行为</strong>。</p>
+</blockquote>
+<hr>
+<h2 id="-️-第四阶段内核源码阅读进阶偏深度研发--高级运维">📌 ⚙️ 第四阶段：内核源码阅读（进阶，偏深度研发 / 高级运维）</h2>
+<p>如果想从 “会用” 走到 “看懂原理、改代码、写内核模块”，开始阅读源码。</p>
+<h2 id="-1-环境准备">📌 1. 环境准备</h2>
+<ol>
+<li>
+<p>下载内核源码：推荐长期稳定版 <code>3.10</code>（CentOS7）、<code>4.19</code>、<code>5.4</code></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">yum</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> kernel-devel</span><span style="color:#6A737D">  # 对应系统内核源码头文件</span></span></code></pre>
+</li>
+<li>
+<p>阅读工具：VS Code + 源码索引（cscope/ctags）</p>
+</li>
+<li>
+<p>编译环境：<code>gcc</code>、<code>make</code>、依赖库</p>
+</li>
+</ol>
+<h2 id="️-2-源码目录结构重点目录">🏗️ 2. 源码目录结构（重点目录）</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>arch/      ：架构相关代码（x86_64 重点）</span></span>
+<span class="line"><span>kernel/    ：进程、调度、系统调用、中断核心代码</span></span>
+<span class="line"><span>mm/        ：内存管理（虚拟内存、SLAB、Swap）</span></span>
+<span class="line"><span>fs/        ：文件系统、VFS</span></span>
+<span class="line"><span>net/       ：网络协议栈、TCP/IP、socket</span></span>
+<span class="line"><span>drivers/   ：设备驱动（网卡、磁盘、外设）</span></span>
+<span class="line"><span>include/   ：头文件、结构体、宏定义</span></span>
+<span class="line"><span>init/      ：内核启动初始化代码</span></span>
+<span class="line"><span>ipc/       ：进程间通信</span></span></code></pre>
+<h2 id="-3-源码阅读顺序由浅入深">📌 3. 源码阅读顺序（由浅入深）</h2>
+<ol>
+<li>
+<p>内核启动流程：<code>init/main.c</code></p>
+</li>
+<li>
+<p>系统调用实现：<code>sys_xxx</code> 函数</p>
+</li>
+<li>
+<p>进程管理：<code>task_struct</code>、调度器代码</p>
+</li>
+<li>
+<p>内存管理：页分配、SLAB、回收逻辑</p>
+</li>
+<li>
+<p>文件系统 VFS 层</p>
+</li>
+<li>
+<p>TCP/IP 网络协议栈</p>
+</li>
+</ol>
+<h2 id="-4-简单内核模块开发入门实验">📌 4. 简单内核模块开发（入门实验）</h2>
+<p>编写简易内核模块（Hello World）、加载 / 卸载模块：
+<code>insmod</code> / <code>rmmod</code> / <code>lsmod</code>
+理解：内核模块、动态加载、符号导出，是驱动开发入门。</p>
+<hr>
+<h2 id="-第五阶段内核调优--疑难故障实战运维终极目标">🚀 第五阶段：内核调优 &#x26; 疑难故障实战（运维终极目标）</h2>
+<p>结合前面所有知识，形成<strong>系统化调优 + 排障能力</strong>，也是大厂高级运维、SRE 核心考点。</p>
+<h2 id="️-️-1-内核参数调优体系">⚙️ ⚙️ 1. 内核参数调优体系</h2>
+<p>所有调优参数都要理解<strong>底层原理</strong>，拒绝网上复制粘贴。
+文件：<code>/etc/sysctl.conf</code></p>
+<h3 id="1内存类">（1）内存类</h3>
+<ul>
+<li>
+<p><code>vm.swappiness</code>、<code>vm.dirty_*</code> 脏页参数</p>
+</li>
+<li>
+<p>内存水位、页回收参数</p>
+</li>
+<li>
+<p>OOM 相关配置</p>
+</li>
+</ul>
+<h3 id="2文件句柄--进程限制">（2）文件句柄 &#x26; 进程限制</h3>
+<ul>
+<li>
+<p><code>file-max</code> 系统全局最大文件句柄</p>
+</li>
+<li>
+<p><code>ulimit</code> 用户级句柄、进程数限制</p>
+</li>
+</ul>
+<h3 id="3网络类高并发服务必备">（3）网络类（高并发服务必备）</h3>
+<ul>
+<li>
+<p>TCP 连接队列、半连接队列</p>
+</li>
+<li>
+<p>TIME_WAIT 回收、端口范围</p>
+</li>
+<li>
+<p>网卡软中断、RSS 队列调优</p>
+</li>
+<li>
+<p>TCP 拥塞、重传、滑动窗口参数</p>
+</li>
+</ul>
+<h3 id="4进程调度类">（4）进程调度类</h3>
+<p>调度器、线程相关参数</p>
+<h2 id="-2-经典内核级故障实战逐个复现排查">🔍 2. 经典内核级故障实战（逐个复现排查）</h2>
+<ol>
+<li>
+<p>大量 D 状态进程（不可中断阻塞）</p>
+</li>
+<li>
+<p>内核 SLAB 内存泄漏</p>
+</li>
+<li>
+<p>软中断 CPU 占满</p>
+</li>
+<li>
+<p>TCP 全连接 / 半连接队列溢出</p>
+</li>
+<li>
+<p>大量 CLOSE_WAIT / TIME_WAIT 导致端口耗尽</p>
+</li>
+<li>
+<p>频繁 OOM 被杀进程</p>
+</li>
+<li>
+<p>磁盘 IO 队列拥塞、业务卡死</p>
+</li>
+<li>
+<p>僵尸进程无法回收</p>
+</li>
+</ol>
+<hr>
+<h2 id="-分阶段学习周期--学习路线总览">🌐 分阶段学习周期 &#x26; 学习路线总览</h2>
+<h2 id="-路线一运维--sre-方向推荐以排障调优工具使用为主">🎯 路线一：<strong>运维 / SRE 方向（推荐，以排障、调优、工具使用为主）</strong></h2>
+<ol>
+<li>
+<p>前置：C 语言基础 + 操作系统理论（1~2 周）</p>
+</li>
+<li>
+<p>阶段 1：内核整体架构 + 启动流程（1~2 周）</p>
+</li>
+<li>
+<p>阶段 2：四大核心子系统（进程 / 内存 / 文件 IO / 网络）（6~8 周）</p>
+</li>
+<li>
+<p>阶段 3：内核工具栈（strace/perf/slabtop/blktrace）实操（2~3 周）</p>
+</li>
+<li>
+<p>阶段 4：内核参数调优 + 线上故障复盘（长期练习）</p>
+</li>
+</ol>
+<blockquote>
+<p>目标：看懂内核行为、定位根因、做生产调优、解决疑难线上问题。</p>
+</blockquote>
+<h2 id="-路线二内核开发--驱动方向偏研发">📌 路线二：<strong>内核开发 / 驱动方向（偏研发）</strong></h2>
+<p>在路线一基础上增加：</p>
+<ol>
+<li>
+<p>内核源码精读（2~4 个月）</p>
+</li>
+<li>
+<p>内核模块、驱动开发、调试（kgdb）</p>
+</li>
+<li>
+<p>内核补丁、编译自定义内核</p>
+</li>
+</ol>
+<hr>
+<h2 id="-优质学习资源书籍--文档--社区">💾 优质学习资源（书籍 + 文档 + 社区）</h2>
+<h2 id="-经典书籍按优先级">📖 经典书籍（按优先级）</h2>
+<h3 id="入门--运维向">入门 &#x26; 运维向</h3>
+<ol>
+<li>
+<p><strong>《Linux 内核设计与实现》</strong>（必看，薄而精，运维首选）
+讲解内核架构、子系统原理，不堆砌复杂源码，适合入门。</p>
+</li>
+<li>
+<p><strong>《Linux 性能优化权威指南》</strong>
+内核 + 应用全链路性能调优、故障排查，运维实战圣经。</p>
+</li>
+<li>
+<p><strong>《深入 Linux 内核架构》</strong>
+内容更深，子系统讲解全面，进阶使用。</p>
+</li>
+</ol>
+<h3 id="源码--开发向">源码 &#x26; 开发向</h3>
+<ol>
+<li>
+<p><strong>《Linux 内核源码剖析》</strong></p>
+</li>
+<li>
+<p><strong>《Linux 设备驱动程序》（LDD）</strong> 驱动经典</p>
+</li>
+<li>
+<p><strong>《深入理解 Linux 虚拟内存管理》</strong> 内存专题</p>
+</li>
+</ol>
+<h2 id="--在线文档--官方资料">📌 ⚡ 在线文档 &#x26; 官方资料</h2>
+<ol>
+<li>
+<p>Linux 内核官方文档：<code>https://www.kernel.org/doc/html/</code>（最权威）</p>
+</li>
+<li>
+<p>Linux man 手册、<code>/proc</code> 文件系统文档</p>
+</li>
+<li>
+<p>RedHat/CentOS 官方内核调优文档（企业生产参考）</p>
+</li>
+</ol>
+<h2 id="-实验环境">🔧 实验环境</h2>
+<ol>
+<li>
+<p>虚拟机：CentOS7/8、Ubuntu，多版本内核切换练习</p>
+</li>
+<li>
+<p>推荐内核版本：先学 <strong>3.10（CentOS7）</strong>（企业存量最多），再学 4.19/5.4</p>
+</li>
+</ol>
+<hr>
+<h2 id="-学习避坑建议针对运维人群">🔒 学习避坑建议（针对运维人群）</h2>
+<ol>
+<li>
+<p><strong>不要一上来就啃海量源码</strong>
+运维优先「原理 + 工具 + 排障」，源码作为辅助理解，否则极易劝退。</p>
+</li>
+<li>
+<p><strong>所有知识点必须上机验证</strong>
+内核抽象，只看书完全没用，一定要用 <code>dmesg</code>/<code>strace</code>/<code>perf</code> 观测现象。</p>
+</li>
+<li>
+<p><strong>结合你现有的业务场景</strong>
+你维护 Kafka、MySQL、Python 服务，重点深挖<strong>网络、内存、IO、进程调度</strong>四大块。</p>
+</li>
+<li>
+<p><strong>调优绝不盲目抄参数</strong>
+每个 <code>sysctl</code> 参数都要搞懂：它在内核做了什么、影响什么场景。</p>
+</li>
+<li>
+<p>循序渐进：基础 Linux → 内核子系统 → 工具 → 调优排障 → 源码。</p>
+</li>
+</ol>
+<hr>
+<h2 id="-极简学习清单速记版">📊 极简学习清单（速记版）</h2>
+<ol>
+<li>
+<p>补齐 <strong>C 语言 + 操作系统理论</strong>（前置）</p>
+</li>
+<li>
+<p>掌握内核整体架构、用户态 / 内核态、启动流程</p>
+</li>
+<li>
+<p>吃透四大核心子系统：<strong>进程调度、虚拟内存、文件系统、网络协议栈</strong></p>
+</li>
+<li>
+<p>精通内核观测工具：<code>strace</code>、<code>perf</code>、<code>vmstat</code>、<code>iostat</code>、<code>ss</code>、<code>tcpdump</code></p>
+</li>
+<li>
+<p>理解全套内核可调参数，掌握调优逻辑</p>
+</li>
+<li>
+<p>复现并解决各类内核级线上故障</p>
+</li>
+<li>
+<p>（可选）阅读源码、编写简单内核模块</p>
+</li>
+</ol>
+<hr>
+<blockquote data-callout="info" class="callout callout-info">
+<p>关联文档
+</p>
+<ul>
+<li><a href="/posts/tech/cloud-native/linux/kernel/linux-%E5%86%85%E6%A0%B8%E5%AD%A6%E4%B9%A0" class="internal-link">Linux 内核学习</a> — 内核基础</li>
+<li>用户态与内核态 — 用户态/内核态</li>
+</ul>
+</blockquote></article><div class="mt-16 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-6"><div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><a href="/" class="inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-accent)]"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>返回首页</a><a href="/rss.xml" class="inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-accent)]"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 8-8 8.5 8.5 0 0 1 7.5 4.75 8 8 0 0 1-4.5 11.25"></path><path d="M12 18a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></path></svg>订阅更新</a></div></div></div><div class="hidden w-56 flex-shrink-0 lg:block"><div class="sticky top-24 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-4"><h3 class="mb-3 text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">目录</h3><nav class="flex flex-col gap-1"><a key="-前置基础必须先掌握否则寸步难行" href="#-前置基础必须先掌握否则寸步难行" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">📖 前置基础（必须先掌握，否则寸步难行）</a><a key="-1-操作系统基础理论计算机底层" href="#-1-操作系统基础理论计算机底层" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">📖 1. 操作系统基础理论（计算机底层）</a><a key="-2-c-语言内核唯一主力语言" href="#-2-c-语言内核唯一主力语言" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">📌 2. C 语言（内核唯一主力语言）</a><a key="-3-汇编语言了解为主" href="#-3-汇编语言了解为主" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">📌 3. 汇编语言（了解为主）</a><a key="-4-已掌握的-linux-实操能力" href="#-4-已掌握的-linux-实操能力" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">📌 4. 已掌握的 Linux 实操能力</a><a key="️--第一阶段内核整体架构--启动流程入门总览12-周" href="#️--第一阶段内核整体架构--启动流程入门总览12-周" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🏗️ ⚡ 第一阶段：内核整体架构 &amp; 启动流程（入门总览，1~2 周）</a><a key="️-1-linux-内核整体架构" href="#️-1-linux-内核整体架构" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🏗️ 1. Linux 内核整体架构</a><a key="分层模型" href="#分层模型" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">分层模型</a><a key="核心概念" href="#核心概念" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">核心概念</a><a key="-2-linux-完整启动流程从上电到应用启动" href="#-2-linux-完整启动流程从上电到应用启动" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🎯 2. Linux 完整启动流程（从上电到应用启动）</a><a key="配套实操" href="#配套实操" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">配套实操</a><a key="-第二阶段内核核心子系统重中之重运维--排障核心48-周" href="#-第二阶段内核核心子系统重中之重运维--排障核心48-周" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🔧 第二阶段：内核核心子系统（重中之重，运维 / 排障核心，4~8 周）</a><a key="--子系统-1进程管理--调度器最高频" href="#--子系统-1进程管理--调度器最高频" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">📌 ⏰ 子系统 1：进程管理 &amp; 调度器（最高频）</a><a key="1-基础概念" href="#1-基础概念" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">1. 基础概念</a><a key="2-进程调度" href="#2-进程调度" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">2. 进程调度</a><a key="3-中断--软中断--硬中断" href="#3-中断--软中断--硬中断" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">3. 中断 &amp; 软中断 &amp; 硬中断</a><a key="4-工具--内核参数--故障" href="#4-工具--内核参数--故障" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">4. 工具 &amp; 内核参数 &amp; 故障</a><a key="-子系统-2内存管理虚拟内存第二核心" href="#-子系统-2内存管理虚拟内存第二核心" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🧠 子系统 2：内存管理（虚拟内存，第二核心）</a><a key="1-虚拟内存原理linux-内存核心" href="#1-虚拟内存原理linux-内存核心" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">1. 虚拟内存原理（Linux 内存核心）</a><a key="2-内核内存布局" href="#2-内核内存布局" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">2. 内核内存布局</a><a key="3-页缓存--buffer--脏页" href="#3-页缓存--buffer--脏页" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">3. 页缓存 &amp; Buffer &amp; 脏页</a><a key="4-swap-交换机制底层" href="#4-swap-交换机制底层" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">4. Swap 交换机制（底层）</a><a key="5-oom-killer-内存溢出" href="#5-oom-killer-内存溢出" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">5. OOM Killer 内存溢出</a><a key="6-内存泄漏--内核内存泄漏" href="#6-内存泄漏--内核内存泄漏" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">6. 内存泄漏 &amp; 内核内存泄漏</a><a key="7-工具--故障" href="#7-工具--故障" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">7. 工具 &amp; 故障</a><a key="-子系统-3文件系统--块设备-io" href="#-子系统-3文件系统--块设备-io" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">💾 子系统 3：文件系统 &amp; 块设备 IO</a><a key="1-虚拟文件系统-vfslinux-设计精髓" href="#1-虚拟文件系统-vfslinux-设计精髓" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">1. 虚拟文件系统 VFS（Linux 设计精髓）</a><a key="2-主流本地文件系统" href="#2-主流本地文件系统" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">2. 主流本地文件系统</a><a key="3-inode--硬链接--软链接" href="#3-inode--硬链接--软链接" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">3. Inode &amp; 硬链接 &amp; 软链接</a><a key="4-块设备--io-调度" href="#4-块设备--io-调度" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">4. 块设备 &amp; IO 调度</a><a key="5-日志轮转文件锁权限底层实现" href="#5-日志轮转文件锁权限底层实现" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">5. 日志轮转、文件锁、权限底层实现</a><a key="工具--故障" href="#工具--故障" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">工具 &amp; 故障</a><a key="-子系统-4网络子系统网络排障终极底层" href="#-子系统-4网络子系统网络排障终极底层" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🌐 子系统 4：网络子系统（网络排障终极底层）</a><a key="1-linux-网络协议栈分层" href="#1-linux-网络协议栈分层" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">1. Linux 网络协议栈分层</a><a key="2-socket-内核实现" href="#2-socket-内核实现" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">2. Socket 内核实现</a><a key="3-tcp-内核深度运维必学" href="#3-tcp-内核深度运维必学" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">3. TCP 内核深度（运维必学）</a><a key="4-网络收包--发包全流程" href="#4-网络收包--发包全流程" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">4. 网络收包 / 发包全流程</a><a key="5-防火墙-netfilteriptables-内核框架" href="#5-防火墙-netfilteriptables-内核框架" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">5. 防火墙 netfilter/iptables 内核框架</a><a key="6-工具--故障" href="#6-工具--故障" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">6. 工具 &amp; 故障</a><a key="-子系统-5系统调用--内核调试基础" href="#-子系统-5系统调用--内核调试基础" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">📖 子系统 5：系统调用 &amp; 内核调试基础</a><a key="1-系统调用" href="#1-系统调用" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">1. 系统调用</a><a key="2-strace-使用运维神器" href="#2-strace-使用运维神器" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">2. strace 使用（运维神器）</a><a key="-第三阶段内核观测--性能分析工具栈运维落地核心" href="#-第三阶段内核观测--性能分析工具栈运维落地核心" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🔧 第三阶段：内核观测 &amp; 性能分析工具栈（运维落地核心）</a><a key="-1-综合监控" href="#-1-综合监控" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">📊 1. 综合监控</a><a key="-2-cpu-分析" href="#-2-cpu-分析" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🔍 2. CPU 分析</a><a key="-3-内存分析" href="#-3-内存分析" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🔍 3. 内存分析</a><a key="-4-磁盘-io-分析" href="#-4-磁盘-io-分析" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🔍 4. 磁盘 IO 分析</a><a key="-5-网络分析" href="#-5-网络分析" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🔍 5. 网络分析</a><a key="-6-跟踪--调试" href="#-6-跟踪--调试" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🔍 6. 跟踪 &amp; 调试</a><a key="-️-第四阶段内核源码阅读进阶偏深度研发--高级运维" href="#-️-第四阶段内核源码阅读进阶偏深度研发--高级运维" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">📌 ⚙️ 第四阶段：内核源码阅读（进阶，偏深度研发 / 高级运维）</a><a key="-1-环境准备" href="#-1-环境准备" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">📌 1. 环境准备</a><a key="️-2-源码目录结构重点目录" href="#️-2-源码目录结构重点目录" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🏗️ 2. 源码目录结构（重点目录）</a><a key="-3-源码阅读顺序由浅入深" href="#-3-源码阅读顺序由浅入深" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">📌 3. 源码阅读顺序（由浅入深）</a><a key="-4-简单内核模块开发入门实验" href="#-4-简单内核模块开发入门实验" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">📌 4. 简单内核模块开发（入门实验）</a><a key="-第五阶段内核调优--疑难故障实战运维终极目标" href="#-第五阶段内核调优--疑难故障实战运维终极目标" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🚀 第五阶段：内核调优 &amp; 疑难故障实战（运维终极目标）</a><a key="️-️-1-内核参数调优体系" href="#️-️-1-内核参数调优体系" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">⚙️ ⚙️ 1. 内核参数调优体系</a><a key="1内存类" href="#1内存类" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">（1）内存类</a><a key="2文件句柄--进程限制" href="#2文件句柄--进程限制" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">（2）文件句柄 &amp; 进程限制</a><a key="3网络类高并发服务必备" href="#3网络类高并发服务必备" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">（3）网络类（高并发服务必备）</a><a key="4进程调度类" href="#4进程调度类" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">（4）进程调度类</a><a key="-2-经典内核级故障实战逐个复现排查" href="#-2-经典内核级故障实战逐个复现排查" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🔍 2. 经典内核级故障实战（逐个复现排查）</a><a key="-分阶段学习周期--学习路线总览" href="#-分阶段学习周期--学习路线总览" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🌐 分阶段学习周期 &amp; 学习路线总览</a><a key="-路线一运维--sre-方向推荐以排障调优工具使用为主" href="#-路线一运维--sre-方向推荐以排障调优工具使用为主" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🎯 路线一：运维 / SRE 方向（推荐，以排障、调优、工具使用为主）</a><a key="-路线二内核开发--驱动方向偏研发" href="#-路线二内核开发--驱动方向偏研发" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">📌 路线二：内核开发 / 驱动方向（偏研发）</a><a key="-优质学习资源书籍--文档--社区" href="#-优质学习资源书籍--文档--社区" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">💾 优质学习资源（书籍 + 文档 + 社区）</a><a key="-经典书籍按优先级" href="#-经典书籍按优先级" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">📖 经典书籍（按优先级）</a><a key="入门--运维向" href="#入门--运维向" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">入门 &amp; 运维向</a><a key="源码--开发向" href="#源码--开发向" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] pl-4 text-[var(--color-text-muted)]">源码 &amp; 开发向</a><a key="--在线文档--官方资料" href="#--在线文档--官方资料" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">📌 ⚡ 在线文档 &amp; 官方资料</a><a key="-实验环境" href="#-实验环境" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🔧 实验环境</a><a key="-学习避坑建议针对运维人群" href="#-学习避坑建议针对运维人群" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">🔒 学习避坑建议（针对运维人群）</a><a key="-极简学习清单速记版" href="#-极简学习清单速记版" class="rounded-lg px-2 py-1 text-xs transition-colors hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-accent)] text-[var(--color-text-secondary)]">📊 极简学习清单（速记版）</a></nav></div></div></main><footer class="mt-auto border-t border-[var(--color-border)]"><div class="mx-auto max-w-3xl px-6 py-8"><div class="flex flex-col items-center gap-2 text-sm text-[var(--color-text-muted)]"><p>&copy; 2026 My Blog. All rights reserved.</p><p class="text-xs">Powered by <a href="https://astro.build" class="hover:text-[var(--color-accent)] transition-colors" target="_blank" rel="noopener">Astro</a>&amp;<a href="https://pages.cloudflare.com" class="hover:text-[var(--color-accent)] transition-colors" target="_blank" rel="noopener">Cloudflare Pages</a></p></div></div></footer><script>
+    (function () {
+      const bar = document.getElementById('progress-bar');
+      if (!bar) return;
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        bar.style.width = progress + '%';
+      });
+    })();
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const article = document.querySelector('article');
+      if (!article) return;
+
+      const mapElement = document.getElementById('title-url-map');
+      const rawData = mapElement ? mapElement.dataset.map : '';
+      const titleUrlMap = mapElement ? JSON.parse(rawData) : {};
+      
+      const wikilinkRegex = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g;
+
+      const resolveWikilink = function(target) {
+        let url = titleUrlMap[target];
+        if (!url) url = titleUrlMap[target.toLowerCase()];
+        
+        if (!url) {
+          const filename = target.split('/').pop() || '';
+          url = titleUrlMap[filename];
+          if (!url) url = titleUrlMap[filename.toLowerCase()];
+        }
+        
+        if (!url) {
+          const cleanTarget = target.replace(/^\.\.\//g, '').replace(/^\.\//g, '');
+          url = titleUrlMap[cleanTarget];
+          if (!url) url = titleUrlMap[cleanTarget.toLowerCase()];
+        }
+        
+        return url;
+      };
+      
+      const replaceWikilinks = function(element) {
+        element.childNodes.forEach(function(node) {
+          if (node.nodeType === Node.TEXT_NODE) {
+            const text = node.textContent;
+            if (text && text.includes('[[')) {
+              const replaced = text.replace(wikilinkRegex, function(match, target, label) {
+                let anchor = '';
+                let cleanTarget = target;
+                
+                if (target.includes('#')) {
+                  const parts = target.split('#');
+                  cleanTarget = parts[0];
+                  anchor = '#' + parts.slice(1).join('#');
+                }
+                
+                const url = resolveWikilink(cleanTarget);
+                if (url) {
+                  const encodedUrl = url.replace(/ /g, '%20');
+                  return '<a href="' + encodedUrl + anchor + '" class="internal-link">' + (label || target) + '</a>';
+                }
+                return label || target;
+              });
+              if (replaced !== text) {
+                const span = document.createElement('span');
+                span.innerHTML = replaced;
+                node.parentNode.replaceChild(span, node);
+              }
+            }
+          } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'A') {
+            replaceWikilinks(node);
+          }
+        });
+      };
+
+      replaceWikilinks(article);
+    });
+  </script><!-- Dark mode toggle script --><script>
+      window.toggleTheme = function () {
+        const html = document.documentElement;
+        const isDark = html.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      };
+    </script></body></html>

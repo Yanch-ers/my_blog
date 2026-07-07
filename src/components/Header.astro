@@ -9,12 +9,12 @@ const navLinks = [
 ---
 
 <header class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-bg)]/80 backdrop-blur-md">
-  <nav class="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
-    <a href="/" class="text-xl font-bold tracking-tight hover:text-[var(--color-accent)] transition-colors">
-      My Blog
+  <nav class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+    <a href="/" class="font-serif text-xl font-bold tracking-tight text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors">
+      NOVA BLOG
     </a>
 
-    <div class="flex items-center gap-6">
+    <div class="hidden items-center gap-8 md:flex">
       {navLinks.map(({ href, label }) => (
         <a
           href={href}
@@ -29,7 +29,6 @@ const navLinks = [
         </a>
       ))}
 
-      <!-- Search link -->
       <a
         href="/search"
         class="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors"
@@ -41,24 +40,77 @@ const navLinks = [
         </svg>
       </a>
 
-      <!-- Dark mode toggle -->
       <button
         onclick="toggleTheme()"
         class="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors"
         title="切换主题"
       >
-        <!-- Sun icon (shown in dark mode) -->
         <svg class="hidden dark:block" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="4" />
           <path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" />
           <path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" />
           <path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" />
         </svg>
-        <!-- Moon icon (shown in light mode) -->
         <svg class="block dark:hidden" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
         </svg>
       </button>
+
+      <a
+        href="/rss.xml"
+        class="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+        title="订阅"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 12a8 8 0 0 1 8-8 8.5 8.5 0 0 1 7.5 4.75 8 8 0 0 1-4.5 11.25" />
+          <path d="M12 18a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+        </svg>
+        订阅
+      </a>
     </div>
+
+    <button
+      class="md:hidden text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]"
+      id="mobile-menu-btn"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" x2="21" y1="6" y2="6" />
+        <line x1="3" x2="21" y1="12" y2="12" />
+        <line x1="3" x2="21" y1="18" y2="18" />
+      </svg>
+    </button>
   </nav>
+
+  <div id="mobile-menu" class="hidden border-t border-[var(--color-border)] bg-[var(--color-bg)] md:hidden">
+    <div class="flex flex-col px-6 py-4 gap-4">
+      {navLinks.map(({ href, label }) => (
+        <a
+          href={href}
+          class:list={[
+            'text-sm font-medium transition-colors',
+            currentPath === href || (href !== '/' && currentPath.startsWith(href))
+              ? 'text-[var(--color-accent)]'
+              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]',
+          ]}
+        >
+          {label}
+        </a>
+      ))}
+      <a href="/search" class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]">搜索</a>
+      <button onclick="toggleTheme()" class="text-sm text-left text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]">切换主题</button>
+      <a href="/rss.xml" class="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-secondary)] w-fit">订阅</a>
+    </div>
+  </div>
 </header>
+
+<script is:inline>
+  (function () {
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    if (btn && menu) {
+      btn.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+      });
+    }
+  })();
+</script>

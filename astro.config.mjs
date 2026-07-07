@@ -2,25 +2,26 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
-import cloudflare from '@astrojs/cloudflare';
+import edgeone from '@edgeone/astro';
 import sitemap from '@astrojs/sitemap';
 import { remarkObsidian } from './src/plugins/remark-obsidian.mjs';
 import { unified } from '@astrojs/markdown-remark';
 
-// https://astro.build/config
+const siteUrl = process.env.SITE_URL || 'https://your-blog.pages.dev';
+
 export default defineConfig({
-  site: 'https://your-blog.pages.dev',
+  site: siteUrl,
   output: 'server',
   markdown: {
     processor: unified({
       remarkPlugins: [remarkObsidian],
+      rehypePlugins: [],
     }),
   },
   vite: {
     plugins: [tailwindcss()],
     server: {
       watch: {
-        // Watch submodule content directories and src for hot-reload
         ignored: (filePath) => {
           const normalized = filePath.replace(/\\/g, '/');
           return !normalized.includes('/blog/content/obsidian')
@@ -33,5 +34,7 @@ export default defineConfig({
     react(),
     sitemap(),
   ],
-  adapter: cloudflare(),
+  adapter: edgeone({
+    entrypointResolution: 'auto',
+  }),
 });

@@ -1,0 +1,19 @@
+name: Trigger Blog Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Trigger blog rebuild
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          repository: Yanch-ers/blog
+          event-type: vault_updated
+          client-payload: '{"commit": "${{ github.sha }}", "ref": "${{ github.ref }}"}'
