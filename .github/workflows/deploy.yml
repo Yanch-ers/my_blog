@@ -1,9 +1,6 @@
 name: Trigger EdgeOne Rebuild
 
 on:
-  push:
-    branches:
-      - master
   repository_dispatch:
     types:
       - vault_updated
@@ -23,6 +20,5 @@ jobs:
         run: |
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
-          git pull origin master --rebase
-          git commit --allow-empty -m "Trigger rebuild: vault updated"
-          git push origin master
+          git commit --allow-empty -m "chore: trigger EdgeOne rebuild"
+          git push https://${{ secrets.GH_TOKEN }}@github.com/Yanch-ers/my_blog.git master
