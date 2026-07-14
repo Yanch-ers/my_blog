@@ -1,14 +1,9 @@
 ---
-interface Props {
-  maxWidth?: string;
-}
-const { maxWidth = 'max-w-5xl' } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
 <footer class="mt-auto">
-  <div class={`mx-auto w-full ${maxWidth} px-6 py-8`}>
-    <div class="glass-panel rounded-2xl p-6">
+  <div class="glass-panel rounded-2xl p-6">
       <div class="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
         <!-- Brand -->
         <div class="max-w-xs">
@@ -57,5 +52,4 @@ const year = new Date().getFullYear();
         </p>
       </div>
     </div>
-  </div>
 </footer>
