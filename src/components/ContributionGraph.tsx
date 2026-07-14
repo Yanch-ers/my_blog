@@ -40,7 +40,23 @@ function getLevel(count: number): number {
 export default function ContributionGraph({ dates }: ContributionGraphProps) {
   const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
 
-  const { weeks, totalContributions, monthLabels } = useMemo(() => {
+  // Extract available years from dates
+  const availableYears = useMemo(() => {
+    const years = new Set<number>();
+    const currentYear = new Date().getFullYear();
+    years.add(currentYear);
+    for (const d of dates) {
+      const year = new Date(d).getFullYear();
+      if (year >= 2020 && year <= currentYear) {
+        years.add(year);
+      }
+    }
+    return Array.from(years).sort((a, b) => b - a);
+  }, [dates]);
+
+  const [selectedYear, setSelectedYear] = useState(availableYears[0] ?? new Date().getFullYear());
+
+  const { weeks, totalContributions, monthLabels, yearTotal } = useMemo(() => {
     // Count articles per day
     const countMap = new Map<string, number>();
     for (const d of dates) {
@@ -48,33 +64,44 @@ export default function ContributionGraph({ dates }: ContributionGraphProps) {
       countMap.set(key, (countMap.get(key) ?? 0) + 1);
     }
 
-    // Build 52-week grid ending at today
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    // Build grid for selected year (Jan 1 - Dec 31, aligned to Sunday start)
+    const yearStart = new Date(selectedYear, 0, 1);
+    // Align to previous Sunday
+    yearStart.setDate(yearStart.getDate() - yearStart.getDay());
 
-    // Start from 52 weeks ago, aligned to Sunday
-    const startDate = new Date(today);
-    startDate.setDate(startDate.getDate() - 364);
-    // Align to Sunday
-    startDate.setDate(startDate.getDate() - startDate.getDay());
+    const yearEnd = new Date(selectedYear, 11, 31);
+    // Calculate number of weeks needed
+    const totalDays = Math.ceil((yearEnd.getTime() - yearStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+    const numWeeks = Math.ceil(totalDays / 7);
 
     const weeks: DayData[][] = [];
     const monthLabels: { label: string; col: number }[] = [];
     let currentMonth = -1;
+    let yearTotal = 0;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-    for (let w = 0; w < 53; w++) {
+    for (let w = 0; w < numWeeks; w++) {
       const week: DayData[] = [];
       for (let d = 0; d < 7; d++) {
-        const date = new Date(startDate);
-        date.setDate(startDate.getDate() + w * 7 + d);
+        const date = new Date(yearStart);
+        date.setDate(yearStart.getDate() + w * 7 + d);
 
+        // Skip future dates
         if (date > today) {
+          week.push({ date, dateStr: '', count: 0 });
+          continue;
+        }
+
+        // Only include dates within the selected year
+        if (date.getFullYear() !== selectedYear) {
           week.push({ date, dateStr: '', count: 0 });
           continue;
         }
 
         const dateStr = date.toISOString().slice(0, 10);
         const count = countMap.get(dateStr) ?? 0;
+        yearTotal += count;
         week.push({ date, dateStr, count });
 
         // Track month labels
@@ -86,10 +113,8 @@ export default function ContributionGraph({ dates }: ContributionGraphProps) {
       weeks.push(week);
     }
 
-    const total = Array.from(countMap.values()).reduce((a, b) => a + b, 0);
-
-    return { weeks, totalContributions: total, monthLabels };
-  }, [dates]);
+    return { weeks, totalContributions: yearTotal, monthLabels, yearTotal };
+  }, [dates, selectedYear]);
 
   const isDark = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
   const colors = isDark ? LEVEL_COLORS_DARK : LEVEL_COLORS_LIGHT;
@@ -104,9 +129,27 @@ export default function ContributionGraph({ dates }: ContributionGraphProps) {
         <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
           写作日历
         </h3>
-        <span className="text-xs text-[var(--color-text-muted)]">
-          过去一年共 <span className="font-semibold text-[var(--color-accent)]">{totalContributions}</span> 篇文章
-        </span>
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-[var(--color-text-muted)]">
+            {selectedYear} 年共 <span className="font-semibold text-[var(--color-accent)]">{yearTotal}</span> 篇文章
+          </span>
+          {/* Year selector */}
+          <div className="flex gap-1">
+            {availableYears.map((year) => (
+              <button
+                key={year}
+                onClick={() => setSelectedYear(year)}
+                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                  year === selectedYear
+                    ? 'bg-[var(--color-accent)] text-white shadow-sm'
+                    : 'text-[var(--color-text-muted)] hover:bg-[var(--color-bg-secondary)]'
+                }`}
+              >
+                {year}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="overflow-x-auto pb-2">
