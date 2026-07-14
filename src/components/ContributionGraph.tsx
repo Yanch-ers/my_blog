@@ -69,28 +69,24 @@ export default function ContributionGraph({ dates }: ContributionGraphProps) {
     // Align to previous Sunday
     yearStart.setDate(yearStart.getDate() - yearStart.getDay());
 
-    const yearEnd = new Date(selectedYear, 11, 31);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // End at today (not Dec 31) to avoid blank weeks
+    const effectiveEnd = today.getFullYear() === selectedYear ? today : new Date(selectedYear, 11, 31);
     // Calculate number of weeks needed
-    const totalDays = Math.ceil((yearEnd.getTime() - yearStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+    const totalDays = Math.ceil((effectiveEnd.getTime() - yearStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
     const numWeeks = Math.ceil(totalDays / 7);
 
     const weeks: DayData[][] = [];
     const monthLabels: { label: string; col: number }[] = [];
     let yearTotal = 0;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
 
     for (let w = 0; w < numWeeks; w++) {
       const week: DayData[] = [];
       for (let d = 0; d < 7; d++) {
         const date = new Date(yearStart);
         date.setDate(yearStart.getDate() + w * 7 + d);
-
-        // Skip future dates
-        if (date > today) {
-          week.push({ date, dateStr: '', count: 0 });
-          continue;
-        }
 
         // Only include dates within the selected year
         if (date.getFullYear() !== selectedYear) {
