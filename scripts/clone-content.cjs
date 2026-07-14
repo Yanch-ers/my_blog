@@ -52,4 +52,23 @@ if (fs.existsSync(gitDir)) {
   fs.rmSync(gitDir, { recursive: true, force: true });
 }
 
-console.log('Content repository cloned successfully');
+// Convert all .md files from CRLF to LF to prevent YAML parse errors on Linux
+function convertLineEndings(dir) {
+  let count = 0;
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      count += convertLineEndings(fullPath);
+    } else if (entry.name.endsWith('.md')) {
+      const buf = fs.readFileSync(fullPath);
+      if (buf.includes(Buffer.from('\r\n'))) {
+        fs.writeFileSync(fullPath, buf.toString('utf8').replace(/\r\n/g, '\n'));
+        count++;
+      }
+    }
+  }
+  return count;
+}
+
+const converted = convertLineEndings(targetDir);
+console.log(`Content repository cloned successfully (${converted} md files converted to LF)`);
