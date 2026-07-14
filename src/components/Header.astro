@@ -14,11 +14,7 @@ const { currentPath = '/' } = Astro.props;
     <nav class="flex items-center justify-between">
       <!-- Logo -->
       <a href="/" class="flex items-center gap-2 group">
-        <div class="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-teal-500 to-emerald-600 text-white transition-transform group-hover:scale-105">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2L2 12l10 10 10-10L12 2z" />
-          </svg>
-        </div>
+        <img src="https://my-blog-1369148642.cos.ap-guangzhou.myqcloud.com/head_photo.jpg" alt="logo" class="h-7 w-7 rounded-md object-cover transition-transform group-hover:scale-105" />
         <span class="text-sm font-bold tracking-tight text-[var(--color-text)]">
           Nova<span class="accent-gradient">Blog</span>
         </span>

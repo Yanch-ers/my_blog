@@ -400,6 +400,7 @@ a.internal-link:hover {
   padding: 0.125em 0.375em;
   border-radius: 0.25rem;
   word-break: break-word;
+  color: var(--color-text);
 }
 
 .prose pre {
@@ -420,6 +421,7 @@ a.internal-link:hover {
   font-size: 0.875rem;
   line-height: inherit;
   word-break: normal;
+  color: var(--color-text);
 }
 
 .prose ul, .prose ol {
