@@ -10,33 +10,37 @@ const sortedTags = Array.from(tags.entries())
 ---
 
 <aside class="hidden w-68 flex-shrink-0 flex-col gap-5 xl:block xl:sticky xl:top-24 xl:self-start">
-  <div class="rounded-xl bg-white p-5 shadow-sm border border-gray-100">
+  <!-- Profile card -->
+  <div class="rounded-xl bg-[var(--color-bg-card)] p-5 border border-[var(--color-border)]">
     <div class="flex items-center gap-3 mb-4">
-      <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+      <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-teal-500 to-cyan-600 text-white shadow-sm">
         <span class="text-sm font-bold">Q</span>
       </div>
       <div>
-        <h3 class="font-semibold text-gray-900">NOVA BLOG</h3>
-        <p class="text-xs text-gray-500">记录技术与生活</p>
+        <h3 class="font-semibold text-[var(--color-text)]">Nova Blog</h3>
+        <p class="text-xs text-[var(--color-text-muted)]">记录技术与生活</p>
       </div>
     </div>
-    <p class="text-sm leading-relaxed text-gray-600">
+    <p class="text-sm leading-relaxed text-[var(--color-text-secondary)]">
       记录技术笔记、设计观察与日常思考，分享云原生、Linux、数据库等技术领域的学习心得。
     </p>
   </div>
 
-  <div class="rounded-xl bg-white p-5 shadow-sm border border-gray-100">
-    <h3 class="mb-4 flex items-center gap-2 text-sm font-semibold text-gray-900">
-      <span class="flex h-6 w-6 items-center justify-center rounded-md bg-blue-100 text-blue-600">📂</span>
+  <!-- Categories -->
+  <div class="rounded-xl bg-[var(--color-bg-card)] p-5 border border-[var(--color-border)]">
+    <h3 class="mb-4 flex items-center gap-2 text-sm font-semibold text-[var(--color-text)]">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)]">
+        <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+      </svg>
       文章分类
     </h3>
-    <nav class="flex max-h-60 flex-col gap-1 overflow-y-auto scrollbar-thin">
+    <nav class="flex max-h-60 flex-col gap-0.5 overflow-y-auto scrollbar-thin">
       <a
         href="/"
-        class="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm text-gray-600 transition-all hover:bg-blue-50 hover:text-blue-600"
+        class="flex items-center justify-between rounded-lg px-3 py-2 text-sm text-[var(--color-text-secondary)] transition-all hover:bg-[var(--color-accent-light)] hover:text-[var(--color-accent)]"
       >
         <span class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-gray-300" />
+          <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-text-muted)]" />
           全部文章
         </span>
       </a>
@@ -44,38 +48,43 @@ const sortedTags = Array.from(tags.entries())
         <a
           key={cat.id}
           href={`/tags/${cat.id}`}
-          class="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm text-gray-600 transition-all hover:bg-blue-50 hover:text-blue-600"
+          class="flex items-center justify-between rounded-lg px-3 py-2 text-sm text-[var(--color-text-secondary)] transition-all hover:bg-[var(--color-accent-light)] hover:text-[var(--color-accent)]"
         >
           <span class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-blue-400" />
+            <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
             {cat.name}
           </span>
-          <span class="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{cat.count}</span>
+          <span class="text-[11px] text-[var(--color-text-muted)] bg-[var(--color-bg-secondary)] px-1.5 py-0.5 rounded">{cat.count}</span>
         </a>
       ))}
     </nav>
   </div>
 
-  <div class="rounded-xl bg-white p-5 shadow-sm border border-gray-100">
-    <h3 class="mb-4 flex items-center gap-2 text-sm font-semibold text-gray-900">
-      <span class="flex h-6 w-6 items-center justify-center rounded-md bg-purple-100 text-purple-600">🏷️</span>
+  <!-- Tags -->
+  <div class="rounded-xl bg-[var(--color-bg-card)] p-5 border border-[var(--color-border)]">
+    <h3 class="mb-4 flex items-center gap-2 text-sm font-semibold text-[var(--color-text)]">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-rose-500">
+        <path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z" />
+        <path d="M7 7h.01" />
+      </svg>
       热门标签
     </h3>
-    <div class="flex flex-wrap gap-2">
+    <div class="flex flex-wrap gap-1.5">
       {sortedTags.map(([tag, count]) => (
         <a
           key={tag}
           href={`/tags/${tag}`}
-          class="inline-flex items-center gap-1.5 rounded-full bg-gray-50 px-2.5 py-1 text-xs text-gray-500 transition-all hover:bg-blue-50 hover:text-blue-600"
+          class="inline-flex items-center gap-1 rounded-md bg-[var(--color-bg-secondary)] px-2 py-1 text-xs text-[var(--color-text-muted)] transition-all hover:bg-[var(--color-accent-light)] hover:text-[var(--color-accent)]"
         >
           {tag}
-          <span class="text-[10px] opacity-70">{count}</span>
+          <span class="text-[10px] opacity-60">{count}</span>
         </a>
       ))}
     </div>
   </div>
 
-  <div class="rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 p-5 text-white shadow-sm">
+  <!-- RSS -->
+  <div class="rounded-xl bg-gradient-to-br from-teal-600 to-cyan-700 p-5 text-white border border-teal-500/20">
     <h3 class="mb-2 flex items-center gap-2 text-sm font-semibold">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M4 12a8 8 0 0 1 8-8 8.5 8.5 0 0 1 7.5 4.75 8 8 0 0 1-4.5 11.25" />
@@ -83,12 +92,12 @@ const sortedTags = Array.from(tags.entries())
       </svg>
       订阅更新
     </h3>
-    <p class="mb-4 text-xs text-blue-100">
+    <p class="mb-4 text-xs text-teal-100">
       获取最新文章推送，不错过任何更新
     </p>
     <a
       href="/rss.xml"
-      class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-white/20 px-4 py-2.5 text-sm font-medium text-white backdrop-blur-sm transition-all hover:bg-white/30"
+      class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-white/15 px-4 py-2.5 text-sm font-medium text-white backdrop-blur-sm transition-all hover:bg-white/25 border border-white/10"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M4 12a8 8 0 0 1 8-8 8.5 8.5 0 0 1 7.5 4.75 8 8 0 0 1-4.5 11.25" />

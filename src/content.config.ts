@@ -30,7 +30,7 @@ const postSchema = z.object({
 }).catchall(z.any());
 
 const tech = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: TECH_DIR }),
+  loader: glob({ pattern: ['**/*.md', '!ai/提示词/**', '!english/**'], base: TECH_DIR }),
   schema: postSchema,
 });
 

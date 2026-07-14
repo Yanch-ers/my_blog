@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import RightNavPanel from '../../components/RightNavPanel.astro';
 import GraphVisualization from '../../components/GraphVisualization';
 import { getAllTags, getAllSubCategories, getTagDimensions, getTagColor, buildGraphData } from '../../lib/content';
 
@@ -13,26 +14,32 @@ const graphData = await buildGraphData();
 const tags = Array.from(tagMap.entries()).sort((a, b) => b[1] - a[1]);
 ---
 
-<BaseLayout title="标签">
+<BaseLayout title="标签" noVideoBackground={true}>
   <Header />
+  <RightNavPanel />
 
-  <main class="mx-auto w-full max-w-[1200px] flex-1 px-6 py-12">
+  <main class="mx-auto w-full max-w-5xl px-6 py-12">
+    <div class="glass-panel rounded-2xl p-8 md:p-10">
     <header class="mb-10 animate-fade-in">
-      <p class="mb-2 text-sm text-gray-400">标签</p>
-      <h1 class="font-serif text-3xl font-bold tracking-tight text-gray-900">
+      <p class="mb-2 text-sm font-medium text-[var(--color-accent)]">标签</p>
+      <h1 class="font-serif text-3xl font-bold tracking-tight text-[var(--color-text)]">
         标签云
       </h1>
-      <p class="mt-2 text-gray-500">
+      <div class="mt-3 h-px w-16 bg-gradient-to-r from-[var(--color-accent)] to-transparent" />
+      <p class="mt-3 text-[var(--color-text-secondary)]">
         共 {tags.length} 个标签，{subCategories.length} 个分类
       </p>
     </header>
 
     <section class="mb-10 animate-fade-in animate-delay-1">
-      <h2 class="mb-4 text-sm font-semibold text-gray-900">📂 分类导航</h2>
+      <h2 class="mb-5 flex items-center gap-3 text-base font-bold text-[var(--color-text)]">
+          <span class="inline-block h-5 w-1.5 rounded-full bg-gradient-to-b from-[var(--color-accent)] to-emerald-400" />
+          分类导航
+        </h2>
       <div class="flex flex-wrap gap-2">
         <a
           href="/"
-          class="inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-blue-700 hover:shadow-md"
+          class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-teal-500 to-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-teal-500/20 transition-all hover:shadow-xl hover:-translate-y-0.5"
         >
           全部文章
         </a>
@@ -42,11 +49,11 @@ const tags = Array.from(tagMap.entries()).sort((a, b) => b[1] - a[1]);
             <a
               key={cat.id}
               href={`/tags/${cat.id}`}
-              class={`inline-flex items-center gap-2 rounded-full border ${color.bg} ${color.border} ${color.text} px-4 py-2 text-sm transition-all hover:shadow-md hover:-translate-y-0.5`}
+              class="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-card)] px-4 py-2 text-sm text-[var(--color-text)] transition-all hover:border-[var(--color-accent)] hover:shadow-md hover:shadow-emerald-500/10 hover:-translate-y-0.5"
             >
               {cat.icon}
               {cat.name}
-              <span class={`rounded-full bg-white/50 px-2 py-0.5 text-xs ${color.text}`}>
+              <span class="rounded-full bg-[var(--color-bg-secondary)] px-2 py-0.5 text-xs text-[var(--color-text-muted)]">
                 {cat.count}
               </span>
             </a>
@@ -57,11 +64,14 @@ const tags = Array.from(tagMap.entries()).sort((a, b) => b[1] - a[1]);
 
     {tagDimensions.length > 0 && (
       <section class="mb-10 animate-fade-in animate-delay-1">
-        <h2 class="mb-4 text-sm font-semibold text-gray-900">🎯 标签维度</h2>
+        <h2 class="mb-5 flex items-center gap-3 text-base font-bold text-[var(--color-text)]">
+          <span class="inline-block h-5 w-1.5 rounded-full bg-gradient-to-b from-[var(--color-accent)] to-emerald-400" />
+          标签维度
+        </h2>
         <div class="grid gap-4 md:grid-cols-2">
           {tagDimensions.map((dim) => (
-            <div key={dim.id} class="rounded-xl border border-gray-200 bg-white p-4">
-              <p class="mb-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">{dim.name}</p>
+            <div key={dim.id} class="glass-card rounded-2xl p-4">
+              <p class="mb-3 text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">{dim.name}</p>
               <div class="flex flex-wrap gap-2">
                 {dim.values.map((value) => {
                   const color = getTagColor(value.id);
@@ -69,10 +79,10 @@ const tags = Array.from(tagMap.entries()).sort((a, b) => b[1] - a[1]);
                     <a
                       key={value.id}
                       href={`/tags/${value.id}`}
-                      class={`inline-flex items-center gap-1 rounded-full border ${color.bg} ${color.border} ${color.text} px-3 py-1.5 text-xs transition-all hover:shadow-sm hover:-translate-y-0.5`}
+                      class="inline-flex items-center gap-1 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-card)] px-3 py-1.5 text-xs text-[var(--color-text)] transition-all hover:border-[var(--color-accent)] hover:shadow-sm hover:shadow-emerald-500/10 hover:-translate-y-0.5"
                     >
                       {value.name}
-                      <span class={color.text}>{value.count}</span>
+                      <span class="text-[var(--color-text-muted)]">{value.count}</span>
                     </a>
                   );
                 })}
@@ -84,14 +94,18 @@ const tags = Array.from(tagMap.entries()).sort((a, b) => b[1] - a[1]);
     )}
 
     <section class="animate-fade-in animate-delay-2">
-      <h2 class="mb-4 text-sm font-semibold text-gray-900">🗺️ 知识图谱</h2>
-      <p class="mb-4 text-xs text-gray-500">基于文章双向链接自动生成，节点大小表示连接强度，颜色区分分类</p>
+      <h2 class="mb-5 flex items-center gap-3 text-base font-bold text-[var(--color-text)]">
+        <span class="inline-block h-5 w-1.5 rounded-full bg-gradient-to-b from-[var(--color-accent)] to-emerald-400" />
+        知识图谱
+      </h2>
+      <p class="mb-4 text-xs text-[var(--color-text-muted)]">基于文章双向链接自动生成，节点大小表示连接强度，颜色区分分类</p>
       <GraphVisualization nodes={graphData.nodes} edges={graphData.edges} client:load />
     </section>
 
     {tags.length === 0 && (
       <p class="py-12 text-center text-[var(--color-text-muted)]">暂无标签</p>
     )}
+    </div>
   </main>
 
   <Footer />

@@ -21,23 +21,23 @@ const subCategories = await getAllSubCategories();
 const matchedSubCategory = subCategories.find((cat) => cat.id === tag);
 ---
 
-<BaseLayout title={`标签: ${tag}`}>
+<BaseLayout title={`标签: ${tag}`} noVideoBackground={true}>
   <Header />
 
   <main class="mx-auto w-full max-w-[1200px] flex-1 px-6 py-12">
     <header class="mb-10 animate-fade-in">
       <div class="flex flex-wrap items-center gap-3">
         {matchedSubCategory && (
-          <span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-600">
+          <span class="rounded-full bg-[var(--color-accent-light)] px-3 py-1 text-xs font-medium text-[var(--color-accent)]">
             {matchedSubCategory.icon} {matchedSubCategory.name}
           </span>
         )}
-        <span class="text-sm text-gray-400">标签</span>
+        <span class="text-sm text-[var(--color-text-muted)]">标签</span>
       </div>
-      <h1 class="font-serif text-3xl font-bold tracking-tight text-gray-900">
+      <h1 class="font-serif text-3xl font-bold tracking-tight text-[var(--color-text)]">
         {tag}
       </h1>
-      <p class="mt-2 text-gray-500">
+      <p class="mt-2 text-[var(--color-text-secondary)]">
         共 {posts.length} 篇文章
       </p>
     </header>

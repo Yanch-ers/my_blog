@@ -1,0 +1,14 @@
+{
+  "name": "vercel-agent-skills",
+  "displayName": "Vercel Agent Skills",
+  "version": "1.0.0",
+  "description": "Collection of agent skills from Vercel Engineering for React, Next.js, React Native, deployment, optimization, and web design.",
+  "descriptionZh": "Vercel 工程团队提供的 Agent Skills 集合，涵盖 React/Next.js 最佳实践、React Native、部署、性能优化和 Web 设计指南。",
+  "author": { "name": "Vercel Labs" },
+  "homepage": "https://github.com/vercel-labs/agent-skills",
+  "repository": "https://github.com/vercel-labs/agent-skills",
+  "keywords": ["qoder-plugin", "skill", "vercel", "react", "nextjs"],
+  "category": "developer-tools",
+  "tags": ["skill"],
+  "skills": "./skills/"
+}

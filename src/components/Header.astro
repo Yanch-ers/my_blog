@@ -1,116 +1,112 @@
 ---
-const currentPath = Astro.url.pathname;
+interface Props {
+  currentPath?: string;
+}
 
-const navLinks = [
-  { href: '/', label: '首页' },
-  { href: '/tags', label: '标签' },
-  { href: '/about', label: '关于' },
-];
+const { currentPath = '/' } = Astro.props;
 ---
 
-<header class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-bg)]/80 backdrop-blur-md">
-  <nav class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-    <a href="/" class="font-serif text-xl font-bold tracking-tight text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors">
-      NOVA BLOG
-    </a>
-
-    <div class="hidden items-center gap-8 md:flex">
-      {navLinks.map(({ href, label }) => (
-        <a
-          href={href}
-          class:list={[
-            'text-sm font-medium transition-colors hover:text-[var(--color-accent)]',
-            currentPath === href || (href !== '/' && currentPath.startsWith(href))
-              ? 'text-[var(--color-accent)]'
-              : 'text-[var(--color-text-secondary)]',
-          ]}
-        >
-          {label}
-        </a>
-      ))}
-
-      <a
-        href="/search"
-        class="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors"
-        title="搜索"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8" />
-          <path d="m21 21-4.3-4.3" />
-        </svg>
+<header
+  id="site-header"
+  class="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+>
+  <div class="mx-auto max-w-7xl px-6 py-3">
+    <nav class="flex items-center justify-between">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2 group">
+        <div class="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-teal-500 to-emerald-600 text-white transition-transform group-hover:scale-105">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L2 12l10 10 10-10L12 2z" />
+          </svg>
+        </div>
+        <span class="text-sm font-bold tracking-tight text-[var(--color-text)]">
+          Nova<span class="accent-gradient">Blog</span>
+        </span>
       </a>
 
-      <button
-        onclick="toggleTheme()"
-        class="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors"
-        title="切换主题"
-      >
-        <svg class="hidden dark:block" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" />
-          <path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" />
-          <path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" />
-        </svg>
-        <svg class="block dark:hidden" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-        </svg>
-      </button>
-
-      <a
-        href="/rss.xml"
-        class="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
-        title="订阅"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 12a8 8 0 0 1 8-8 8.5 8.5 0 0 1 7.5 4.75 8 8 0 0 1-4.5 11.25" />
-          <path d="M12 18a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-        </svg>
-        订阅
-      </a>
-    </div>
-
-    <button
-      class="md:hidden text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]"
-      id="mobile-menu-btn"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="3" x2="21" y1="6" y2="6" />
-        <line x1="3" x2="21" y1="12" y2="12" />
-        <line x1="3" x2="21" y1="18" y2="18" />
-      </svg>
-    </button>
-  </nav>
-
-  <div id="mobile-menu" class="hidden border-t border-[var(--color-border)] bg-[var(--color-bg)] md:hidden">
-    <div class="flex flex-col px-6 py-4 gap-4">
-      {navLinks.map(({ href, label }) => (
+      <!-- Desktop right actions -->
+      <div class="hidden items-center gap-2 md:flex">
+        <!-- RSS pill button -->
         <a
-          href={href}
-          class:list={[
-            'text-sm font-medium transition-colors',
-            currentPath === href || (href !== '/' && currentPath.startsWith(href))
-              ? 'text-[var(--color-accent)]'
-              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]',
-          ]}
+          href="/rss.xml"
+          class="inline-flex items-center gap-1.5 rounded-full glass-button px-3.5 py-1.5 text-xs font-medium text-[var(--color-text-secondary)] transition-all hover:text-[var(--color-accent)]"
         >
-          {label}
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12a8 8 0 0 1 8-8 8.5 8.5 0 0 1 7.5 4.75 8 8 0 0 1-4.5 11.25" />
+            <path d="M12 18a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+          </svg>
+          RSS
         </a>
-      ))}
-      <a href="/search" class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]">搜索</a>
-      <button onclick="toggleTheme()" class="text-sm text-left text-[var(--color-text-secondary)] hover:text-[var(--color-accent)]">切换主题</button>
-      <a href="/rss.xml" class="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-secondary)] w-fit">订阅</a>
-    </div>
+
+        <!-- 关于 pill button -->
+        <a
+          href="/about"
+          class="inline-flex items-center gap-1.5 rounded-full glass-button px-3.5 py-1.5 text-xs font-medium text-[var(--color-text-secondary)] transition-all hover:text-[var(--color-accent)]"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4" />
+            <path d="M12 8h.01" />
+          </svg>
+          关于
+        </a>
+
+        <div class="mx-1 h-4 w-px bg-[var(--color-border)]" />
+
+        <!-- Theme toggle -->
+        <button
+          onClick="toggleTheme()"
+          class="glass-button flex h-8 w-8 items-center justify-center rounded-full text-[var(--color-text-muted)]"
+          aria-label="Toggle theme"
+        >
+          <svg class="h-3.5 w-3.5 dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+          </svg>
+          <svg class="hidden h-3.5 w-3.5 dark:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" />
+          </svg>
+        </button>
+
+        <!-- Right nav toggle -->
+        <button
+          id="right-nav-toggle"
+          class="glass-button flex h-8 w-8 items-center justify-center rounded-full text-[var(--color-text-muted)]"
+          aria-label="Toggle navigation"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="flex items-center gap-1.5 md:hidden">
+        <button
+          onClick="toggleTheme()"
+          class="glass-button flex h-8 w-8 items-center justify-center rounded-full text-[var(--color-text-muted)]"
+          aria-label="Toggle theme"
+        >
+          <svg class="h-3.5 w-3.5 dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+          </svg>
+          <svg class="hidden h-3.5 w-3.5 dark:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" />
+          </svg>
+        </button>
+        <button
+          id="right-nav-toggle-mobile"
+          class="glass-button flex h-8 w-8 items-center justify-center rounded-full text-[var(--color-text-muted)]"
+          aria-label="Menu"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+    </nav>
   </div>
 </header>
 
-<script is:inline>
-  (function () {
-    const btn = document.getElementById('mobile-menu-btn');
-    const menu = document.getElementById('mobile-menu');
-    if (btn && menu) {
-      btn.addEventListener('click', () => {
-        menu.classList.toggle('hidden');
-      });
-    }
-  })();
-</script>
+<!-- Spacer for fixed header -->
+<div class="h-14" />
+

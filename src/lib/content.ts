@@ -26,7 +26,6 @@ export interface TagDimension {
 
 const subCategoryMap: Record<string, { name: string; icon?: string }> = {
   ai: { name: 'AI', icon: '🤖' },
-  english: { name: '英语学习', icon: '📚' },
   kubernetes: { name: 'Kubernetes', icon: '☸️' },
   linux: { name: 'Linux', icon: '🐧' },
   database: { name: '数据库', icon: '💾' },
@@ -59,25 +58,25 @@ const dimensionPrefixes: Record<string, string> = {
 };
 
 const tagColors: Record<string, { bg: string; text: string; border: string }> = {
-  kubernetes: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-200' },
-  k8s: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-200' },
-  ai: { bg: 'bg-purple-50', text: 'text-purple-600', border: 'border-purple-200' },
-  linux: { bg: 'bg-green-50', text: 'text-green-600', border: 'border-green-200' },
-  docker: { bg: 'bg-cyan-50', text: 'text-cyan-600', border: 'border-cyan-200' },
-  mysql: { bg: 'bg-orange-50', text: 'text-orange-600', border: 'border-orange-200' },
-  redis: { bg: 'bg-red-50', text: 'text-red-600', border: 'border-red-200' },
-  kafka: { bg: 'bg-indigo-50', text: 'text-indigo-600', border: 'border-indigo-200' },
-  elasticsearch: { bg: 'bg-amber-50', text: 'text-amber-600', border: 'border-amber-200' },
-  java: { bg: 'bg-red-50', text: 'text-red-600', border: 'border-red-200' },
+  kubernetes: { bg: 'bg-teal-50', text: 'text-teal-700', border: 'border-teal-200' },
+  k8s: { bg: 'bg-teal-50', text: 'text-teal-700', border: 'border-teal-200' },
+  ai: { bg: 'bg-rose-50', text: 'text-rose-600', border: 'border-rose-200' },
+  linux: { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' },
+  docker: { bg: 'bg-cyan-50', text: 'text-cyan-700', border: 'border-cyan-200' },
+  mysql: { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200' },
+  redis: { bg: 'bg-rose-50', text: 'text-rose-600', border: 'border-rose-200' },
+  kafka: { bg: 'bg-sky-50', text: 'text-sky-700', border: 'border-sky-200' },
+  elasticsearch: { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200' },
+  java: { bg: 'bg-rose-50', text: 'text-rose-600', border: 'border-rose-200' },
   python: { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200' },
-  shell: { bg: 'bg-gray-50', text: 'text-gray-600', border: 'border-gray-200' },
-  network: { bg: 'bg-teal-50', text: 'text-teal-600', border: 'border-teal-200' },
-  monitoring: { bg: 'bg-pink-50', text: 'text-pink-600', border: 'border-pink-200' },
-  database: { bg: 'bg-orange-50', text: 'text-orange-600', border: 'border-orange-200' },
-  ceph: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-200' },
-  ansible: { bg: 'bg-purple-50', text: 'text-purple-600', border: 'border-purple-200' },
-  gpu: { bg: 'bg-emerald-50', text: 'text-emerald-600', border: 'border-emerald-200' },
-  programming: { bg: 'bg-gray-50', text: 'text-gray-600', border: 'border-gray-200' },
+  shell: { bg: 'bg-slate-50', text: 'text-slate-600', border: 'border-slate-200' },
+  network: { bg: 'bg-teal-50', text: 'text-teal-700', border: 'border-teal-200' },
+  monitoring: { bg: 'bg-violet-50', text: 'text-violet-600', border: 'border-violet-200' },
+  database: { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200' },
+  ceph: { bg: 'bg-sky-50', text: 'text-sky-700', border: 'border-sky-200' },
+  ansible: { bg: 'bg-rose-50', text: 'text-rose-600', border: 'border-rose-200' },
+  gpu: { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' },
+  programming: { bg: 'bg-slate-50', text: 'text-slate-600', border: 'border-slate-200' },
   storage: { bg: 'bg-stone-50', text: 'text-stone-600', border: 'border-stone-200' },
   microservices: { bg: 'bg-violet-50', text: 'text-violet-600', border: 'border-violet-200' },
   middleware: { bg: 'bg-fuchsia-50', text: 'text-fuchsia-600', border: 'border-fuchsia-200' },
@@ -85,7 +84,39 @@ const tagColors: Record<string, { bg: string; text: string; border: string }> = 
 };
 
 export function getTagColor(tag: string): { bg: string; text: string; border: string } {
-  return tagColors[tag.toLowerCase()] || { bg: 'bg-gray-50', text: 'text-gray-600', border: 'border-gray-200' };
+  return tagColors[tag.toLowerCase()] || { bg: 'bg-slate-50', text: 'text-slate-600', border: 'border-slate-200' };
+}
+
+const categoryAccentColors: Record<string, string> = {
+  ai: '#f43f5e',
+  kubernetes: '#0d9488',
+  linux: '#10b981',
+  database: '#f59e0b',
+  mysql: '#f59e0b',
+  redis: '#f43f5e',
+  elasticsearch: '#f59e0b',
+  kafka: '#0ea5e9',
+  docker: '#06b6d4',
+  ansible: '#f43f5e',
+  network: '#0d9488',
+  gpu: '#10b981',
+  programming: '#64748b',
+  java: '#f43f5e',
+  python: '#eab308',
+  shell: '#64748b',
+  monitoring: '#8b5cf6',
+  storage: '#78716c',
+  ceph: '#0ea5e9',
+  openstack: '#0ea5e9',
+  microservices: '#8b5cf6',
+  middleware: '#d946ef',
+  cicd: '#f43f5e',
+  container: '#06b6d4',
+};
+
+export function getCategoryColor(subCategory: string | null): string {
+  if (!subCategory) return '#94a3b8';
+  return categoryAccentColors[subCategory] || '#94a3b8';
 }
 
 /** Get the best available date from Obsidian frontmatter */

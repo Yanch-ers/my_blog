@@ -3,93 +3,241 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PostCard from '../components/PostCard.astro';
-import LargePostCard from '../components/LargePostCard.astro';
 import HeroSection from '../components/HeroSection.astro';
-import Sidebar from '../components/Sidebar.astro';
-import { getAllPosts } from '../lib/content';
+import RightNavPanel from '../components/RightNavPanel.astro';
+import { getAllPosts, getDate, getSummary, formatDate, getTags, getSubCategoryName, getCategoryColor, readingTime } from '../lib/content';
+import { render } from 'astro:content';
 
 export const prerender = true;
 
 const allPosts = await getAllPosts();
-
-const POSTS_PER_PAGE = 12;
-const totalPages = Math.ceil(allPosts.length / POSTS_PER_PAGE);
-const pagePosts = allPosts.slice(0, POSTS_PER_PAGE);
-const featuredPost = pagePosts[0];
-const remainingPosts = pagePosts.slice(1);
+const latestPost = allPosts[0];
+const recentPosts = allPosts.slice(1, 10);
 
 const techCount = allPosts.filter((p) => p.collection === 'tech').length;
 const essaysCount = allPosts.filter((p) => p.collection === 'essays').length;
+
+// Latest post details
+const latestDate = latestPost ? formatDate(getDate(latestPost)) : '';
+const latestTags = latestPost ? getTags(latestPost) : [];
+const latestSummary = latestPost ? getSummary(latestPost) : '';
+const latestSubCategory = latestPost ? getSubCategoryName(latestPost) : '';
+const latestIsEssay = latestPost?.collection === 'essays';
+const latestAccentColor = latestIsEssay ? '#f43f5e' : getCategoryColor(latestSubCategory);
+const latestBodyText = latestPost?.body ?? '';
+const latestRt = readingTime(latestBodyText);
+
+// Render latest post content
+let LatestContent: any = null;
+if (latestPost) {
+  const { Content } = await render(latestPost);
+  LatestContent = Content;
+}
 ---
 
 <BaseLayout title="首页">
   <Header />
+  <RightNavPanel />
 
-  <main class="mx-auto flex max-w-[1600px] flex-1 flex-col px-6 py-10">
-    <HeroSection techCount={techCount} essaysCount={essaysCount} />
+  <!-- Scroll snap container -->
+  <main id="snap-container" class="h-screen overflow-y-auto snap-y snap-mandatory scroll-smooth">
 
-    <div class="flex flex-col gap-8 xl:flex-row xl:items-start">
-      <div id="posts" class="flex flex-col gap-6 flex-1">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 class="font-serif text-2xl font-bold text-gray-900">精选文章</h2>
-            <p class="mt-1 text-sm text-gray-500">最新发布的技术文章和随笔</p>
-          </div>
-          {totalPages > 1 && (
-            <a
-              href="/page/2"
-              class="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 transition-colors hover:text-blue-700"
-            >
-              查看更多
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m9 18 6-6-6-6" />
-              </svg>
-            </a>
-          )}
-        </div>
-
-        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {featuredPost && (
-            <div class="animate-fade-in lg:col-span-2">
-              <LargePostCard post={featuredPost} />
-            </div>
-          )}
-          {remainingPosts.map((post, index) => (
-            <div class={`animate-fade-in animate-delay-${Math.min(index + 1, 3)}`}>
-              <PostCard post={post} />
-            </div>
-          ))}
-        </div>
-
-        {allPosts.length === 0 && (
-          <div class="flex flex-col items-center justify-center py-20 text-center">
-            <div class="flex h-20 w-20 items-center justify-center rounded-2xl bg-gray-100 mb-6">
-              <span class="text-4xl">📝</span>
-            </div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">暂无文章</h3>
-            <p class="text-sm text-gray-500">敬请期待更多内容</p>
-          </div>
-        )}
-
-        {totalPages > 1 && (
-          <nav class="mt-8 flex items-center justify-center gap-3">
-            <span class="text-sm text-gray-400">第 1 / {totalPages} 页</span>
-            <a
-              href="/page/2"
-              class="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-600 transition-all hover:border-blue-300 hover:text-blue-600 hover:shadow-sm"
-            >
-              下一页
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m9 18 6-6-6-6" />
-              </svg>
-            </a>
-          </nav>
-        )}
+    <!-- Section 1: Hero (full screen) -->
+    <section class="snap-start min-h-screen flex items-center justify-center px-6 py-8" data-snap-section>
+      <div class="w-full max-w-5xl snap-animate">
+        <HeroSection techCount={techCount} essaysCount={essaysCount} />
       </div>
+    </section>
 
-      <Sidebar />
-    </div>
+    <!-- Section 2: Latest article (natural height, top-aligned) -->
+    {latestPost && (
+      <section class="snap-start min-h-screen px-6 pt-20 pb-12" data-snap-section>
+        <div class="mx-auto max-w-5xl snap-animate">
+          <div class="glass-panel overflow-hidden rounded-2xl p-6 md:p-8">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-2">
+                {latestSubCategory && !latestIsEssay && (
+                  <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium" style={`background-color: ${latestAccentColor}15; color: ${latestAccentColor}`}>
+                    {latestSubCategory}
+                  </span>
+                )}
+                {latestIsEssay && (
+                  <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium" style="background-color: #f43f5e15; color: #f43f5e">
+                    随笔
+                  </span>
+                )}
+                <span class="text-xs text-[var(--color-text-muted)] flex items-center gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2" /><line x1="16" x2="16" y1="2" y2="6" /><line x1="8" x2="8" y1="2" y2="6" /><line x1="3" x2="21" y1="10" y2="10" />
+                  </svg>
+                  {latestDate}
+                  <span class="mx-1">·</span>
+                  {latestRt} min
+                </span>
+              </div>
+              <a
+                href="/page/1"
+                class="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--color-accent)] transition-colors hover:text-[var(--color-accent-dark)]"
+              >
+                全部文章
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </a>
+            </div>
+
+            <a href={`/posts/${latestPost.collection}/${latestPost.id}`} class="group block">
+              <h1 class="font-serif text-2xl md:text-3xl font-bold leading-tight text-[var(--color-text)] mb-4 transition-colors group-hover:text-[var(--color-accent)]">
+                {latestPost.data.title}
+              </h1>
+            </a>
+
+            {LatestContent && (
+              <div class="rounded-xl bg-[var(--color-code-bg)] border border-[var(--color-border)] p-5 md:p-6 mb-4">
+                <div class="content-preview-lg text-sm md:text-base leading-relaxed text-[var(--color-text-secondary)]">
+                  <LatestContent />
+                </div>
+              </div>
+            )}
+
+            {latestTags.length > 0 && (
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                {latestTags.slice(0, 5).map((tag) => (
+                  <span
+                    key={tag}
+                    class="inline-flex items-center rounded-full glass-button px-2.5 py-1 text-xs text-[var(--color-text-secondary)]"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <div>
+              <a
+                href={`/posts/${latestPost.collection}/${latestPost.id}`}
+                class="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-accent)] hover:gap-3 transition-all"
+              >
+                阅读全文
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Section 3: Recent articles + Footer (natural height) -->
+    {recentPosts.length > 0 && (
+      <section class="snap-start min-h-screen px-6 pt-16 pb-12" data-snap-section>
+        <div class="mx-auto max-w-5xl snap-animate">
+          <div class="glass-panel overflow-hidden rounded-2xl p-6 md:p-8 mb-20">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="font-serif text-lg font-bold text-[var(--color-text)]">最近更新</h2>
+              <a
+                href="/page/1"
+                class="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--color-accent)] transition-colors hover:text-[var(--color-accent-dark)]"
+              >
+                更多
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </a>
+            </div>
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {recentPosts.map((post, index) => (
+                <div class={`snap-child-animate snap-child-delay-${Math.min(index, 8)}`}>
+                  <PostCard post={post} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Footer merged into this section -->
+          <Footer />
+        </div>
+      </section>
+    )}
+
+    {allPosts.length === 0 && (
+      <section class="snap-start min-h-screen flex items-center justify-center px-6 py-8" data-snap-section>
+        <div class="w-full max-w-5xl snap-animate">
+          <div class="flex flex-col items-center justify-center py-16 text-center glass-panel rounded-3xl p-12">
+            <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--color-bg-secondary)] mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-[var(--color-text-muted)]">
+                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+              </svg>
+            </div>
+            <h3 class="text-base font-semibold text-[var(--color-text)] mb-1">暂无文章</h3>
+            <p class="text-xs text-[var(--color-text-muted)]">敬请期待更多内容</p>
+          </div>
+        </div>
+      </section>
+    )}
   </main>
 
-  <Footer />
+  <!-- Navigation dots (3 dots: Hero, Latest, Recent+Footer) -->
+  <nav id="snap-dots" class="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3">
+    <button class="snap-dot active" data-index="0" aria-label="首页"></button>
+    {latestPost && <button class="snap-dot" data-index="1" aria-label="最新文章"></button>}
+    {recentPosts.length > 0 && <button class="snap-dot" data-index="2" aria-label="最近更新"></button>}
+  </nav>
+
+  <script>
+    const container = document.getElementById('snap-container');
+    const sections = container.querySelectorAll('[data-snap-section]');
+    const dots = document.querySelectorAll('.snap-dot');
+
+    // Click dot to scroll
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const idx = parseInt(dot.dataset.index);
+        sections[idx]?.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // Intersection Observer for animations + active dot
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Entrance animation - add class to trigger transition
+            const animTarget = entry.target.querySelector('.snap-animate');
+            if (animTarget) {
+              animTarget.classList.add('snap-animated');
+            }
+
+            // Child stagger animation
+            const children = entry.target.querySelectorAll('.snap-child-animate');
+            children.forEach((child, i) => {
+              setTimeout(() => child.classList.add('snap-child-animated'), i * 80 + 100);
+            });
+
+            // Active dot
+            const idx = Array.from(sections).indexOf(entry.target);
+            dots.forEach((d) => d.classList.remove('active'));
+            dots[idx]?.classList.add('active');
+          } else {
+            // Remove animation classes when section leaves viewport (for replay)
+            const animTarget = entry.target.querySelector('.snap-animate');
+            if (animTarget) animTarget.classList.remove('snap-animated');
+
+            const children = entry.target.querySelectorAll('.snap-child-animate');
+            children.forEach((child) => child.classList.remove('snap-child-animated'));
+          }
+        });
+      },
+      { root: container, threshold: 0.15 }
+    );
+
+    sections.forEach((s) => observer.observe(s));
+
+    // Trigger first section animation after a short delay
+    setTimeout(() => {
+      const firstAnim = sections[0]?.querySelector('.snap-animate');
+      if (firstAnim) firstAnim.classList.add('snap-animated');
+    }, 200);
+  </script>
 </BaseLayout>

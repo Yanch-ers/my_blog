@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import PostCard from '../../components/PostCard.astro';
-import Sidebar from '../../components/Sidebar.astro';
+import RightNavPanel from '../../components/RightNavPanel.astro';
 import { getAllPosts } from '../../lib/content';
 
 export const prerender = true;
@@ -24,7 +24,7 @@ export async function getStaticPaths() {
         totalPages,
       },
     };
-  }).filter((route) => route.params.page !== '1');
+  });
 }
 
 const { posts, currentPage, totalPages } = Astro.props;
@@ -32,51 +32,50 @@ const { posts, currentPage, totalPages } = Astro.props;
 
 <BaseLayout title={`第 ${currentPage} 页`}>
   <Header />
+  <RightNavPanel />
 
-  <main class="mx-auto flex max-w-[1600px] flex-1 flex-col px-6 py-10">
-    <div class="flex flex-col gap-8 xl:flex-row xl:items-start">
-      <div class="flex flex-col gap-6 flex-1">
-        <div class="flex items-center justify-between">
-          <h2 class="font-serif text-2xl font-bold text-gray-900">精选文章</h2>
-          <span class="text-sm text-gray-400">第 {currentPage} / {totalPages} 页</span>
-        </div>
+  <main class="mx-auto max-w-5xl px-6 py-8">
+    <div class="glass-panel rounded-3xl p-6 md:p-8">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="font-serif text-xl font-bold text-[var(--color-text)]">精选文章</h2>
+        <span class="text-xs text-[var(--color-text-muted)]">第 {currentPage} / {totalPages} 页</span>
+      </div>
 
-        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post: any, index: number) => (
-            <div class={`animate-fade-in animate-delay-${Math.min(index + 1, 3)}`}>
-              <PostCard post={post} />
-            </div>
-          ))}
-        </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {posts.map((post: any, index: number) => (
+          <div class={`animate-fade-in animate-delay-${Math.min(index + 1, 3)}`}>
+            <PostCard post={post} />
+          </div>
+        ))}
+      </div>
 
-        <nav class="mt-8 flex items-center justify-center gap-3">
+      <nav class="mt-8 flex items-center justify-center gap-3">
+        {currentPage > 1 && (
           <a
-            href={currentPage === 2 ? '/' : `/page/${currentPage - 1}`}
-            class="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-600 transition-all hover:border-blue-300 hover:text-blue-600 hover:shadow-sm"
+            href={`/page/${currentPage - 1}`}
+            class="inline-flex items-center gap-2 rounded-xl glass-button px-5 py-2.5 text-sm font-medium text-[var(--color-text-secondary)]"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="m15 18-6-6 6-6" />
             </svg>
             上一页
           </a>
-          <span class="text-sm text-gray-400">
-            {currentPage} / {totalPages}
-          </span>
-          {currentPage < totalPages && (
-            <a
-              href={`/page/${currentPage + 1}`}
-              class="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-600 transition-all hover:border-blue-300 hover:text-blue-600 hover:shadow-sm"
-            >
-              下一页
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m9 18 6-6-6-6" />
-              </svg>
-            </a>
-          )}
-        </nav>
-      </div>
-
-      <Sidebar />
+        )}
+        <span class="text-xs text-[var(--color-text-muted)]">
+          {currentPage} / {totalPages}
+        </span>
+        {currentPage < totalPages && (
+          <a
+            href={`/page/${currentPage + 1}`}
+            class="inline-flex items-center gap-2 rounded-xl glass-button px-5 py-2.5 text-sm font-medium text-[var(--color-text-secondary)]"
+          >
+            下一页
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </a>
+        )}
+      </nav>
     </div>
   </main>
 
