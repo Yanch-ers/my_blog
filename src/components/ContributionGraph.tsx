@@ -76,7 +76,6 @@ export default function ContributionGraph({ dates }: ContributionGraphProps) {
 
     const weeks: DayData[][] = [];
     const monthLabels: { label: string; col: number }[] = [];
-    let currentMonth = -1;
     let yearTotal = 0;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -103,14 +102,19 @@ export default function ContributionGraph({ dates }: ContributionGraphProps) {
         const count = countMap.get(dateStr) ?? 0;
         yearTotal += count;
         week.push({ date, dateStr, count });
-
-        // Track month labels
-        if (date.getMonth() !== currentMonth && d === 0) {
-          currentMonth = date.getMonth();
-          monthLabels.push({ label: MONTH_NAMES[currentMonth], col: w });
-        }
       }
       weeks.push(week);
+    }
+
+    // Generate month labels: find the first week column that contains each month
+    for (let m = 0; m < 12; m++) {
+      for (let w = 0; w < weeks.length; w++) {
+        const hasMonth = weeks[w].some((day) => day.dateStr && day.date.getMonth() === m);
+        if (hasMonth) {
+          monthLabels.push({ label: MONTH_NAMES[m], col: w });
+          break;
+        }
+      }
     }
 
     return { weeks, totalContributions: yearTotal, monthLabels, yearTotal };
@@ -155,11 +159,11 @@ export default function ContributionGraph({ dates }: ContributionGraphProps) {
       <div className="overflow-x-auto pb-2">
         <div className="inline-flex flex-col">
           {/* Month labels row */}
-          <div className="flex ml-8 mb-1">
+          <div className="flex ml-7 mb-1">
             {weeks.map((_, w) => {
               const label = monthLabels.find((m) => m.col === w);
               return (
-                <div key={w} className="w-[11px] mx-[1px] text-[9px] text-[var(--color-text-muted)]">
+                <div key={w} className="w-[10px] mx-[1px] text-[9px] text-[var(--color-text-muted)]">
                   {label ? label.label : ''}
                 </div>
               );
@@ -171,7 +175,7 @@ export default function ContributionGraph({ dates }: ContributionGraphProps) {
             {/* Day labels */}
             <div className="flex flex-col mr-1">
               {DAY_LABELS.map((label, i) => (
-                <div key={i} className="h-[11px] my-[1px] flex items-center text-[9px] text-[var(--color-text-muted)] leading-none">
+                <div key={i} className="h-[10px] my-[1px] flex items-center text-[9px] text-[var(--color-text-muted)] leading-none">
                   {label}
                 </div>
               ))}
@@ -187,7 +191,7 @@ export default function ContributionGraph({ dates }: ContributionGraphProps) {
                     return (
                       <div
                         key={`${w}-${d}`}
-                        className="w-[11px] h-[11px] my-[1px] rounded-[2px] transition-colors duration-150"
+                        className="w-[10px] h-[10px] my-[1px] rounded-[2px] transition-colors duration-150"
                         style={{
                           backgroundColor: isFuture ? 'transparent' : colors[level],
                           cursor: isFuture ? 'default' : 'pointer',
@@ -215,7 +219,7 @@ export default function ContributionGraph({ dates }: ContributionGraphProps) {
             {[0, 1, 2, 3, 4].map((level) => (
               <div
                 key={level}
-                className="w-[11px] h-[11px] rounded-[2px]"
+                className="w-[10px] h-[10px] rounded-[2px]"
                 style={{ backgroundColor: colors[level] }}
               />
             ))}
