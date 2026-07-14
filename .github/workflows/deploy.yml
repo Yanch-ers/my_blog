@@ -11,6 +11,8 @@ on:
 jobs:
   trigger:
     runs-on: ubuntu-latest
+    # Skip if this push was made by the workflow itself (avoid infinite loop)
+    if: github.event_name == 'repository_dispatch' || github.event.head_commit.author.name != 'GitHub Actions'
     
     steps:
       - name: Checkout repository
@@ -20,6 +22,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
 
       - name: Trigger EdgeOne rebuild by empty commit
+        if: github.event_name == 'repository_dispatch'
         run: |
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
