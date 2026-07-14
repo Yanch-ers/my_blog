@@ -3,11 +3,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import RightNavPanel from '../components/RightNavPanel.astro';
-import { getAllPosts } from '../lib/content';
+import ContributionGraph from '../components/ContributionGraph';
+import { getAllPosts, getDate } from '../lib/content';
 
 const allPosts = await getAllPosts();
 const techCount = allPosts.filter((p) => p.collection === 'tech').length;
 const essaysCount = allPosts.filter((p) => p.collection === 'essays').length;
+const articleDates = allPosts.map((p) => getDate(p).toISOString());
 ---
 
 <BaseLayout title="关于">
@@ -45,6 +47,11 @@ const essaysCount = allPosts.filter((p) => p.collection === 'essays').length;
         <p class="text-2xl font-bold text-[var(--color-accent)]">{techCount}</p>
         <p class="mt-1 text-xs text-[var(--color-text-muted)]">技术文章</p>
       </div>
+    </section>
+
+    <!-- Contribution Graph -->
+    <section class="glass-card rounded-2xl p-6 mb-6 animate-fade-in animate-delay-2">
+      <ContributionGraph dates={articleDates} client:load />
     </section>
 
     <!-- Tech stack -->
