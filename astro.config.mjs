@@ -6,7 +6,8 @@ import sitemap from '@astrojs/sitemap';
 import { remarkObsidian } from './src/plugins/remark-obsidian.mjs';
 import { unified } from '@astrojs/markdown-remark';
 
-const siteUrl = process.env.SITE_URL || 'https://your-blog.pages.dev';
+const rawSiteUrl = process.env.SITE_URL || '';
+const siteUrl = rawSiteUrl && !rawSiteUrl.startsWith('http') ? `https://${rawSiteUrl}` : rawSiteUrl || 'https://nova-blog.vercel.app';
 
 export default defineConfig({
   site: siteUrl,
