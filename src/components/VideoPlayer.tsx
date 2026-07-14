@@ -2,7 +2,7 @@
  * VideoPlayer 组件 - 预留位置
  *
  * 后期实现时：
- * 1. 接入视频 URL (来自 Cloudflare R2 或 Stream)
+ * 1. 接入视频 URL (来自腾讯云 COS 或其他 CDN)
  * 2. 实现自定义播放器 UI 或使用原生 <video> 标签
  * 3. 支持播放控制、进度条、音量等
  *

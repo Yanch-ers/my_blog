@@ -18,7 +18,7 @@ draft: false
 
 - **Astro** — 现代化的静态站点生成器
 - **Tailwind CSS** — 原子化 CSS 框架
-- **Cloudflare Pages** — 全球 CDN 部署
+- **腾讯云 EdgeOne** — 全球 CDN 部署
 
 ### 代码示例
 

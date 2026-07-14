@@ -1,4 +1,4 @@
-# NOVA BLOG
+# YANCHE BLOG
 
 一个基于 Astro 7 构建的个人技术博客，部署在腾讯云 EdgeOne 上。
 
