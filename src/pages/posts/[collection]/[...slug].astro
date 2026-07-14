@@ -89,7 +89,7 @@ const subCategoryName = getSubCategoryName(post);
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
 
-<BaseLayout title={post.data.title} description={summary}>
+<BaseLayout title={post.data.title || ''} description={summary} noVideoBackground={true}>
   <div id="title-url-map" style="display:none;" data-map={JSON.stringify(urlMap)}></div>
   <Header />
 
