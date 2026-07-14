@@ -52,32 +52,31 @@ const siteName = 'Yanche Blog';
   <body class:list={['min-h-screen flex flex-col antialiased', { 'tags-bg': noVideoBackground }]}>
     {!noVideoBackground && (
       <>
-        <!-- Video forest background -->
+        <!-- Fallback gradient background (always visible behind video) -->
+        <div 
+          class="fixed inset-0"
+          style="z-index: 0; background: linear-gradient(135deg, #0a1a0a 0%, #0d2818 30%, #0a1a0a 60%, #071510 100%);"
+          aria-hidden="true"
+        ></div>
+        
+        <!-- Video forest background (desktop only, loads on demand) -->
         <video 
           autoplay 
           loop 
           muted 
           playsinline
-          preload="auto"
+          preload="none"
           class="fixed inset-0 w-full h-full object-cover"
-          style="z-index: 0;"
+          style="z-index: 1;"
           aria-hidden="true"
-          onerror="this.style.display='none'"
         >
           <source src="https://my-blog-1369148642.cos.ap-guangzhou.myqcloud.com/forest-bg.mp4" type="video/mp4" />
         </video>
         
-        <!-- Fallback background (shown when video fails to load on mobile) -->
-        <div 
-          class="fixed inset-0"
-          style="z-index: -1; background: linear-gradient(135deg, #0a1a0a 0%, #0d2818 30%, #0a1a0a 60%, #071510 100%);"
-          aria-hidden="true"
-        ></div>
-        
         <!-- Dark overlay for readability -->
         <div 
           class="fixed inset-0 pointer-events-none"
-          style="z-index: 1; background: rgba(0, 0, 0, 0.1);"
+          style="z-index: 2; background: rgba(0, 0, 0, 0.1);"
           aria-hidden="true"
         ></div>
       </>
@@ -97,16 +96,21 @@ const siteName = 'Yanche Blog';
       };
     </script>
 
-    <!-- Video background fallback -->
+    <!-- Video background: lazy load on desktop, skip on mobile -->
     <script is:inline>
       (function () {
         var video = document.querySelector('video');
         if (!video) return;
         
-        // Detect mobile / low-power mode
         var isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
         
-        // Try to play, hide video if fails
+        // Skip video entirely on mobile - gradient background shows through
+        if (isMobile) {
+          video.remove();
+          return;
+        }
+        
+        // Desktop: try to play, hide if fails
         var playPromise = video.play();
         if (playPromise !== undefined) {
           playPromise.catch(function () {
@@ -114,21 +118,12 @@ const siteName = 'Yanche Blog';
           });
         }
         
-        // Also handle source error
+        // Handle source load error
         var source = video.querySelector('source');
         if (source) {
           source.addEventListener('error', function () {
             video.style.display = 'none';
           });
-        }
-        
-        // On mobile, reduce video quality expectations - just show gradient if video is slow
-        if (isMobile) {
-          setTimeout(function () {
-            if (video.readyState < 2) {
-              video.style.display = 'none';
-            }
-          }, 3000);
         }
       })();
     </script>
