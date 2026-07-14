@@ -44,7 +44,7 @@ import Footer from '../components/Footer.astro';
       <!-- Reader Links -->
       <div class="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
         <a
-          href="https://feedly.com/i/subscription/feed/https://www.yanche.chat/rss.xml"
+          href={`https://feedly.com/i/subscription/feed/${encodeURIComponent('https://www.yanche.chat/rss.xml')}`}
           target="_blank"
           rel="noopener"
           class="flex items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] px-6 py-3.5 text-sm font-medium text-[var(--color-text)] transition-all hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
@@ -55,7 +55,7 @@ import Footer from '../components/Footer.astro';
           Feedly 订阅
         </a>
         <a
-          href="https://www.inoreader.com/?add_feed=https://www.yanche.chat/rss.xml"
+          href={`https://www.inoreader.com/?add_feed=${encodeURIComponent('https://www.yanche.chat/rss.xml')}`}
           target="_blank"
           rel="noopener"
           class="flex items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] px-6 py-3.5 text-sm font-medium text-[var(--color-text)] transition-all hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
@@ -66,6 +66,14 @@ import Footer from '../components/Footer.astro';
           </svg>
           Inoreader 订阅
         </a>
+      </div>
+
+      <!-- Manual Add Instructions -->
+      <div class="mt-6 rounded-xl border border-dashed border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-4 text-left">
+        <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">其他阅读器</p>
+        <p class="text-sm text-[var(--color-text-secondary)]">
+          如果上述一键订阅不可用，请在您的 RSS 阅读器中手动添加以下 Feed 地址：
+        </p>
       </div>
 
       <!-- Raw XML Link -->
