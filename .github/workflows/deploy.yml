@@ -1,6 +1,9 @@
 name: Trigger EdgeOne Rebuild
 
 on:
+  push:
+    branches:
+      - master
   repository_dispatch:
     types:
       - vault_updated
