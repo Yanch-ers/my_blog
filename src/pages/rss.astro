@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="RSS 订阅" description="订阅 Yanche Blog 获取最新文章推送" noVideoBackground={true}>
+  <Header />
+
+  <main class="mx-auto flex max-w-2xl flex-1 flex-col items-center justify-center px-6 py-16 text-center">
+    <div class="animate-fade-in">
+      <!-- RSS Icon -->
+      <div class="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-light)] shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 12a8 8 0 0 1 8-8 8.5 8.5 0 0 1 7.5 4.75 8 8 0 0 1-4.5 11.25" />
+          <path d="M12 18a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+        </svg>
+      </div>
+
+      <h1 class="font-serif text-3xl font-bold text-[var(--color-text)] sm:text-4xl">
+        RSS 订阅
+      </h1>
+
+      <p class="mt-4 text-lg text-[var(--color-text-secondary)]">
+        通过 RSS 阅读器订阅 <span class="font-semibold text-[var(--color-accent)]">Yanche Blog</span>，第一时间获取最新文章推送。
+      </p>
+
+      <!-- Feed URL -->
+      <div class="mt-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-4">
+        <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">Feed 地址</p>
+        <div class="flex items-center gap-2">
+          <code class="flex-1 truncate rounded-lg bg-[var(--color-bg-secondary)] px-4 py-2.5 text-sm text-[var(--color-text)]">
+            https://www.yanche.chat/rss.xml
+          </code>
+          <button
+            id="copy-btn"
+            class="flex-shrink-0 rounded-lg bg-[var(--color-accent)] px-4 py-2.5 text-sm font-medium text-white transition-all hover:opacity-90 active:scale-95"
+          >
+            复制
+          </button>
+        </div>
+      </div>
+
+      <!-- Reader Links -->
+      <div class="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <a
+          href="https://feedly.com/i/subscription/feed/https://www.yanche.chat/rss.xml"
+          target="_blank"
+          rel="noopener"
+          class="flex items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] px-6 py-3.5 text-sm font-medium text-[var(--color-text)] transition-all hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3.5 18.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5S2 16.17 2 17s.67 1.5 1.5 1.5zM2 11.02V13h5.5c2.48 0 4.5 2.02 4.5 4.5V19h2c0-3.59-2.91-6.5-6.5-6.5H2zm0-5V8.02h9.5c5.24 0 9.5 4.26 9.5 9.5V19h2c0-6.35-5.15-11.5-11.5-11.5H2z"/>
+          </svg>
+          Feedly 订阅
+        </a>
+        <a
+          href="https://www.inoreader.com/?add_feed=https://www.yanche.chat/rss.xml"
+          target="_blank"
+          rel="noopener"
+          class="flex items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] px-6 py-3.5 text-sm font-medium text-[var(--color-text)] transition-all hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12a8 8 0 0 1 8-8 8.5 8.5 0 0 1 7.5 4.75 8 8 0 0 1-4.5 11.25" />
+            <path d="M12 18a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+          </svg>
+          Inoreader 订阅
+        </a>
+      </div>
+
+      <!-- Raw XML Link -->
+      <p class="mt-8 text-sm text-[var(--color-text-muted)]">
+        查看原始 XML：
+        <a href="/rss.xml" class="text-[var(--color-accent)] underline underline-offset-2 hover:opacity-80">
+          /rss.xml
+        </a>
+      </p>
+    </div>
+  </main>
+
+  <Footer maxWidth="max-w-2xl" />
+
+  <script>
+    const copyBtn = document.getElementById('copy-btn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText('https://www.yanche.chat/rss.xml').then(() => {
+          copyBtn.textContent = '已复制!';
+          copyBtn.classList.add('opacity-70');
+          setTimeout(() => {
+            copyBtn.textContent = '复制';
+            copyBtn.classList.remove('opacity-70');
+          }, 2000);
+        });
+      });
+    }
+  </script>
+</BaseLayout>
