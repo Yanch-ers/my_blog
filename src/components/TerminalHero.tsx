@@ -64,7 +64,7 @@ export default function TerminalHero({ techCount, essaysCount }: TerminalHeroPro
             <span className="h-3 w-3 rounded-full bg-amber-400/80" />
             <span className="h-3 w-3 rounded-full bg-emerald-400/80" />
           </div>
-          <span className="text-xs font-medium text-[var(--color-text-muted)]">~/NovaBlog</span>
+          <span className="text-xs font-medium text-[var(--color-text-muted)]">~/YancheBlog</span>
         </div>
         <div className="flex items-center gap-3 text-xs text-[var(--color-text-muted)]">
           <span className="flex items-center gap-1.5">
