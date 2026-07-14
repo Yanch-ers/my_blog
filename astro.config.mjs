@@ -7,7 +7,7 @@ import { remarkObsidian } from './src/plugins/remark-obsidian.mjs';
 import { unified } from '@astrojs/markdown-remark';
 
 const rawSiteUrl = process.env.SITE_URL || '';
-const siteUrl = rawSiteUrl && !rawSiteUrl.startsWith('http') ? `https://${rawSiteUrl}` : rawSiteUrl || 'https://yanche.blog';
+const siteUrl = rawSiteUrl && !rawSiteUrl.startsWith('http') ? `https://${rawSiteUrl}` : rawSiteUrl || 'https://yanche.chat';
 
 export default defineConfig({
   site: siteUrl,

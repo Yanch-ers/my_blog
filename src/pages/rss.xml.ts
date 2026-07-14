@@ -14,7 +14,7 @@ export const GET: APIRoute = async (context) => {
   const rssResponse = await rss({
     title: 'Yanche Blog',
     description: '技术笔记与生活随笔',
-    site: context.site ?? import.meta.env.SITE_URL ?? 'https://yanche.blog',
+    site: context.site ?? import.meta.env.SITE_URL ?? 'https://yanche.chat',
     items: allPosts.map((post) => ({
       title: post.data.title,
       pubDate: getDate(post),
