@@ -129,15 +129,19 @@ export default function TerminalHero({ techCount, essaysCount }: TerminalHeroPro
 
         {/* CTA */}
         <div className="flex justify-center gap-4 mt-8">
-          <a
-            href="#posts"
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-teal-500/25 transition-all hover:shadow-xl hover:shadow-teal-500/30 hover:-translate-y-0.5"
+          <button
+            onClick={() => {
+              const container = document.getElementById('snap-container');
+              const sections = container?.querySelectorAll('[data-snap-section]');
+              sections?.[1]?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-teal-500/25 transition-all hover:shadow-xl hover:shadow-teal-500/30 hover:-translate-y-0.5 cursor-pointer"
           >
             开始阅读
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="m9 18 6-6-6-6" />
             </svg>
-          </a>
+          </button>
           <a
             href="/rss"
             className="inline-flex items-center gap-2 rounded-xl glass-button px-6 py-2.5 text-sm font-medium text-[var(--color-text-secondary)]"
