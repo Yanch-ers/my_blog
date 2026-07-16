@@ -15,12 +15,12 @@ const commands = [
 ];
 
 const categories = [
-  { name: 'Kubernetes', icon: '☸️' },
-  { name: 'Linux', icon: '🐧' },
-  { name: 'Database', icon: '💾' },
-  { name: 'Docker', icon: '🐳' },
-  { name: 'AI', icon: '🤖' },
-  { name: 'Network', icon: '🌐' },
+  { name: 'Kubernetes', icon: '☸️', href: '/tags/kubernetes' },
+  { name: 'Linux', icon: '🐧', href: '/tags/linux' },
+  { name: 'Database', icon: '💾', href: '/tags/database' },
+  { name: 'Docker', icon: '🐳', href: '/tags/docker' },
+  { name: 'AI', icon: '🤖', href: '/tags/ai' },
+  { name: 'Network', icon: '🌐', href: '/tags/network' },
 ];
 
 export default function TerminalHero({ techCount, essaysCount }: TerminalHeroProps) {
@@ -117,13 +117,14 @@ export default function TerminalHero({ techCount, essaysCount }: TerminalHeroPro
         {/* Category tags */}
         <div className="flex flex-wrap justify-center gap-3 mt-8">
           {categories.map((cat) => (
-            <span
+            <a
               key={cat.name}
-              className="inline-flex items-center gap-1.5 rounded-lg glass-button px-3 py-1.5 text-xs font-medium text-[var(--color-text-secondary)]"
+              href={cat.href}
+              className="inline-flex items-center gap-1.5 rounded-lg glass-button px-3 py-1.5 text-xs font-medium text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-accent)]"
             >
               <span>{cat.icon}</span>
               {cat.name}
-            </span>
+            </a>
           ))}
         </div>
 
