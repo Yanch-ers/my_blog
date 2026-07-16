@@ -43,6 +43,7 @@ export default function GraphVisualization({ nodes, edges }: Props) {
   const [hoveredNode, setHoveredNode] = useState<GraphNode | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+  const containerRectRef = useRef<DOMRect | null>(null);
 
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -303,6 +304,7 @@ export default function GraphVisualization({ nodes, edges }: Props) {
     if (!container) return;
 
     const rect = container.getBoundingClientRect();
+    containerRectRef.current = rect;
     mouseRef.current.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
     mouseRef.current.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
 
@@ -320,7 +322,7 @@ export default function GraphVisualization({ nodes, edges }: Props) {
       const node = nodeDataMapRef.current.get(target);
       if (node) {
         setHoveredNode(node);
-        setTooltipPos({ x: e.clientX, y: e.clientY });
+        setTooltipPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
         setShowTooltip(true);
         container.style.cursor = 'pointer';
         highlightNode(node.id);
@@ -380,7 +382,7 @@ export default function GraphVisualization({ nodes, edges }: Props) {
     >
       {showTooltip && hoveredNode && (
         <div
-          className="fixed z-50 rounded-lg shadow-xl border border-gray-100 bg-white p-3"
+          className="absolute z-50 rounded-lg shadow-xl border border-gray-100 bg-white p-3 pointer-events-none"
           style={{
             left: tooltipPos.x + 15,
             top: tooltipPos.y + 15,
