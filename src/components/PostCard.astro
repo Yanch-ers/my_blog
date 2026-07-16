@@ -21,7 +21,7 @@ const rt = readingTime(bodyText);
 <article class="group relative rounded-xl post-card overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5">
   <a
     href={`/posts/${post.collection}/${post.id}`}
-    class="block p-4"
+    class="block p-4 pb-2"
   >
     <!-- Top row: category + date -->
     <div class="flex items-center justify-between gap-2 mb-2">
@@ -49,20 +49,21 @@ const rt = readingTime(bodyText);
     <h2 class="font-serif text-sm font-extrabold leading-snug text-[var(--color-text)] transition-colors group-hover:text-[var(--color-accent)] line-clamp-2 mb-2">
       {post.data.title}
     </h2>
-
-    <!-- Bottom: tags + read time -->
-    <div class="flex items-center justify-between">
-      <div class="flex flex-wrap gap-1">
-        {tags.slice(0, 3).map((tag) => (
-          <span
-            key={tag}
-            class="inline-flex items-center rounded-full bg-[var(--color-bg-secondary)] px-1.5 py-0.5 text-[9px] font-medium text-[var(--color-text-muted)]"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-      <span class="text-[10px] font-medium text-[var(--color-text-muted)]">{rt} min</span>
-    </div>
   </a>
+
+  <!-- Bottom: tags + read time (outside link to allow tag clicks) -->
+  <div class="flex items-center justify-between px-4 pb-4">
+    <div class="flex flex-wrap gap-1">
+      {tags.slice(0, 3).map((tag) => (
+        <a
+          key={tag}
+          href={`/tags/${tag}`}
+          class="inline-flex items-center rounded-full bg-[var(--color-bg-secondary)] px-1.5 py-0.5 text-[9px] font-medium text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-accent)]"
+        >
+          {tag}
+        </a>
+      ))}
+    </div>
+    <span class="text-[10px] font-medium text-[var(--color-text-muted)]">{rt} min</span>
+  </div>
 </article>

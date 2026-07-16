@@ -24,7 +24,7 @@ const rt = readingTime(bodyText);
 
   <a
     href={`/posts/${post.collection}/${post.id}`}
-    class="relative flex flex-col gap-4 p-6"
+    class="relative flex flex-col gap-4 p-6 pb-4"
   >
     <!-- Top row -->
     <div class="flex items-center justify-between">
@@ -69,12 +69,13 @@ const rt = readingTime(bodyText);
     {tags.length > 0 && (
       <div class="flex flex-wrap gap-1.5">
         {tags.slice(0, 4).map((tag) => (
-          <span
+          <a
             key={tag}
-            class="inline-flex items-center rounded-lg bg-[var(--color-bg-secondary)] px-2.5 py-1 text-xs text-[var(--color-text-muted)] transition-colors group-hover:bg-[var(--color-accent-light)] group-hover:text-[var(--color-accent)]"
+            href={`/tags/${tag}`}
+            class="inline-flex items-center rounded-lg bg-[var(--color-bg-secondary)] px-2.5 py-1 text-xs text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-accent)]"
           >
             {tag}
-          </span>
+          </a>
         ))}
         {tags.length > 4 && (
           <span class="inline-flex items-center rounded-lg px-2 py-1 text-xs text-[var(--color-text-muted)]">
